@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>음악 이론 퀴즈 — 중학교 음악 교육과정</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f5;--bg-tertiary:#efefef;
+  --text-primary:#1a1a1a;--text-secondary:#6b6b6b;--text-tertiary:#9b9b9b;
+  --border-tertiary:rgba(0,0,0,0.12);--border-secondary:rgba(0,0,0,0.22);
+  --radius-md:8px;--radius-lg:12px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg-primary:#1e1e1e;--bg-secondary:#2a2a2a;--bg-tertiary:#141414;
+    --text-primary:#f0f0f0;--text-secondary:#aaaaaa;--text-tertiary:#666666;
+    --border-tertiary:rgba(255,255,255,0.1);--border-secondary:rgba(255,255,255,0.2);
+  }
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg-tertiary);min-height:100vh;color:var(--text-primary)}
+.app{max-width:680px;margin:0 auto;padding:1rem}
+.screen{display:none;animation:fadeIn 0.3s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.hero{text-align:center;padding:2rem 0 1.5rem}
+.hero-icon{font-size:48px;margin-bottom:0.75rem}
+.hero h1{font-size:22px;font-weight:500;color:var(--text-primary);margin-bottom:0.5rem}
+.hero p{font-size:14px;color:var(--text-secondary);line-height:1.6}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:1.25rem 0}
+.stat-card{background:var(--bg-secondary);border-radius:var(--radius-md);padding:0.75rem;text-align:center}
+.stat-num{font-size:22px;font-weight:500;color:var(--text-primary)}
+.stat-label{font-size:12px;color:var(--text-secondary);margin-top:2px}
+.section-title{font-size:13px;font-weight:500;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.05em;margin:1.5rem 0 0.75rem}
+.category-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cat-card{background:var(--bg-primary);border:0.5px solid var(--border-tertiary);border-radius:var(--radius-lg);padding:1rem 1.25rem;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.cat-card:hover{border-color:var(--border-secondary);background:var(--bg-secondary)}
+.cat-card:active{transform:scale(0.98)}
+.cat-accent{width:3px;height:100%;position:absolute;left:0;top:0;border-radius:4px 0 0 4px}
+.cat-icon{font-size:22px;margin-bottom:6px}
+.cat-title{font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:2px}
+.cat-sub{font-size:12px;color:var(--text-secondary)}
+.cat-badge{font-size:11px;padding:2px 7px;border-radius:9999px;position:absolute;top:10px;right:10px;font-weight:500}
+.badge-done{background:#EAF3DE;color:#3B6D11}
+.badge-new{background:#E6F1FB;color:#185FA5}
+.quiz-header{background:var(--bg-primary);border:0.5px solid var(--border-tertiary);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:1rem}
+.quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem}
+.quiz-category{font-size:13px;color:var(--text-secondary)}
+.quiz-progress-text{font-size:13px;color:var(--text-secondary)}
+.progress-bar{height:5px;background:var(--bg-secondary);border-radius:9999px;overflow:hidden}
+.progress-fill{height:100%;border-radius:9999px;transition:width 0.4s ease;background:#6C5CE7}
+.question-card{background:var(--bg-primary);border:0.5px solid var(--border-tertiary);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
+.q-num{font-size:12px;color:var(--text-tertiary);margin-bottom:0.5rem}
+.q-text{font-size:16px;font-weight:500;color:var(--text-primary);line-height:1.6;margin-bottom:0.5rem}
+.q-image{text-align:center;padding:0.75rem;font-size:28px;background:var(--bg-secondary);border-radius:var(--radius-md);margin:0.75rem 0}
+.options-grid{display:grid;gap:8px;margin-top:1rem}
+.opt-btn{background:var(--bg-primary);border:0.5px solid var(--border-tertiary);border-radius:var(--radius-md);padding:0.75rem 1rem;text-align:left;cursor:pointer;font-size:14px;color:var(--text-primary);transition:all 0.15s;display:flex;align-items:center;gap:0.75rem;font-family:inherit;width:100%}
+.opt-btn:hover:not(:disabled){background:var(--bg-secondary);border-color:var(--border-secondary)}
+.opt-label{width:24px;height:24px;border-radius:50%;border:0.5px solid var(--border-secondary);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;color:var(--text-secondary)}
+.opt-btn.correct{background:#EAF3DE;border-color:#639922;color:#27500A}
+.opt-btn.correct .opt-label{background:#639922;color:#fff;border-color:#639922}
+.opt-btn.wrong{background:#FCEBEB;border-color:#E24B4A;color:#501313}
+.opt-btn.wrong .opt-label{background:#E24B4A;color:#fff;border-color:#E24B4A}
+.opt-btn:disabled{cursor:default}
+.feedback-bar{border-radius:var(--radius-md);padding:0.875rem 1rem;margin-bottom:1rem;display:none;align-items:center;gap:0.75rem}
+.feedback-bar.show{display:flex}
+.feedback-bar.ok{background:#EAF3DE;border:0.5px solid #97C459}
+.feedback-bar.ng{background:#FCEBEB;border:0.5px solid #F09595}
+.feedback-icon{font-size:18px;flex-shrink:0}
+.feedback-text{font-size:14px;font-weight:500;flex:1}
+.feedback-text.ok{color:#27500A}
+.feedback-text.ng{color:#501313}
+.feedback-explain{font-size:13px;color:var(--text-secondary);margin-top:2px}
+.next-btn{width:100%;background:#6C5CE7;color:#fff;border:none;border-radius:var(--radius-md);padding:0.875rem;font-size:15px;font-weight:500;cursor:pointer;transition:opacity 0.15s;font-family:inherit}
+.next-btn:hover{opacity:0.9}
+.next-btn:active{transform:scale(0.99)}
+.result-card{background:var(--bg-primary);border:0.5px solid var(--border-tertiary);border-radius:var(--radius-lg);padding:2rem;text-align:center;margin-bottom:1rem}
+.score-ring{width:100px;height:100px;margin:0 auto 1rem;position:relative}
+.score-ring svg{transform:rotate(-90deg)}
+.score-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:22px;font-weight:500;color:var(--text-primary)}
+.result-title{font-size:20px;font-weight:500;margin-bottom:0.25rem;color:var(--text-primary)}
+.result-sub{font-size:14px;color:var(--text-secondary)}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:1.25rem}
+.r-stat{background:var(--bg-secondary);border-radius:var(--radius-md);padding:0.625rem;text-align:center}
+.r-stat-n{font-size:18px;font-weight:500;color:var(--text-primary)}
+.r-stat-l{font-size:11px;color:var(--text-secondary)}
+.review-item{background:var(--bg-primary);border:0.5px solid var(--border-tertiary);border-radius:var(--radius-md);padding:0.875rem;margin-bottom:8px;display:flex;gap:0.75rem;align-items:flex-start}
+.review-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.review-q{font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:2px}
+.review-a{font-size:12px;color:var(--text-secondary)}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0.75rem}
+.btn-sec{background:var(--bg-primary);border:0.5px solid var(--border-secondary);border-radius:var(--radius-md);padding:0.75rem;font-size:14px;cursor:pointer;color:var(--text-primary);font-family:inherit;transition:background 0.15s}
+.btn-sec:hover{background:var(--bg-secondary)}
+.btn-pri{background:#6C5CE7;border:none;border-radius:var(--radius-md);padding:0.75rem;font-size:14px;font-weight:500;cursor:pointer;color:#fff;font-family:inherit;transition:opacity 0.15s}
+.btn-pri:hover{opacity:0.9}
+.back-btn{background:none;border:none;cursor:pointer;color:var(--text-secondary);font-size:13px;padding:0;font-family:inherit;display:flex;align-items:center;gap:4px;margin-bottom:1rem}
+.back-btn:hover{color:var(--text-primary)}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="screen active" id="home-screen">
+  <div class="hero">
+    <div class="hero-icon">🎵</div>
+    <h1>음악 이론 퀴즈</h1>
+    <p>중학교 음악 교육과정 기반 · 7개 영역 · 140개 문제</p>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num" id="gs-total">0</div>
+      <div class="stat-label">총 풀이</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="gs-correct">0%</div>
+      <div class="stat-label">정답률</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="gs-streak">0</div>
+      <div class="stat-label">최고 연속</div>
+    </div>
+  </div>
+  <div class="section-title">학습 영역 선택</div>
+  <div class="category-grid" id="cat-grid"></div>
+</div>
+
+<div class="screen" id="quiz-screen">
+  <button class="back-btn" onclick="goHome()">← 홈으로</button>
+  <div class="quiz-header">
+    <div class="quiz-meta">
+      <span class="quiz-category" id="q-cat-name"></span>
+      <span class="quiz-progress-text" id="q-progress"></span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="q-prog-fill" style="width:0%"></div>
+    </div>
+  </div>
+  <div class="question-card">
+    <div class="q-num" id="q-num"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="q-image" id="q-image" style="display:none"></div>
+    <div class="options-grid" id="q-options"></div>
+  </div>
+  <div class="feedback-bar" id="feedback">
+    <div class="feedback-icon" id="fb-icon"></div>
+    <div>
+      <div class="feedback-text" id="fb-text"></div>
+      <div class="feedback-explain" id="fb-explain"></div>
+    </div>
+  </div>
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()" style="display:none">다음 문제 →</button>
+</div>
+
+<div class="screen" id="result-screen">
+  <button class="back-btn" onclick="goHome()">← 홈으로</button>
+  <div class="result-card">
+    <div class="score-ring">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="42" fill="none" stroke="var(--bg-secondary)" stroke-width="8"/>
+        <circle cx="50" cy="50" r="42" fill="none" stroke-width="8" stroke-linecap="round" id="score-arc" stroke="#6C5CE7" stroke-dasharray="0 264"/>
+      </svg>
+      <div class="score-center" id="score-pct"></div>
+    </div>
+    <div class="result-title" id="result-title"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="result-stats">
+      <div class="r-stat"><div class="r-stat-n" id="r-correct" style="color:#639922">0</div><div class="r-stat-l">정답</div></div>
+      <div class="r-stat"><div class="r-stat-n" id="r-wrong" style="color:#E24B4A">0</div><div class="r-stat-l">오답</div></div>
+      <div class="r-stat"><div class="r-stat-n" id="r-time">0s</div><div class="r-stat-l">소요 시간</div></div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-sec" onclick="retryQuiz()">다시 풀기</button>
+    <button class="btn-pri" onclick="goHome()">다른 영역 →</button>
+  </div>
+  <div class="section-title">문제 풀이 복습</div>
+  <div id="review-list"></div>
+</div>
+
+</div>
+<script>
+const CATS=[
+  {id:'note',title:'음표와 쉼표',sub:'음표 종류·음가·점음표',icon:'♩',accent:'#6C5CE7'},
+  {id:'scale',title:'음계와 조성',sub:'장음계·단음계·조표',icon:'🎼',accent:'#00B894'},
+  {id:'rhythm',title:'박자와 리듬',sub:'박자표·박·리듬꼴',icon:'🥁',accent:'#E17055'},
+  {id:'mark',title:'악상기호',sub:'세기·빠르기·나타냄말',icon:'𝆒',accent:'#0984E3'},
+  {id:'chord',title:'화음과 음정',sub:'음정·장단화음·으뜸화음',icon:'🎹',accent:'#c0901e'},
+  {id:'inst',title:'악기',sub:'관현악기·국악기·분류',icon:'🎻',accent:'#E84393'},
+  {id:'form',title:'음악 형식',sub:'형식·악곡·음악사',icon:'📜',accent:'#00CEC9'},
+];
+
+const QUESTIONS={
+note:[
+  {q:'온음표의 박자 수는?',opts:['1박','2박','3박','4박'],ans:3,explain:'온음표(𝅝)는 기본 단위로 4박을 가집니다.'},
+  {q:'2분음표의 박자 수는?',opts:['1박','2박','3박','4박'],ans:1,explain:'2분음표(𝅗𝅥)는 온음표의 절반인 2박입니다.'},
+  {q:'4분음표의 박자 수는?',opts:['1박','2박','3박','4박'],ans:0,explain:'4분음표(♩)는 가장 기본적인 음표로 1박을 나타냅니다.'},
+  {q:'8분음표(♪)는 몇 박인가요?',opts:['½박','1박','2박','4박'],ans:0,explain:'8분음표는 4분음표의 절반인 ½박입니다.'},
+  {q:'점2분음표의 박자 수는?',opts:['2박','2.5박','3박','3.5박'],ans:2,explain:'점음표는 원래 음표의 1.5배이므로, 점2분음표 = 2 × 1.5 = 3박입니다.'},
+  {q:'4분쉼표가 쉬는 시간은?',opts:['½박','1박','2박','4박'],ans:1,explain:'쉼표는 해당 음표와 같은 길이만큼 소리를 내지 않습니다. 4분쉼표 = 1박.'},
+  {q:'16분음표 2개는 어느 음표와 같은가요?',opts:['온음표','2분음표','4분음표','8분음표'],ans:3,explain:'16분음표 = 8분음표의 절반이므로, 16분음표 2개 = 8분음표 1개.'},
+  {q:'온음표 쉼표의 모양 설명으로 맞는 것은?',opts:['선 위에 매달린 직사각형','선 아래에 붙은 직사각형','빈 마름모','채워진 마름모'],ans:1,explain:'온음표 쉼표는 4번 선 아래에 붙은 납작한 직사각형으로 표기됩니다.'},
+  {q:'점4분음표의 박자 수는?',opts:['1박','1.5박','2박','2.5박'],ans:1,explain:'점음표는 원래 음표의 1.5배입니다. 점4분음표 = 1 × 1.5 = 1.5박.'},
+  {q:'다음 중 틀린 것은?',opts:['♩ = 1박','𝅗𝅥 = 2박','𝅝 = 4박','♪ = 1박'],ans:3,explain:'8분음표(♪)는 ½박입니다. 1박은 4분음표(♩)입니다.'},
+  {q:'온음표 4개는 몇 박인가요?',opts:['4박','8박','16박','12박'],ans:2,explain:'온음표 1개 = 4박이므로, 4개 × 4박 = 16박입니다.'},
+  {q:'겹점음표는 원래 음표의 몇 배인가요?',opts:['1.5배','1.75배','2배','2.5배'],ans:1,explain:'겹점음표는 원래 음표 + 절반 + 1/4, 즉 1.75배입니다.'},
+  {q:'당김음(Syncopation)이란?',opts:['여린박이 강박처럼 강조됨','강박에 음이 오는 것','빠르게 연주하는 기법','쉼표가 많은 리듬'],ans:0,explain:'당김음은 여린박에 시작한 음이 강박까지 이어져 강박처럼 들리는 효과입니다.'},
+  {q:'4분음표 4개로 만들 수 있는 박자는?',opts:['2/4박자','3/4박자','4/4박자','6/8박자'],ans:2,explain:'4/4박자는 한 마디에 4분음표가 4개 들어가는 박자입니다.'},
+  {q:'2분음표 쉼표의 모양은?',opts:['선 아래에 붙음','선 위에 매달림','삐죽한 모양','와구리 모양'],ans:1,explain:'2분음표 쉼표는 3번 선 위에 올려놓은 납작한 직사각형으로, 온음표 쉼표와 반대 방향입니다.'},
+  {q:'셋잇단음표(Triplet)에서 3개의 음표가 차지하는 시간은?',opts:['같은 종류 1개 길이','같은 종류 2개 길이','같은 종류 3개 길이','같은 종류 4개 길이'],ans:1,explain:'8분음표 셋잇단음표 3개는 8분음표 2개(= 4분음표 1박)와 같은 시간을 차지합니다.'},
+  {q:'온음표 쉼표와 2분음표 쉼표를 구별하는 방법은?',opts:['크기가 다르다','위치가 반대이다','색이 다르다','획수가 다르다'],ans:1,explain:'온음표 쉼표는 선 아래에, 2분음표 쉼표는 선 위에 붙습니다.'},
+  {q:'붙임줄(Tie)의 역할은?',opts:['음을 꾸미는 것','같은 음을 연결해 길이를 늘리는 것','빠르기를 표시','음의 세기를 표시'],ans:1,explain:'붙임줄은 같은 높이의 음표 두 개를 연결하여 하나의 긴 음으로 연주하게 합니다.'},
+  {q:'이음줄(Slur)의 역할은?',opts:['음을 부드럽게 연결','음의 길이를 연장','음의 세기 증가','빠르게 연주'],ans:0,explain:'이음줄은 서로 다른 높이의 음표를 부드럽게(레가토) 연결하는 기호입니다.'},
+  {q:'한 마디에 4분음표 4박이 들어가는 박자 표기는?',opts:['2/4','3/4','4/4','6/8'],ans:2,explain:'4/4박자: 분모 4는 4분음표, 분자 4는 한 마디에 4박임을 나타냅니다.'},
+],
+scale:[
+  {q:'C장조의 음계 순서는?',opts:['도레미파솔라시도','도레미♭파솔라시도','도레♭미파솔라시도','도레미파♭솔라시도'],ans:0,explain:'C장조는 검은 건반 없이 흰 건반만으로 이루어진 기본 장음계입니다.'},
+  {q:'장음계의 온음·반음 구조는?',opts:['온온반온온온반','온반온온반온온','반온온온반온온','온온온반온온반'],ans:0,explain:'장음계의 구조는 온-온-반-온-온-온-반 순서입니다 (W-W-H-W-W-W-H).'},
+  {q:'G장조의 조표는?',opts:['♭ 1개','♯ 1개','♭ 2개','♯ 2개'],ans:1,explain:'G장조는 F♯ 하나를 조표로 가집니다.'},
+  {q:'F장조의 조표는?',opts:['♭ 1개','♯ 1개','♭ 2개','♯ 2개'],ans:0,explain:'F장조는 B♭ 하나를 조표로 가집니다.'},
+  {q:'계이름 "라"에 해당하는 음이름(영어)은?',opts:['A','B','C','D'],ans:0,explain:'솔페지오 계이름과 영어 음이름: 도=C, 레=D, 미=E, 파=F, 솔=G, 라=A, 시=B.'},
+  {q:'자연단음계와 장음계의 차이점은?',opts:['3·6·7번째 음이 반음 낮음','2·4·6번째 음이 반음 높음','1·3·5번째 음만 다름','모든 음이 반음 낮음'],ans:0,explain:'자연단음계는 장음계의 3, 6, 7번째 음을 각각 반음 낮춰서 만듭니다.'},
+  {q:'D장조의 올림표(♯) 수는?',opts:['1개','2개','3개','4개'],ans:1,explain:'D장조는 F♯, C♯ 두 개의 올림표를 가집니다.'},
+  {q:'♯이 3개인 장조는?',opts:['G장조','D장조','A장조','E장조'],ans:2,explain:'♯ 3개 = A장조입니다. (F♯, C♯, G♯)'},
+  {q:'반음(Half step)이란?',opts:['피아노에서 인접한 두 건반의 음정','두 음의 음정 간격이 온음인 것','두 옥타브 차이','3도 음정'],ans:0,explain:'반음은 피아노에서 바로 이웃한 두 건반 사이의 가장 작은 음정 간격입니다.'},
+  {q:'솔페지오에서 "시"의 음이름은?',opts:['A','B','C','G'],ans:1,explain:'도=C, 레=D, 미=E, 파=F, 솔=G, 라=A, 시=B입니다.'},
+  {q:'♭이 2개인 조성은?',opts:['F장조','B♭장조','E♭장조','A♭장조'],ans:1,explain:'B♭장조는 B♭, E♭ 두 개의 내림표를 가집니다.'},
+  {q:'화성단음계(Harmonic minor)의 특징은?',opts:['7번째 음을 반음 올림','6번째 음을 반음 올림','3번째 음을 반음 올림','5번째 음을 반음 올림'],ans:0,explain:'화성단음계는 자연단음계의 7번째 음을 반음 올려서 이끈음 효과를 만듭니다.'},
+  {q:'5도권에서 ♯이 하나씩 늘어나는 순서는?',opts:['C→G→D→A→E','C→F→B♭→E♭','C→D→E→F','C→B→A→G'],ans:0,explain:'장조의 ♯ 순서: C(0)→G(1)→D(2)→A(3)→E(4)→B(5)→F♯(6)→C♯(7)'},
+  {q:'"도"에서 옥타브 위의 "도"까지 반음 개수는?',opts:['10개','11개','12개','13개'],ans:2,explain:'한 옥타브는 12개의 반음(반음 간격)으로 구성됩니다.'},
+  {q:'장음계에서 으뜸음(Tonic)은 몇 번째 음인가요?',opts:['1번째','3번째','5번째','7번째'],ans:0,explain:'으뜸음(Tonic)은 음계의 첫 번째 음으로, 조성의 중심음입니다.'},
+  {q:'반음계(Chromatic scale)는 옥타브 안에 몇 개의 음이 있나요?',opts:['7개','10개','12개','13개'],ans:2,explain:'반음계는 한 옥타브 안에 12개의 반음으로 이루어진 음계입니다.'},
+  {q:'E장조의 ♯ 개수는?',opts:['2개','3개','4개','5개'],ans:2,explain:'E장조는 F♯, C♯, G♯, D♯ 네 개의 올림표를 가집니다.'},
+  {q:'가단조(A minor)의 나란한조(관계장조)는?',opts:['C장조','G장조','F장조','D장조'],ans:0,explain:'가단조의 으뜸음 라(A)에서 단3도 위인 다(C)장조가 나란한조입니다.'},
+  {q:'올림표(♯)의 역할은?',opts:['음을 반음 올린다','음을 반음 낮춘다','음을 온음 올린다','이전 변화표를 취소'],ans:0,explain:'올림표(♯)는 해당 음을 반음 높여 연주하도록 지시합니다.'},
+  {q:'내림표(♭)의 역할은?',opts:['음을 반음 올린다','음을 반음 낮춘다','음을 온음 올린다','온음 낮춘다'],ans:1,explain:'내림표(♭)는 해당 음을 반음 낮춰 연주하도록 지시합니다.'},
+],
+rhythm:[
+  {q:'4/4박자에서 가장 강한 박은?',opts:['1박','2박','3박','4박'],ans:0,explain:'4/4박자의 강세: 강(1박) - 약(2박) - 중강(3박) - 약(4박)'},
+  {q:'3/4박자의 강세 패턴은?',opts:['강-약-약','강-약-강','강-강-약','약-강-약'],ans:0,explain:'3/4박자: 강(1박) - 약(2박) - 약(3박)으로, 왈츠 리듬이 대표적입니다.'},
+  {q:'6/8박자에서 한 박(beat)의 단위 음표는?',opts:['4분음표','8분음표','2분음표','점4분음표'],ans:3,explain:'6/8박자는 겹박자(compound time)로, 한 박은 점4분음표(8분음표 3개 묶음)입니다. 지휘할 때에도 2박으로 합니다.'},
+  {q:'2/4박자 한 마디에 들어가는 4분음표의 수는?',opts:['2개','3개','4개','8개'],ans:0,explain:'2/4박자: 분자 2는 2박, 분모 4는 4분음표 기준임을 나타냅니다.'},
+  {q:'박자표 3/8에서 분모 8이 나타내는 것은?',opts:['8분음표가 기준','3박','8마디','8분쉼표'],ans:0,explain:'박자표의 분모는 기준이 되는 음표의 종류입니다. 8=8분음표.'},
+  {q:'3/4박자를 대표하는 춤곡은?',opts:['왈츠','마치','폴카','탱고'],ans:0,explain:'왈츠(Waltz)는 3/4박자의 대표적인 춤곡으로 "쿵-짝-짝" 리듬이 특징입니다.'},
+  {q:'혼합박자 5/4박자의 강세는 보통 어떻게 나뉘나요?',opts:['3+2 또는 2+3','4+1','5개 동등','1+4'],ans:0,explain:'5/4박자는 보통 3+2 또는 2+3으로 나뉘어 강세를 가집니다.'},
+  {q:'4/4박자 한 마디에 8분음표는 몇 개까지 들어가나요?',opts:['4개','6개','8개','16개'],ans:2,explain:'4/4박자 = 4박 = 8분음표 기준 8개.'},
+  {q:'"알레그로"는 어떤 빠르기인가요?',opts:['느리게','보통 빠르게','빠르게','아주 느리게'],ans:2,explain:'Allegro(알레그로)는 ♩=120~168 bpm 수준의 빠른 빠르기입니다.'},
+  {q:'리타르단도(rit.)의 의미는?',opts:['점점 빠르게','점점 느리게','갑자기 빠르게','일정한 빠르기'],ans:1,explain:'Ritardando(리타르단도, rit.)는 점점 느리게 연주하라는 빠르기 변화 기호입니다.'},
+  {q:'아첼레란도(accel.)의 의미는?',opts:['점점 느리게','점점 빠르게','갑자기 느리게','빠르기 유지'],ans:1,explain:'Accelerando(아첼레란도, accel.)는 점점 빠르게 연주하라는 지시입니다.'},
+  {q:'템포 루바토(Tempo rubato)란?',opts:['빠르기를 자유롭게 변화','일정 빠르기 유지','아주 느리게','박자 없이 연주'],ans:0,explain:'루바토는 감정 표현을 위해 빠르기를 자유롭게 신축적으로 변화시키는 것입니다.'},
+  {q:'메트로놈(Metronome)의 역할은?',opts:['음의 높이 측정','정확한 빠르기 표시','음량 측정','악기 조율'],ans:1,explain:'메트로놈은 분당 박자 수(BPM)를 기계적으로 표시하여 정확한 빠르기를 알려줍니다.'},
+  {q:'♩=60 BPM은 1분에 4분음표가 몇 개인가요?',opts:['30개','60개','120개','240개'],ans:1,explain:'BPM(Beats Per Minute): ♩=60은 1분에 4분음표 60박을 연주합니다.'},
+  {q:'복박자(compound time)란?',opts:['각 박이 3으로 나뉘는 박자','홀수 박의 박자','각 박이 2로 나뉘는 박자','강박이 없는 박자'],ans:0,explain:'복박자는 한 박이 8분음표 3개(점4분음표)로 구성되어 3으로 나뉘는 박자입니다. 6/8, 9/8, 12/8이 대표적입니다.'},
+  {q:'당김음 리듬이 자주 쓰이는 음악 장르는?',opts:['클래식','재즈','그레고리안 성가','인도 음악'],ans:1,explain:'당김음(Syncopation)은 재즈, 팝, 블루스에서 스윙감을 주는 핵심 리듬 기법입니다.'},
+  {q:'점4분음표와 8분음표의 조합은 어떤 리듬인가요?',opts:['점리듬(Dotted rhythm)','셋잇단음표','당김음','2연음'],ans:0,explain:'점4분음표+8분음표는 "쿵-짝" 형태의 점리듬(Dotted rhythm)입니다.'},
+  {q:'4/4박자에서 3번째 박의 강세는?',opts:['강','약','중강','없음'],ans:2,explain:'4/4박자: 강(1)·약(2)·중강(3)·약(4)으로, 3번째 박은 중강박입니다.'},
+  {q:'다음 중 복박자(compound time)에 해당하는 것은?',opts:['2/4박자','3/4박자','6/8박자','4/4박자'],ans:2,explain:'6/8박자는 겹2박자로, 한 마디에 점4분음표가 2개(한 박이 8분음표 3개씩) 들어가는 대표적인 복박자입니다.'},
+  {q:'안다체(Andante)의 뜻은?',opts:['아주 느리게','느리게 걷는 속도로','빠르게','아주 빠르게'],ans:1,explain:'Andante(안다체)는 이탈리아어로 "걷는 속도로"를 뜻합니다.'},
+],
+mark:[
+  {q:'ff(포르티시모)의 의미는?',opts:['여리게','아주 세게','보통 세기','아주 여리게'],ans:1,explain:'ff(fortissimo)는 "아주 세게"를 의미하는 악상기호입니다.'},
+  {q:'pp(피아니시모)의 의미는?',opts:['아주 세게','세게','여리게','아주 여리게'],ans:3,explain:'pp(pianissimo)는 "아주 여리게"를 의미합니다.'},
+  {q:'크레셴도(crescendo)를 나타내는 기호는?',opts:['<','>', '==', '≤'],ans:0,explain:'크레셴도(<)는 점점 세게를 나타내는 기호입니다.'},
+  {q:'데크레셴도(decrescendo)의 의미는?',opts:['점점 세게','점점 여리게','갑자기 세게','갑자기 여리게'],ans:1,explain:'데크레셴도(>)는 점점 여리게 연주하라는 기호입니다.'},
+  {q:'mf(메조포르테)의 의미는?',opts:['아주 세게','세게','조금 세게','보통 세게'],ans:2,explain:'mf(mezzo forte)는 "조금 세게" 수준입니다.'},
+  {q:'sfz(스포르찬도)의 의미는?',opts:['점점 세게','특별히 강하게 강조','점점 여리게','유지하며 세게'],ans:1,explain:'sfz(sforzando)는 특정 음을 갑자기 강하게 강조하는 기호입니다.'},
+  {q:'레가토(legato)는 어떻게 연주하나요?',opts:['음을 끊어서','음을 부드럽게 연결','아주 짧게','강하게 강조'],ans:1,explain:'레가토(legato)는 음과 음 사이를 부드럽게 연결하여 연주하는 주법입니다.'},
+  {q:'스타카토(staccato)의 기호는?',opts:['음표 위/아래 점(·)','음표 위 선(-)','물결 기호(~)','꺾인 화살표'],ans:0,explain:'스타카토는 음표 위나 아래에 작은 점(·)으로 표기하며, 음을 짧고 끊어서 연주합니다.'},
+  {q:'페르마타(𝄐)의 의미는?',opts:['빠르게','자유롭게 늘여서','여리게','반복'],ans:1,explain:'페르마타(𝄐)는 해당 음표 위에 표기되며, 적절히 길게 늘여서 연주하는 기호입니다.'},
+  {q:'Adagio(아다지오)의 빠르기는?',opts:['아주 빠르게','빠르게','느리게','아주 느리게'],ans:2,explain:'Adagio는 이탈리아어로 "편안하게, 느리게"를 의미합니다.'},
+  {q:'Presto(프레스토)는?',opts:['매우 빠르게','빠르게','보통으로','느리게'],ans:0,explain:'Presto는 매우 빠른 빠르기로, Allegro보다 빠릅니다.'},
+  {q:'Moderato(모데라토)의 뜻은?',opts:['느리게','보통 빠르기로','빠르게','아주 빠르게'],ans:1,explain:'Moderato는 "중간 정도의" 빠르기를 의미합니다.'},
+  {q:'p(피아노)와 f(포르테) 사이의 세기 순서(여린→센 순)는?',opts:['pp-p-mp-mf-f-ff','pp-p-mf-mp-f-ff','p-pp-mp-mf-f-ff','pp-mp-p-mf-f-ff'],ans:0,explain:'세기 순서: pp < p < mp < mf < f < ff'},
+  {q:'"Dolce"의 뜻은?',opts:['강하게','부드럽고 달콤하게','빠르게','슬프게'],ans:1,explain:'Dolce(돌체)는 "달콤하게, 부드럽게"를 의미하는 나타냄말입니다.'},
+  {q:'"Vivace"의 빠르기는?',opts:['아주 느리게','느리게','빠르게','아주 빠르게'],ans:2,explain:'Vivace(비바체)는 "생기 있게, 활발하게"를 뜻하는 빠른 빠르기입니다.'},
+  {q:'반복 기호 𝄇𝄆의 의미는?',opts:['처음부터 반복','그 부분만 반복','3번 반복','끝까지 반복 후 종료'],ans:1,explain:'반복 기호(𝄆 ... 𝄇)로 묶인 구간을 한 번 반복합니다.'},
+  {q:'Da capo(D.C.)의 의미는?',opts:['처음으로 돌아가','표시된 곳으로 돌아가','끝','중간부터'],ans:0,explain:'Da capo(D.C.)는 "처음부터"를 뜻하며, 곡의 처음으로 돌아가 연주하라는 지시입니다.'},
+  {q:'Dal segno(D.S.)의 의미는?',opts:['처음으로','𝄋 기호 있는 곳으로','마지막으로','두 번 반복'],ans:1,explain:'Dal segno(D.S.)는 세뇨(𝄋) 기호가 있는 곳으로 돌아가라는 지시입니다.'},
+  {q:'"Fine"의 의미는?',opts:['시작','끝','반복','느리게'],ans:1,explain:'Fine(피네)는 "끝"을 의미하며 D.C. al Fine와 함께 쓰여 그곳에서 곡이 끝납니다.'},
+  {q:'테누토(tenuto)기호(-)의 의미는?',opts:['짧게 끊어','음 길이를 충분히 유지','크게 강조','아주 여리게'],ans:1,explain:'테누토는 음표의 충분한 길이를 유지하면서 가볍게 강조하는 주법입니다.'},
+],
+chord:[
+  {q:'음정 "3도"란?',opts:['3개의 음 사이','두 음 사이 간격이 3도','화음 3개','3번째 음'],ans:1,explain:'음정은 두 음 사이의 높이 차이를 나타내며, "도~미"처럼 3번째 음까지의 거리를 3도라 합니다.'},
+  {q:'장3도의 반음 수는?',opts:['3반음','4반음','5반음','6반음'],ans:1,explain:'장3도는 4개의 반음으로 이루어집니다. 예: 도~미.'},
+  {q:'단3도의 반음 수는?',opts:['2반음','3반음','4반음','5반음'],ans:1,explain:'단3도는 3개의 반음으로 이루어집니다. 예: 미~솔.'},
+  {q:'장화음(Major chord)의 구성은?',opts:['장3도+단3도','단3도+장3도','장3도+장3도','단3도+단3도'],ans:0,explain:'장화음 = 장3도(4반음) + 단3도(3반음)'},
+  {q:'단화음(Minor chord)의 구성은?',opts:['장3도+단3도','단3도+장3도','장3도+장3도','단3도+단3도'],ans:1,explain:'단화음 = 단3도(3반음) + 장3도(4반음)'},
+  {q:'C장조에서 으뜸화음(I도 화음)은?',opts:['CEG(도미솔)','DFA(레파라)','EGB(미솔시)','FAC(파라도)'],ans:0,explain:'으뜸화음(Tonic chord)은 음계의 1번째 음에서 시작합니다. C장조에서는 C-E-G.'},
+  {q:'C장조에서 딸림화음(V도 화음)은?',opts:['CEG','DFA','EGB','GBD(솔시레)'],ans:3,explain:'딸림화음(Dominant chord)은 음계 5번째 음에서 시작합니다. C장조에서는 G-B-D.'},
+  {q:'버금딸림화음(IV도 화음)은 C장조에서?',opts:['CEG','FAC(파라도)','GBD','ACE'],ans:1,explain:'버금딸림화음(Subdominant)은 음계 4번째 음에서 시작합니다. C장조: F-A-C.'},
+  {q:'완전5도의 반음 수는?',opts:['5반음','6반음','7반음','8반음'],ans:2,explain:'완전5도 = 7개의 반음입니다. 예: 도~솔.'},
+  {q:'완전8도(옥타브)의 반음 수는?',opts:['10반음','11반음','12반음','13반음'],ans:2,explain:'완전8도(옥타브) = 12개의 반음입니다.'},
+  {q:'감화음(Diminished chord)의 구성은?',opts:['장3도+장3도','단3도+단3도','장3도+단3도','단3도+장3도'],ans:1,explain:'감화음 = 단3도+단3도, 즉 6반음으로 이루어집니다.'},
+  {q:'증화음(Augmented chord)의 구성은?',opts:['장3도+장3도','단3도+단3도','장3도+단3도','단3도+장3도'],ans:0,explain:'증화음 = 장3도+장3도, 즉 8반음으로 이루어집니다.'},
+  {q:'"종지(Cadence)"란?',opts:['화음 진행의 종지 방식','음계의 이름','박자의 종류','악기 조율법'],ans:0,explain:'종지는 악구나 곡을 마무리하는 화음 진행 방식입니다. V→I(정격종지)가 대표적입니다.'},
+  {q:'정격종지란?',opts:['V→I 진행','I→V 진행','IV→I 진행','V→IV 진행'],ans:0,explain:'정격종지(Authentic cadence)는 딸림화음(V)에서 으뜸화음(I)으로 진행하는 가장 완결된 종지입니다.'},
+  {q:'C-E-G 화음은 어떤 종류인가요?',opts:['C단화음','C장화음','C감화음','C증화음'],ans:1,explain:'C-E-G는 장3도(C-E) + 단3도(E-G)로 구성된 C장화음입니다.'},
+  {q:'"아르페지오(Arpeggio)"란?',opts:['화음을 동시에','화음을 순서대로 연주','빠르게 반복','슬라이드 연주'],ans:1,explain:'아르페지오는 화음의 구성음을 아래에서 위로 순서대로 하나씩 연주하는 기법입니다.'},
+  {q:'장2도의 반음 수는?',opts:['1반음','2반음','3반음','4반음'],ans:1,explain:'장2도 = 2반음(온음 1개). 예: 도~레.'},
+  {q:'단2도의 반음 수는?',opts:['1반음','2반음','3반음','4반음'],ans:0,explain:'단2도 = 1반음(반음 1개). 예: 미~파, 시~도.'},
+  {q:'C장조 II도 화음은?',opts:['CEG','DFA','EGB','GBD'],ans:1,explain:'II도 화음은 음계 2번째 음에서 시작합니다. C장조: D-F-A (단화음).'},
+  {q:'전위화음이란?',opts:['으뜸음이 베이스에 오지 않는 화음','반음이 없는 화음','5음이 없는 화음','7음이 추가된 화음'],ans:0,explain:'전위화음은 화음의 구성음 중 으뜸음이 아닌 다른 음이 베이스에 오는 화음입니다.'},
+],
+inst:[
+  {q:'현악기에 해당하지 않는 것은?',opts:['바이올린','첼로','클라리넷','비올라'],ans:2,explain:'클라리넷은 목관악기입니다. 현악기: 바이올린, 비올라, 첼로, 콘트라베이스.'},
+  {q:'목관악기에 해당하는 것은?',opts:['트럼펫','트롬본','플루트','호른'],ans:2,explain:'플루트는 목관악기입니다. 트럼펫, 트롬본, 호른은 금관악기입니다.'},
+  {q:'타악기에 해당하는 것은?',opts:['오보에','팀파니','하프','콘트라베이스'],ans:1,explain:'팀파니는 음정이 있는 타악기입니다.'},
+  {q:'국악기 가야금은 어떤 종류인가요?',opts:['관악기','현악기','타악기','성악'],ans:1,explain:'가야금은 12줄의 현을 손으로 뜯어 소리를 내는 발현 현악기입니다.'},
+  {q:'거문고의 현(줄) 수는?',opts:['6줄','7줄','12줄','25줄'],ans:0,explain:'거문고는 6줄의 현을 술대로 치거나 뜯어 연주하는 국악 현악기입니다.'},
+  {q:'해금은 어떤 악기인가요?',opts:['발현악기','찰현악기','타악기','관악기'],ans:1,explain:'해금은 활로 현을 마찰시켜 소리를 내는 찰현악기입니다.'},
+  {q:'국악의 대표적인 관악기는?',opts:['가야금','장구','대금','해금'],ans:2,explain:'대금은 대나무로 만든 가로로 부는 관악기로, 국악 대표 관악기입니다.'},
+  {q:'장구는 어떤 악기인가요?',opts:['현악기','관악기','타악기','건반악기'],ans:2,explain:'장구는 양쪽을 채와 손으로 치는 타악기로, 국악에서 장단을 이끕니다.'},
+  {q:'오케스트라에서 지휘자를 바라볼 때 왼쪽 앞에 앉는 악기는?',opts:['첼로','제1바이올린','비올라','콘트라베이스'],ans:1,explain:'제1바이올린은 오케스트라에서 지휘자 왼쪽 앞에 위치하며 선율을 주로 담당합니다.'},
+  {q:'콘트라베이스의 역할은?',opts:['고음 선율','중음 하모니','저음 베이스','타악 리듬'],ans:2,explain:'콘트라베이스는 현악기 중 가장 낮은 음역을 담당합니다.'},
+  {q:'클라리넷 리드(Reed)는 몇 개인가요?',opts:['1개(싱글 리드)','2개(더블 리드)','3개','없음'],ans:0,explain:'클라리넷은 싱글 리드(갈대 조각 1개)를 사용합니다. 오보에·바순은 더블 리드.'},
+  {q:'피콜로(Piccolo)의 특징은?',opts:['가장 낮은 음역의 목관','플루트보다 한 옥타브 높음','금관악기의 일종','타악기의 일종'],ans:1,explain:'피콜로는 플루트 계열의 소형 악기로, 플루트보다 한 옥타브 높은 음역을 가집니다.'},
+  {q:'팀파니(Timpani)의 특징은?',opts:['음정 조절 불가','음정 조절 가능','현악기','관악기'],ans:1,explain:'팀파니는 발판이나 나사로 가죽의 장력을 조절하여 음정을 바꿀 수 있는 음정 타악기입니다.'},
+  {q:'국악에서 "정간보"란?',opts:['악기 배치도','국악 전용 악보','춤 동작 표기','음정 기호'],ans:1,explain:'정간보는 세종대왕 때 만들어진 국악 전통 악보로, 칸을 나누어 리듬을 표기합니다.'},
+  {q:'하프(Harp)의 연주 방법은?',opts:['활로 긁기','손가락으로 뜯기','입으로 불기','채로 치기'],ans:1,explain:'하프는 손가락으로 현을 뜯어 소리를 내는 발현 현악기입니다.'},
+  {q:'트럼펫(Trumpet)은 어떤 악기군인가요?',opts:['목관악기','금관악기','현악기','타악기'],ans:1,explain:'트럼펫은 금속 관에 밸브가 달린 금관악기입니다.'},
+  {q:'바이올린 활(Bow)의 털은 어디서 얻나요?',opts:['나일론','말총(말꼬리)','나무섬유','플라스틱'],ans:1,explain:'전통적인 바이올린 활의 털은 말(Horse)의 꼬리털로 만들어집니다.'},
+  {q:'국악의 단소는 어떻게 소리를 내나요?',opts:['가로로 불기','세로로 불기','리드를 물고 불기','활로 마찰'],ans:1,explain:'단소는 세로로 잡고 취구에 입술을 대어 부는 종적 계열의 국악 관악기입니다.'},
+  {q:'현악 4중주(String Quartet)의 구성은?',opts:['바이올린2·비올라1·첼로1','바이올린2·첼로2','바이올린1·비올라1·첼로2','바이올린4'],ans:0,explain:'현악 4중주는 제1바이올린·제2바이올린·비올라·첼로 각 1대씩으로 구성됩니다.'},
+  {q:'심벌즈(Cymbals)는 어떤 악기인가요?',opts:['현악기','관악기','타악기','건반악기'],ans:2,explain:'심벌즈는 두 개의 금속 원판을 부딪쳐 소리를 내는 타악기입니다.'},
+],
+form:[
+  {q:'두도막 형식(AB)의 특징은?',opts:['두 개의 서로 다른 악절','세 개의 악절','같은 악절 반복','무정형'],ans:0,explain:'두도막 형식(AB)은 a와 b 두 악절로 구성됩니다.'},
+  {q:'세도막 형식(ABA)의 특징은?',opts:['처음 악절이 마지막에 반복','세 악절이 모두 다름','가운데만 반복','끝없이 반복'],ans:0,explain:'세도막 형식(ABA)은 A부분-B부분-A부분 재현의 3부 구조입니다.'},
+  {q:'론도 형식(Rondo)이란?',opts:['ABACADA... 주제가 반복','ABA 구조','변주곡 형식','소나타 형식'],ans:0,explain:'론도 형식은 주제(A)가 다른 에피소드(B, C, D) 사이에 반복 등장하는 ABACADA... 형식입니다.'},
+  {q:'소나타 형식의 3요소는?',opts:['제시부-발전부-재현부','A부-B부-A부','서주-주제-코다','노출-절정-결말'],ans:0,explain:'소나타 형식: 제시부(주제 제시)→발전부(주제 발전)→재현부(주제 재현).'},
+  {q:'변주곡(Variation)이란?',opts:['주제를 여러 방식으로 변화','두 주제를 교차','즉흥 연주','3박자 춤곡'],ans:0,explain:'변주곡은 하나의 주제를 리듬·선율·화성·조성 등을 변화시켜 반복하는 형식입니다.'},
+  {q:'푸가(Fuga)의 특징은?',opts:['하나의 주제가 여러 성부에서 모방','두 주제가 대비','자유로운 즉흥','강한 리듬'],ans:0,explain:'푸가는 하나의 주제(Subject)가 여러 성부에서 차례로 모방되며 전개되는 대위법적 형식입니다.'},
+  {q:'바로크 시대(Baroque)의 대표 작곡가는?',opts:['모차르트','베토벤','바흐','슈베르트'],ans:2,explain:'요한 제바스티안 바흐(J.S. Bach, 1685~1750)는 바로크 시대의 대표 작곡가입니다.'},
+  {q:'고전주의(Classical)시대의 대표 작곡가는?',opts:['바흐','헨델','모차르트','브람스'],ans:2,explain:'볼프강 아마데우스 모차르트(Mozart, 1756~1791)는 고전주의 시대를 대표합니다.'},
+  {q:'낭만주의(Romantic) 시대를 대표하는 작곡가가 아닌 것은?',opts:['쇼팽','슈베르트','헨델','브람스'],ans:2,explain:'헨델(Handel, 1685~1759)은 바로크 시대 작곡가입니다.'},
+  {q:'"교향곡(Symphony)"은 보통 몇 악장으로 구성되나요?',opts:['1악장','2악장','3악장','4악장'],ans:3,explain:'교향곡은 일반적으로 4개의 악장으로 구성됩니다.'},
+  {q:'소나타(Sonata)와 교향곡의 주요 차이는?',opts:['소나타는 독주·실내악, 교향곡은 오케스트라','소나타는 느림, 교향곡은 빠름','악장 수가 다름','조성이 다름'],ans:0,explain:'소나타는 독주 또는 소편성 실내악, 교향곡은 대편성 오케스트라를 위한 형식입니다.'},
+  {q:'협주곡(Concerto)의 특징은?',opts:['독주악기와 오케스트라','합창과 오케스트라','현악기만 사용','무반주 성악'],ans:0,explain:'협주곡은 독주악기와 오케스트라가 대비·협력하며 연주하는 형식입니다.'},
+  {q:'악곡의 코다(Coda)란?',opts:['도입부','전개부','마무리 부분','반복 부분'],ans:2,explain:'코다(Coda)는 이탈리아어로 "꼬리"를 의미하며, 악곡을 마무리하는 종결 부분입니다.'},
+  {q:'4악장 교향곡에서 2악장의 일반적인 특징은?',opts:['빠르고 활발함','느리고 서정적','왈츠 리듬','강렬한 종결'],ans:1,explain:'4악장 교향곡의 2악장은 일반적으로 느리고 서정적인 성격을 가집니다.'},
+  {q:'한국 전통음악 "판소리"의 특징은?',opts:['독창+고수 반주','합창+오케스트라','무반주 기악','2인 2창'],ans:0,explain:'판소리는 소리꾼(독창) 한 명이 고수(북 반주)의 장단에 맞춰 이야기를 노래하는 형식입니다.'},
+  {q:'국악의 "산조"는 어떤 형식인가요?',opts:['독주 기악곡','합창곡','무용음악','의식음악'],ans:0,explain:'산조는 독주 악기와 장구 반주로 이루어진 기악 독주 형식으로, 빠르기가 점차 빨라집니다.'},
+  {q:'"가곡(Lied)"이 발전한 시대는?',opts:['바로크','고전주의','낭만주의','현대'],ans:2,explain:'독일 가곡(Lied)은 슈베르트·슈만·브람스 등 낭만주의 시대에 크게 발전했습니다.'},
+  {q:'오페라(Opera)의 구성 요소가 아닌 것은?',opts:['아리아(Aria)','레치타티보','오케스트라','소나타 형식'],ans:3,explain:'오페라는 아리아(독창), 레치타티보(낭송), 합창, 오케스트라로 구성된 종합 예술입니다.'},
+  {q:'세레나데(Serenade)는 원래 어떤 목적의 음악인가요?',opts:['아침에 연주하는 음악','저녁에 연인에게 바치는 음악','신에게 바치는 음악','전쟁 음악'],ans:1,explain:'세레나데는 원래 저녁에 연인의 창가에서 연주하는 야외 소야곡(小夜曲)입니다.'},
+  {q:'"절대음악"과 "표제음악"의 차이는?',opts:['절대음악=특정 내용 없음, 표제음악=이야기/그림 묘사','절대음악=느림, 표제음악=빠름','절대음악=성악, 표제음악=기악','악기 구성이 다름'],ans:0,explain:'절대음악은 순수 음으로만 구성되고, 표제음악은 이야기·자연·그림 등을 묘사합니다.'},
+],
+};
+
+let state={screen:'home',cat:null,qs:[],cur:0,score:0,answers:[],startTime:0,streak:0};
+let storage={total:0,correct:0,maxStreak:0,catDone:{}};
+
+function loadStorage(){
+  try{const s=JSON.parse(localStorage.getItem('mqz')||'{}');
+  storage={total:s.total||0,correct:s.correct||0,maxStreak:s.maxStreak||0,catDone:s.catDone||{}};}
+  catch(e){}
+}
+function saveStorage(){try{localStorage.setItem('mqz',JSON.stringify(storage));}catch(e){}}
+
+function updateHomeStats(){
+  const pct=storage.total>0?Math.round(storage.correct/storage.total*100):0;
+  document.getElementById('gs-total').textContent=storage.total;
+  document.getElementById('gs-correct').textContent=pct+'%';
+  document.getElementById('gs-streak').textContent=storage.maxStreak;
+}
+
+function buildCategoryGrid(){
+  const g=document.getElementById('cat-grid');
+  g.innerHTML='';
+  CATS.forEach(c=>{
+    const done=storage.catDone[c.id];
+    const div=document.createElement('div');
+    div.className='cat-card';
+    div.innerHTML=`<div class="cat-accent" style="background:${c.accent}"></div>
+<div class="cat-icon">${c.icon}</div>
+<div class="cat-title">${c.title}</div>
+<div class="cat-sub">${c.sub}</div>
+${done!==undefined?`<span class="cat-badge badge-done">완료 ${done}%</span>`:`<span class="cat-badge badge-new">NEW</span>`}`;
+    div.onclick=()=>startQuiz(c.id);
+    g.appendChild(div);
+  });
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function goHome(){
+  showScreen('home-screen');
+  updateHomeStats();
+  buildCategoryGrid();
+}
+
+function shuffle(arr){return arr.slice().sort(()=>Math.random()-0.5)}
+
+function startQuiz(catId){
+  const cat=CATS.find(c=>c.id===catId);
+  const allQ=QUESTIONS[catId];
+  const qs=shuffle(allQ).slice(0,10).map(q=>({...q}));
+  state={screen:'quiz',cat,qs,cur:0,score:0,answers:[],startTime:Date.now(),streak:0};
+  document.getElementById('q-cat-name').textContent=cat.title;
+  document.querySelector('.progress-fill').style.background=cat.accent;
+  renderQuestion();
+  showScreen('quiz-screen');
+}
+
+function renderQuestion(){
+  const q=state.qs[state.cur];
+  const n=state.cur+1;
+  const total=state.qs.length;
+  document.getElementById('q-num').textContent=`문제 ${n}`;
+  document.getElementById('q-progress').textContent=`${n} / ${total}`;
+  document.getElementById('q-prog-fill').style.width=`${(n-1)/total*100}%`;
+  document.getElementById('q-text').textContent=q.q;
+  const img=document.getElementById('q-image');
+  if(q.img){img.textContent=q.img;img.style.display='block';}else{img.style.display='none';}
+  const opts=document.getElementById('q-options');
+  const labels=['A','B','C','D'];
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';
+    btn.innerHTML=`<span class="opt-label">${labels[i]}</span><span>${o}</span>`;
+    btn.onclick=()=>selectAnswer(i,btn);
+    opts.appendChild(btn);
+  });
+  document.getElementById('feedback').className='feedback-bar';
+  document.getElementById('next-btn').style.display='none';
+}
+
+function selectAnswer(idx,btn){
+  const q=state.qs[state.cur];
+  const correct=idx===q.ans;
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>b.disabled=true);
+  btns[q.ans].classList.add('correct');
+  if(!correct)btn.classList.add('wrong');
+  const fb=document.getElementById('feedback');
+  const fi=document.getElementById('fb-icon');
+  const ft=document.getElementById('fb-text');
+  const fe=document.getElementById('fb-explain');
+  if(correct){
+    state.score++;state.streak++;
+    fi.textContent='✓';ft.textContent='정답입니다!';ft.className='feedback-text ok';fb.className='feedback-bar show ok';
+  }else{
+    state.streak=0;
+    fi.textContent='✗';ft.textContent=`오답. 정답: ${q.opts[q.ans]}`;ft.className='feedback-text ng';fb.className='feedback-bar show ng';
+  }
+  fe.textContent=q.explain||'';
+  state.answers.push({q:q.q,opts:q.opts,ans:q.ans,chosen:idx,correct,explain:q.explain||''});
+  document.getElementById('next-btn').style.display='block';
+  document.getElementById('q-prog-fill').style.width=`${(state.cur+1)/state.qs.length*100}%`;
+}
+
+function nextQuestion(){
+  state.cur++;
+  if(state.cur>=state.qs.length){showResult();}else{renderQuestion();}
+}
+
+function showResult(){
+  const elapsed=Math.round((Date.now()-state.startTime)/1000);
+  const pct=Math.round(state.score/state.qs.length*100);
+  storage.total+=state.qs.length;
+  storage.correct+=state.score;
+  if(state.streak>storage.maxStreak)storage.maxStreak=state.streak;
+  storage.catDone[state.cat.id]=pct;
+  saveStorage();
+  const arc=document.getElementById('score-arc');
+  const circ=2*Math.PI*42;
+  arc.setAttribute('stroke-dasharray',`${circ*pct/100} ${circ}`);
+  arc.setAttribute('stroke',pct>=80?'#639922':pct>=60?'#BA7517':'#E24B4A');
+  document.getElementById('score-pct').textContent=pct+'%';
+  const msgs=pct>=90?['완벽해요!','음악 천재 🎵']:pct>=70?['잘했어요!','꾸준히 공부해요']:pct>=50?['절반 이상!','복습이 필요해요']:['더 노력해요','열심히 공부해봐요'];
+  document.getElementById('result-title').textContent=msgs[0];
+  document.getElementById('result-sub').textContent=`${state.score}/${state.qs.length} 정답 · ${msgs[1]}`;
+  document.getElementById('r-correct').textContent=state.score;
+  document.getElementById('r-wrong').textContent=state.qs.length-state.score;
+  document.getElementById('r-time').textContent=elapsed+'s';
+  const rl=document.getElementById('review-list');
+  rl.innerHTML='';
+  state.answers.forEach((a,i)=>{
+    const div=document.createElement('div');
+    div.className='review-item';
+    div.innerHTML=`<div class="review-dot" style="background:${a.correct?'#639922':'#E24B4A'}"></div>
+<div>
+<div class="review-q">${i+1}. ${a.q}</div>
+<div class="review-a">${a.correct?'✓ 정답':'✗ 내 답: '+a.opts[a.chosen]+' · 정답: '+a.opts[a.ans]}</div>
+<div class="review-a" style="margin-top:2px;opacity:0.75">${a.explain}</div>
+</div>`;
+    rl.appendChild(div);
+  });
+  showScreen('result-screen');
+}
+
+function retryQuiz(){startQuiz(state.cat.id);}
+
+loadStorage();
+updateHomeStats();
+buildCategoryGrid();
+</script>
+</body>
+</html>
