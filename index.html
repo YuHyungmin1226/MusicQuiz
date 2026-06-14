@@ -190,16 +190,7 @@ button{font:inherit}button:focus-visible,.cat-card:focus-visible{outline:1px sol
     <p class="about-section-desc">중학교 음악 교육과정 기반 퀴즈 앱으로 핵심 음악 이론 지식을 빠르게 복습하고 학습 상태를 관리할 수 있습니다.</p>
     
     <div class="about-links typora-comment">
-      Email: <a href="mailto:dew1052ii@gmail.com">dew1052ii@gmail.com</a> &nbsp;&nbsp;·&nbsp;&nbsp;
-      Support: <a href="mailto:dew1052ii@gmail.com?subject=[MusicQuiz%20Support]">Contact Support</a>
-    </div>
-    
-    <div class="feedback-box">
-      <h3>have something to say?</h3>
-      <form class="feedback-form" id="about-feedback-form" type="button">
-        <textarea id="about-feedback-text" placeholder="의견이나 피드백을 적어주세요..." required></textarea>
-        <button type="submit" id="send-feedback-btn">Send Feedback</button>
-      </form>
+      Email: <a href="mailto:dew1052ii@gmail.com">dew1052ii@gmail.com</a>
     </div>
   </div>
 </div>
@@ -691,15 +682,6 @@ byId('other-cat-btn').addEventListener('click',goHome);
 
 byId('go-about-btn').addEventListener('click',()=>showScreen('about-screen'));
 byId('about-home-btn').addEventListener('click',goHome);
-byId('about-feedback-form').addEventListener('submit',function(e){
-  e.preventDefault();
-  const text=byId('about-feedback-text').value.trim();
-  if(!text)return;
-  const subject=encodeURIComponent('MusicQuiz Feedback');
-  const body=encodeURIComponent(text);
-  window.location.href=`mailto:dew1052ii@gmail.com?subject=${subject}&body=${body}`;
-  byId('about-feedback-text').value='';
-});
 
 // 전체 결과를 항상 한 페이지에 담는다.
 // jsPDF/html2canvas 전역이 있으면 A4 한 장에 비율을 유지해 축소 배치하고,
