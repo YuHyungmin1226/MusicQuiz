@@ -13,51 +13,51 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   color-scheme:light;
-  --bg:#fbfaf8;          /* Typora의 온화하고 품격있는 미색 서재 배경 */
-  --bg-soft:#f3f1ed;     /* 블록 구분 배경 */
-  --surface:#ffffff;     /* 카드 표면 */
-  --surface-strong:#faf8f5;
-  --text:#2f3035;        /* 눈이 편안한 리딩용 차콜 */
-  --muted:#5f6368;       /* 서브 텍스트 */
-  --faint:#9aa0a6;       /* 주석 및 각주 */
-  --line:#e0dcd5;        /* 정교하고 얇은 가로선 */
-  --accent:#3f51b5;      /* 신뢰감 있는 딥 인디고 */
-  --accent-strong:#303f9f;
-  --accent-soft:#e8eaf6;
-  --success:#2e7d32;
-  --success-soft:#e8f5e9;
-  --danger:#c62828;
-  --danger-soft:#ffebee;
-  --warning:#ef6c00;
-  --shadow:0 2px 8px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.015);
-  --ring:0 0 0 3px rgba(63,81,181,0.15);
-  --radius-sm:4px;       /* Typora 마크다운 감성의 정돈된 모서리 */
-  --radius-md:6px;
-  --radius-lg:8px;
+  --bg:#f4f5f9;
+  --bg-soft:#e9ebf2;
+  --surface:#ffffff;
+  --surface-strong:#f6f7fc;
+  --text:#191b29;
+  --muted:#5a6072;
+  --faint:#9a9fb2;
+  --line:#e5e7f0;
+  --accent:#6c5ce7;
+  --accent-strong:#5a49d6;
+  --accent-soft:#ecebfc;
+  --success:#16a34a;
+  --success-soft:#e7f7ec;
+  --danger:#e23b3b;
+  --danger-soft:#fdecec;
+  --warning:#d97706;
+  --shadow:0 6px 24px rgba(28,28,60,0.07), 0 1px 3px rgba(28,28,60,0.05);
+  --ring:0 0 0 3px rgba(108,92,231,0.28);
+  --radius-sm:8px;
+  --radius-md:14px;
+  --radius-lg:20px;
   --space:8px;
   --font:"Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 @media(prefers-color-scheme:dark){
   :root{
     color-scheme:dark;
-    --bg:#1e1e1e;          /* Typora Night 테마 */
-    --bg-soft:#252526;
-    --surface:#2d2d2d;
-    --surface-strong:#333333;
-    --text:#d4d4d4;        /* 오프 화이트 */
-    --muted:#9b9b9b;
-    --faint:#606060;
-    --line:#3c3c3c;
-    --accent:#5c6bc0;
-    --accent-strong:#7986cb;
-    --accent-soft:#282a36;
-    --success:#4caf50;
-    --success-soft:#1b301c;
-    --danger:#f44336;
-    --danger-soft:#3c1c1c;
-    --warning:#ff9800;
-    --shadow:0 4px 16px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1);
-    --ring:0 0 0 3px rgba(92,107,192,0.3);
+    --bg:#15161d;
+    --bg-soft:#1c1e27;
+    --surface:#20222c;
+    --surface-strong:#272a36;
+    --text:#e9eaf2;
+    --muted:#a6abbd;
+    --faint:#6b7088;
+    --line:#2f323e;
+    --accent:#8b7cff;
+    --accent-strong:#a99dff;
+    --accent-soft:#262339;
+    --success:#4ade80;
+    --success-soft:#15331f;
+    --danger:#f87171;
+    --danger-soft:#3a1f22;
+    --warning:#fbbf24;
+    --shadow:0 8px 28px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.3);
+    --ring:0 0 0 3px rgba(139,124,255,0.35);
   }
 }
 body{font-family:var(--font);background:var(--bg);min-height:100vh;color:var(--text);line-height:1.7;overflow-x:hidden}
@@ -67,43 +67,33 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
 /* Layout Containers */
 .app{width:100%}
 .container{max-width:800px;margin:0 auto;padding:0 24px;width:100%}
-.screen{display:none;animation:fadeIn .3s cubic-bezier(0.16, 1, 0.3, 1);margin-top:40px;margin-bottom:40px;border-top:1.5px solid var(--line);padding-top:40px}.screen.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.typora-comment{font-family:"Outfit", Menlo, Monaco, Consolas, monospace;font-style:italic;color:var(--faint);font-size:0.88em;letter-spacing:0.02em}
+.screen{display:none;animation:fadeIn .32s cubic-bezier(.16,1,.3,1);max-width:860px;margin:0 auto;padding:28px 24px 60px}.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.typora-comment{color:var(--muted);font-size:13.5px;line-height:1.6}
 
-/* Sticky Navigation Bar */
-.nav-bar{position:sticky;top:0;left:0;right:0;height:56px;background:color-mix(in srgb,var(--bg) 90%,transparent);border-bottom:1px solid var(--line);backdrop-filter:blur(12px);z-index:100;width:100%;transition:background 0.3s ease, border-color 0.3s ease}
-.nav-container{max-width:800px;margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 24px;width:100%}
-.nav-brand{font-family:"Outfit", var(--font);font-size:16px;font-weight:700;letter-spacing:-.02em;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:6px}
-.nav-links{display:flex;align-items:center;gap:20px}
-.nav-link{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;transition:color .15s ease;background:transparent;border:none;cursor:pointer;padding:6px 0;position:relative}
-.nav-link:hover{color:var(--text)}
-.nav-link::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;background:var(--accent);transition:all 0.2s ease;transform:translateX(-50%)}
-.nav-link:hover::after{width:100%}
+/* App Bar */
+.appbar{position:sticky;top:0;z-index:100;width:100%;background:color-mix(in srgb,var(--bg) 86%,transparent);border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+.appbar-inner{max-width:860px;margin:0 auto;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;gap:16px}
+.brand{font-family:"Outfit",var(--font);font-size:17px;font-weight:700;letter-spacing:-.02em;color:var(--text);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;padding:4px 0}
+.appnav{display:flex;align-items:center;gap:8px}
+.navbtn{font-size:13.5px;font-weight:600;color:var(--muted);background:transparent;border:1px solid transparent;border-radius:999px;cursor:pointer;padding:7px 14px;transition:all .15s ease}
+.navbtn:hover{color:var(--text);background:var(--surface-strong)}
 
-/* Hero Section */
-.hero-sec{min-height:calc(80vh - 56px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:60px 0;position:relative}
-.hero-icon{width:60px;height:60px;border-radius:var(--radius-md);background:var(--surface);display:grid;place-items:center;font-size:30px;border:1px solid var(--line);box-shadow:var(--shadow);margin-bottom:24px}
-.hero-sec h1{font-family:"Outfit", var(--font);font-size:clamp(32px,7vw,48px);letter-spacing:-.03em;line-height:1.2;font-weight:700;margin-bottom:12px;color:var(--text)}
-.hero-sec p{margin-top:8px}
-.scroll-down{position:absolute;bottom:40px;left:0;font-size:20px;color:var(--faint);animation:bounce 2s infinite;cursor:pointer;font-family:"Outfit", monospace;font-weight:500;width:38px;height:38px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow)}
-.scroll-down:hover{color:var(--text);border-color:var(--accent)}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+/* Home / Hero */
+.hero{padding:14px 0 6px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--accent);background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 22%,transparent);padding:5px 12px;border-radius:999px;margin-bottom:16px}
+.hero h1{font-family:"Outfit",var(--font);font-size:clamp(30px,6vw,44px);letter-spacing:-.03em;line-height:1.15;font-weight:700;margin-bottom:12px;color:var(--text)}
+.lead{font-size:15px;color:var(--muted);line-height:1.7;max-width:620px}
+.section-h{font-family:"Outfit",var(--font);font-size:20px;font-weight:700;letter-spacing:-.02em;margin:34px 0 4px}
+.section-sub{font-size:13.5px;color:var(--muted);margin-bottom:18px}
 
-/* Features Section */
-.features-sec{padding:80px 0;border-top:1px solid var(--line)}
-.features-sec h2{font-family:"Outfit", var(--font);font-size:26px;font-weight:700;margin-bottom:12px;letter-spacing:-.02em}
-.features-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;margin-top:30px}
-.features-text{display:flex;flex-direction:column;gap:20px}
-.feature-item{border-left:2px solid var(--line);padding-left:18px;transition:all .2s ease}
-.feature-item:hover{border-color:var(--accent);transform:translateX(4px)}
-.feature-item h3{font-size:15px;font-weight:700;margin-bottom:6px}
-.feature-item p{font-size:13.5px;color:var(--muted);line-height:1.6}
-.features-media{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:24px;box-shadow:var(--shadow);display:grid;place-items:center;min-height:240px;aspect-ratio:1.5/1;width:100%}
-
-/* Quiz Start Section */
-.quiz-sec{padding:80px 0;border-top:1px solid var(--line)}
-.quiz-sec h2{font-family:"Outfit", var(--font);font-size:26px;font-weight:700;margin-bottom:8px;letter-spacing:-.02em}
+/* Feature strip */
+.feature-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:34px}
+.feature-mini{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:16px;box-shadow:var(--shadow)}
+.feature-mini>span{font-size:22px;line-height:1.1}
+.feature-mini b{display:block;font-size:14px;font-weight:700;margin-bottom:3px}
+.feature-mini p{font-size:12.5px;color:var(--muted);line-height:1.5}
+@media(max-width:600px){.feature-strip{grid-template-columns:1fr}}
 .category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:30px}
 .cat-card{appearance:none;width:100%;text-align:left;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--radius-md);padding:20px;cursor:pointer;transition:all .15s ease;position:relative;overflow:hidden;min-height:140px;display:flex;flex-direction:column;justify-content:flex-start;box-shadow:var(--shadow)}
 .cat-card:hover{border-color:var(--accent);background:var(--surface-strong);transform:translateY(-2px)}
@@ -115,12 +105,12 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
 .badge-done{background:var(--success-soft);color:var(--success);border:1px solid color-mix(in srgb,var(--success) 20%,transparent)}
 .badge-new{background:var(--bg-soft);color:var(--muted);border:1px solid var(--line)}
 
-/* About Section */
-.about-sec{padding:60px 0;border-top:1px solid var(--line);text-align:center}
-.about-sec h2{font-family:"Outfit", var(--font);font-size:22px;font-weight:700;margin-bottom:12px}
-.about-sec p{max-width:520px;margin:0 auto 24px;font-size:13.5px;color:var(--muted);line-height:1.6}
-.about-links{font-size:13.5px}
-.about-links a{color:var(--text);text-decoration:underline;font-weight:700}
+/* About */
+.about{padding:6px 0}
+.about p{font-size:14px;color:var(--muted);line-height:1.75;max-width:600px;margin-bottom:14px}
+.about-email{font-size:14px;font-weight:600;color:var(--text)}
+.about-email a{color:var(--accent);text-decoration:none;font-weight:700}
+.about-email a:hover{text-decoration:underline}
 
 /* Quiz Screen Components */
 .quiz-header{border-radius:var(--radius-md);padding:18px;margin-bottom:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
@@ -242,7 +232,7 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
 .print-area.pdf-rendering{--text:#212529;--bg:#ffffff;--surface:#ffffff;--surface-strong:#f8f9fa;--line:#dee2e6;--muted:#495057;background:#ffffff;color:#212529;border-radius:0;box-shadow:none;width:720px;margin:0 auto;padding:20px}
 .print-area.pdf-rendering .result-card,.print-area.pdf-rendering .review-item{background:#ffffff;box-shadow:none;border:1px solid #dee2e6}
 
-.copyright{margin:40px 0 10px;text-align:center;color:var(--faint);font-size:11.5px;font-family:"Outfit", monospace;font-style:italic}
+.copyright{margin:8px auto 28px;text-align:center;color:var(--faint);font-size:12px;max-width:860px;padding:0 24px}
 
 /* Responsive Media Queries (가로폭 찌그러짐 원천 차단 + 360px 닫는 괄호 정상화) */
 @media(max-width:800px){
@@ -254,12 +244,9 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
   .category-grid{grid-template-columns:repeat(2,1fr);gap:14px}
 }
 @media(max-width:600px){
-  .nav-container{padding:0 16px}
-  .nav-links{gap:12px}
-  .nav-link{font-size:12px}
-  .hero-sec{padding:40px 0;min-height:auto}
-  .hero-icon{width:52px;height:52px;font-size:26px;margin-bottom:16px}
-  .hero-sec h1{font-size:32px}
+  .appbar-inner{padding:0 16px}
+  .screen{padding:22px 16px 48px}
+  .hero h1{font-size:30px}
   .category-grid,.stats-row,.result-stats,.btn-row,.calc-grid,.inst-grid{grid-template-columns:1fr}
   .cat-card{min-height:auto;padding:16px}
   .question-card{padding:16px}
@@ -331,73 +318,45 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
 <body>
 <main class="app">
 
-  <!-- Sticky Nav Bar -->
-  <header class="nav-bar">
-    <div class="nav-container">
-      <a href="#hero-sec" class="nav-brand" id="nav-brand-btn">🎵 MusicQuiz</a>
-      <nav class="nav-links">
-        <button class="nav-link" id="nav-features-btn" type="button">Features</button>
-        <button class="nav-link" id="nav-quiz-btn" type="button">Start Quiz</button>
-        <button class="nav-link" id="nav-about-btn" type="button">About</button>
+  <!-- App Bar -->
+  <header class="appbar">
+    <div class="appbar-inner">
+      <button class="brand" id="nav-brand-btn" type="button">🎵 MusicQuiz</button>
+      <nav class="appnav">
+        <button class="navbtn" id="nav-home-btn" type="button">홈</button>
+        <button class="navbtn" id="nav-about-btn" type="button">소개</button>
       </nav>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero-sec container" id="hero-sec">
-    <div class="hero-icon">🎵</div>
-    <h1>음악 이론 퀴즈</h1>
-    <p class="typora-comment">/* 중학교 음악 교육과정 기반 · 7개 영역 · 140개 문제 */</p>
-    <div class="scroll-down" id="scroll-down-btn">↓</div>
-  </section>
+  <!-- Home Screen -->
+  <div class="screen active" id="home-screen">
+    <section class="hero">
+      <span class="hero-badge">🎵 중등 음악 이론</span>
+      <h1>음악 이론 퀴즈</h1>
+      <p class="lead">중학교 음악 교육과정 기반 · 7개 영역 · 140문항. 이론을 익히고 퀴즈로 점검한 뒤, 결과를 PDF 리포트로 저장하세요.</p>
+    </section>
 
-  <!-- Features Section -->
-  <section class="features-sec container" id="features-sec">
-    <h2>Simple, yet Educational</h2>
-    <p class="typora-comment">/* 음악 시험 준비와 이론 복습에 특화된 기능 */</p>
-    <div class="features-grid">
-      <div class="features-text">
-        <div class="feature-item">
-          <h3>🎯 학습 목적 및 대상</h3>
-          <p>중학교 음악 교과과정을 체계적으로 커버하여 중고등 시험 대비와 일반 기초 화성학 입문을 돕습니다.</p>
-        </div>
-        <div class="feature-item">
-          <h3>🎼 SVG 벡터 악보 드로잉</h3>
-          <p>폰트 깨짐 현상이 없는 SVG 그래픽 렌더러가 음표와 쉼표를 정확하게 그려주어 가독성을 보장합니다.</p>
-        </div>
-        <div class="feature-item">
-          <h3>💾 개인 통계 및 결과 인쇄</h3>
-          <p>로컬에 누적된 나의 정답률, 연속 정답 기록을 한 눈에 확인하고 결과를 PDF 리포트로 안전하게 출력합니다.</p>
-        </div>
-      </div>
-      <div class="features-media">
-        <svg width="180" height="120" viewBox="0 0 180 120" style="color:var(--accent);opacity:0.85">
-          <line x1="10" y1="20" x2="170" y2="20" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
-          <line x1="10" y1="40" x2="170" y2="40" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
-          <line x1="10" y1="60" x2="170" y2="60" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
-          <line x1="10" y1="80" x2="170" y2="80" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
-          <line x1="10" y1="100" x2="170" y2="100" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
-          <ellipse cx="60" cy="80" rx="9" ry="6" transform="rotate(-15 60 80)" fill="currentColor"/>
-          <line x1="68" y1="80" x2="68" y2="30" stroke="currentColor" stroke-width="2.5"/>
-          <path d="M68,30 c12,-2 18,6 18,14 c0,10 -18,10 -18,10" fill="none" stroke="currentColor" stroke-width="2.5"/>
-          <ellipse cx="110" cy="60" rx="9" ry="6" transform="rotate(-15 110 60)" fill="currentColor"/>
-          <line x1="118" y1="60" x2="118" y2="10" stroke="currentColor" stroke-width="2.5"/>
-          <path d="M118,10 c12,-2 18,6 18,14 c0,10 -18,10 -18,10" fill="none" stroke="currentColor" stroke-width="2.5"/>
-        </svg>
-      </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="home-total">0</div><div class="stat-label">총 풀이</div></div>
+      <div class="stat-card"><div class="stat-num" id="home-correct">0%</div><div class="stat-label">정답률</div></div>
+      <div class="stat-card"><div class="stat-num" id="home-streak">0</div><div class="stat-label">최고 연속</div></div>
     </div>
-  </section>
 
-  <!-- Quiz Categories Section -->
-  <section class="quiz-sec container" id="quiz-sec">
-    <h2>Start Music Theory Quiz</h2>
-    <p class="typora-comment">/* 아래 영역 중 원하는 학습 주제를 선택해 10문항 복습을 시작하세요. */</p>
+    <h2 class="section-h">학습 영역</h2>
+    <p class="section-sub">영역을 선택해 이론 학습 또는 퀴즈를 시작하세요.</p>
     <div class="category-grid" id="cat-grid"></div>
-  </section>
+
+    <div class="feature-strip">
+      <div class="feature-mini"><span>🎼</span><div><b>SVG 벡터 악보</b><p>폰트 깨짐 없는 음표·쉼표 렌더링</p></div></div>
+      <div class="feature-mini"><span>🎹</span><div><b>인터랙티브 학습</b><p>피아노 건반·메트로놈·화음 도구</p></div></div>
+      <div class="feature-mini"><span>💾</span><div><b>PDF 리포트</b><p>학습 결과를 한 페이지로 저장</p></div></div>
+    </div>
+  </div>
 
   <!-- Study Section Container (동적 스크롤 인라인 배치) -->
   <div class="screen" id="study-screen">
-    <button class="back-btn" id="study-home-btn" type="button">↑ 카테고리 선택으로</button>
+    <button class="back-btn" id="study-home-btn" type="button">← 홈으로</button>
     <div class="study-card">
       <div class="study-header">
         <h2 id="study-title" style="font-size:24px;font-weight:700;">이론 학습</h2>
@@ -412,7 +371,7 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
 
   <!-- Quiz Section Container (동적 스크롤 인라인 배치) -->
   <div class="screen" id="quiz-screen">
-    <button class="back-btn" id="quiz-home-btn" type="button">↑ 카테고리 선택으로</button>
+    <button class="back-btn" id="quiz-home-btn" type="button">← 홈으로</button>
     <div class="quiz-header">
       <div class="quiz-meta">
         <span class="quiz-category" id="q-cat-name"></span>
@@ -440,7 +399,7 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
 
   <!-- Result Section Container (동적 스크롤 인라인 배치) -->
   <div class="screen" id="result-screen">
-    <button class="back-btn" id="result-home-btn" type="button">↑ 카테고리 선택으로</button>
+    <button class="back-btn" id="result-home-btn" type="button">← 홈으로</button>
     <div id="print-area" class="print-area">
       <div class="print-header">
         <div class="print-header-icon">🎵</div>
@@ -492,15 +451,17 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
     </div>
   </div>
 
-  <!-- About Section -->
-  <section class="about-sec container" id="about-sec">
-    <h2>About Developer</h2>
-    <p>MusicQuiz 프로젝트와 관련된 건의사항이나 학습 문의는 아래 이메일로 전달해 주시기 바랍니다.</p>
-    <div class="about-links typora-comment">
-      Email: <a href="mailto:dew1052ii@gmail.com">dew1052ii@gmail.com</a>
-    </div>
-  </section>
-  <footer class="copyright">/* © 2026 Hyungmin Yoo. All rights reserved. */</footer>
+  <!-- About Screen -->
+  <div class="screen" id="about-screen">
+    <button class="back-btn" id="about-home-btn" type="button">← 홈으로</button>
+    <section class="about">
+      <h2 class="section-h">소개</h2>
+      <p>MusicQuiz는 중학교 음악 교육과정을 기반으로 한 이론 학습·퀴즈 도구입니다. 회원가입 없이 바로 사용할 수 있으며, 학습 기록은 이 기기에만 저장됩니다.</p>
+      <p>건의사항이나 학습 문의는 아래 이메일로 전달해 주세요.</p>
+      <p class="about-email">Email · <a href="mailto:dew1052ii@gmail.com">dew1052ii@gmail.com</a></p>
+    </section>
+  </div>
+  <footer class="copyright">© 2026 Hyungmin Yoo. All rights reserved.</footer>
 </main>
 <script>
 const CATS=[
@@ -700,11 +661,11 @@ function saveStorage(){
   catch(error){console.warn('학습 기록을 저장하지 못했습니다.',error);}
 }
 
+function setStat(id,val){const el=byId(id);if(el)el.textContent=val;}
 function updateHomeStats(){
   const pct=storage.total>0?Math.round(storage.correct/storage.total*100):0;
-  byId('gs-total').textContent=storage.total;
-  byId('gs-correct').textContent=pct+'%';
-  byId('gs-streak').textContent=storage.maxStreak;
+  setStat('gs-total',storage.total);setStat('gs-correct',pct+'%');setStat('gs-streak',storage.maxStreak);
+  setStat('home-total',storage.total);setStat('home-correct',pct+'%');setStat('home-streak',storage.maxStreak);
 }
 
 function buildCategoryGrid(){
@@ -789,7 +750,7 @@ function goStudy(catId){
   currentStudyCatId = catId;
   const cat = CATS.find(c=>c.id===catId);
   byId('study-title').textContent = cat.title;
-  byId('study-subtitle').textContent = `/* ${cat.sub} · 2022 개정 교육과정 중등 음악 */`;
+  byId('study-subtitle').textContent = `${cat.sub} · 2022 개정 교육과정 중등 음악`;
   
   const content = byId('study-content');
   content.replaceChildren();
@@ -1387,36 +1348,10 @@ function renderFormStudy(parent){
 }
 
 function showScreen(id){
-  if(id === 'landing-screen'){
-    ['study-screen', 'quiz-screen', 'result-screen'].forEach(secId => {
-      const el = byId(secId);
-      if(el) el.style.display = 'none';
-    });
-    byId('quiz-sec').scrollIntoView({behavior:'smooth'});
-    return;
-  }
-  
-  if(id === 'study-screen'){
-    const study = byId('study-screen');
-    if(study) study.style.display = 'block';
-    const quiz = byId('quiz-screen');
-    if(quiz) quiz.style.display = 'none';
-    const result = byId('result-screen');
-    if(result) result.style.display = 'none';
-  } else if(id === 'quiz-screen'){
-    const quiz = byId('quiz-screen');
-    if(quiz) quiz.style.display = 'block';
-    const result = byId('result-screen');
-    if(result) result.style.display = 'none';
-  } else if(id === 'result-screen'){
-    const result = byId('result-screen');
-    if(result) result.style.display = 'block';
-  }
-  
-  setTimeout(() => {
-    const el = byId(id);
-    if(el) el.scrollIntoView({behavior:'smooth'});
-  }, 50);
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el=byId(id);
+  if(el)el.classList.add('active');
+  window.scrollTo(0,0);
 }
 
 function goHome(){
@@ -1424,7 +1359,7 @@ function goHome(){
     clearInterval(window.metroInterval);
     window.metroInterval = null;
   }
-  showScreen('landing-screen');
+  showScreen('home-screen');
   updateHomeStats();
   buildCategoryGrid();
 }
@@ -1569,7 +1504,7 @@ function showResult(){
   byId('r-wrong').textContent=state.qs.length-state.score;
   byId('r-time').textContent=elapsed+'s';
   const dStr = new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});
-  byId('print-date').textContent=`/* ${dStr} */`;
+  byId('print-date').textContent=dStr;
   const rl=byId('review-list');
   rl.replaceChildren();
   state.answers.forEach((a,i)=>{
@@ -1599,29 +1534,10 @@ byId('next-btn').addEventListener('click',nextQuestion);
 byId('retry-btn').addEventListener('click',retryQuiz);
 byId('other-cat-btn').addEventListener('click',goHome);
 
-function scrollToSection(id){
-  goHome();
-  setTimeout(()=>{
-    const el=byId(id);
-    if(el){
-      el.scrollIntoView({behavior:'smooth'});
-      if(id==='quiz-sec'){
-        const grid = byId('cat-grid');
-        grid.style.transition = 'transform 0.3s ease';
-        grid.style.transform = 'scale(1.02)';
-        setTimeout(() => grid.style.transform = 'scale(1)', 300);
-      }
-    }
-  }, 60);
-}
-byId('nav-brand-btn').addEventListener('click',function(e){
-  e.preventDefault();
-  scrollToSection('hero-sec');
-});
-byId('scroll-down-btn').addEventListener('click',()=>scrollToSection('features-sec'));
-byId('nav-features-btn').addEventListener('click',()=>scrollToSection('features-sec'));
-byId('nav-quiz-btn').addEventListener('click',()=>scrollToSection('quiz-sec'));
-byId('nav-about-btn').addEventListener('click',()=>scrollToSection('about-sec'));
+byId('nav-brand-btn').addEventListener('click',goHome);
+byId('nav-home-btn').addEventListener('click',goHome);
+byId('nav-about-btn').addEventListener('click',()=>showScreen('about-screen'));
+byId('about-home-btn').addEventListener('click',goHome);
 
 // 전체 결과를 항상 한 페이지에 담는다.
 // jsPDF/html2canvas 전역이 있으면 A4 한 장에 비율을 유지해 축소 배치하고,
