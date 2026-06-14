@@ -1,88 +1,19 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { readFile } from 'node:fs/promises';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 
-// Extract the QUESTIONS object by finding the array boundaries
-function extractQuestions(html) {
-  const qStart = html.indexOf('const QUESTIONS=');
-  const qEnd = html.indexOf('const state=', qStart);
-  const src = html.substring(qStart + 'const QUESTIONS='.length, qEnd).trim();
-  return parseQuestions(src);
+// Evaluate the QUESTIONS literal directly instead of hand-rolling a parser.
+// The previous regex-based parser failed on the `form` category (special
+// characters such as ♭ / "..." broke the JSON conversion) and emitted
+// false-positive DUPLICATE / missing-explain errors.
+function extractConst(name) {
+  const pattern = /const QUESTIONS=([\s\S]*?\n};)/;
+  const match = html.match(pattern);
+  if (!match) throw new Error(`${name} 선언을 찾을 수 없습니다.`);
+  return Function(`return (${match[1].slice(0, -1)});`)();
 }
 
-function parseQuestions(src) {
-  // The source looks like: {note:[{...},{...}], scale:[...], rhythm:[...], ...}
-  // We need to find each category array
-  const cats = ['note', 'scale', 'rhythm', 'mark', 'chord', 'inst', 'form'];
-  const result = {};
-
-  let pos = 0;
-  // Skip opening {
-  if (src[pos] === '{') pos++;
-  
-  for (const cat of cats) {
-    // Find category key
-    const keyStart = src.indexOf(cat + ':', pos);
-    if (keyStart < 0) {
-      console.error(`Category ${cat} not found after position ${pos}`);
-      continue;
-    }
-    
-    // Find opening bracket
-    const arrStart = src.indexOf('[', keyStart);
-    if (arrStart < 0) break;
-    
-    // Find closing bracket (track depth)
-    let depth = 0;
-    let arrEnd = arrStart;
-    for (let i = arrStart; i < src.length; i++) {
-      if (src[i] === '[') depth++;
-      else if (src[i] === ']') {
-        depth--;
-        if (depth === 0) {
-          arrEnd = i;
-          break;
-        }
-      }
-    }
-    
-    const arrStr = src.substring(arrStart, arrEnd + 1);
-    
-    // Convert JS object notation to JSON for parsing
-    // 1. Single quotes to double quotes
-    // 2. Unquoted keys to quoted keys
-    let json = arrStr
-      .replace(/'/g, '"')
-      .replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3');
-    
-    try {
-      result[cat] = JSON.parse(json);
-    } catch (e) {
-      console.error(`Failed to parse ${cat}: ${e.message}`);
-      // Try manual counting of objects
-      const objMatches = arrStr.match(/\{[^}]+?\}/g);
-      result[cat] = objMatches ? objMatches.map(m => {
-        const qMatch = m.match(/q:'([^']+)'/);
-        const ansMatch = m.match(/ans:(\d+)/);
-        const optsMatch = m.match(/opts:\[([^\]]+)\]/);
-        return {
-          q: qMatch ? qMatch[1] : '?',
-          ans: ansMatch ? parseInt(ansMatch[1]) : -1,
-          opts: optsMatch ? optsMatch[1].split(',').length : 0
-        };
-      }) : [];
-    }
-    
-    pos = arrEnd + 1;
-  }
-  
-  return result;
-}
-
-const QUESTIONS = extractQuestions(html);
+const QUESTIONS = extractConst('QUESTIONS');
 
 console.log('Question counts per category:');
 for (const [cat, qs] of Object.entries(QUESTIONS)) {

@@ -418,21 +418,28 @@ function renderNotation(target,notation){
   if(!notation){target.style.display='none';return;}
   target.style.display='block';
   const wrap=node('div','notation-card');
-  const svg=svgNode('svg',{viewBox:'0 0 220 96',width:'220',height:'96',role:'img','aria-label':notation.label||'음악 기호'});
-  for(let y=24;y<=64;y+=10)svg.appendChild(svgNode('line',{x1:18,y1:y,x2:202,y2:y,stroke:'currentColor','stroke-width':'1.4',opacity:'.55'}));
+  const svg=svgNode('svg',{viewBox:'0 0 240 100',width:'240',height:'100',role:'img','aria-label':notation.label||'음악 기호'});
+  const staffY=[28,38,48,58,68];
+  staffY.forEach(y=>svg.appendChild(svgNode('line',{x1:20,y1:y,x2:220,y2:y,stroke:'currentColor','stroke-width':'1',opacity:'.4'})));
+  const midY=48;
   const label=node('div','review-a',notation.label||'');
   label.style.textAlign='center';
   label.style.marginTop='6px';
 
   if(notation.type==='rest'){
-    svg.append(svgNode('rect',{x:94,y:44,width:32,height:9,rx:2,fill:'currentColor'}),svgNode('path',{d:'M100 54c5 9 14 9 20 0',fill:'none',stroke:'currentColor','stroke-width':3,'stroke-linecap':'round'}));
+    if(notation.value==='whole')svg.appendChild(svgNode('rect',{x:102,y:30,width:36,height:8,rx:2,fill:'currentColor'}));
+    else if(notation.value==='half')svg.appendChild(svgNode('rect',{x:102,y:48,width:36,height:8,rx:2,fill:'currentColor'}));
+    else svg.appendChild(svgNode('path',{d:'M114,30 l-12,12 l20,6 l-22,18',fill:'none',stroke:'currentColor','stroke-width':'4','stroke-linecap':'round','stroke-linejoin':'round'}));
   }else{
     const filled=!['whole','half','dotted-half'].includes(notation.value);
-    const notehead=svgNode('ellipse',{cx:108,cy:52,rx:18,ry:11,transform:'rotate(-18 108 52)',fill:filled?'currentColor':'none',stroke:'currentColor','stroke-width':'3'});
+    const notehead=svgNode('ellipse',{cx:108,cy:midY,rx:8,ry:5.5,transform:'rotate(-18 108 '+midY+')',fill:filled?'currentColor':'none',stroke:'currentColor','stroke-width':'2'});
     svg.appendChild(notehead);
-    if(notation.value!=='whole')svg.appendChild(svgNode('line',{x1:123,y1:49,x2:123,y2:15,stroke:'currentColor','stroke-width':3,'stroke-linecap':'round'}));
-    if(notation.value==='eighth')svg.appendChild(svgNode('path',{d:'M123 15c23 8 24 20 8 30',fill:'none',stroke:'currentColor','stroke-width':3,'stroke-linecap':'round'}));
-    if(notation.value&&notation.value.startsWith('dotted'))svg.appendChild(svgNode('circle',{cx:144,cy:49,r:3.5,fill:'currentColor'}));
+    if(notation.value!=='whole'){
+      const stemX=115;
+      svg.appendChild(svgNode('line',{x1:stemX,y1:midY-4,x2:stemX,y2:midY-36,stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
+    }
+    if(notation.value==='eighth')svg.appendChild(svgNode('path',{d:'M115,14 c6,2 12,8 10,16',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
+    if(notation.value&&notation.value.startsWith('dotted'))svg.appendChild(svgNode('circle',{cx:126,cy:midY+1,r:2.5,fill:'currentColor'}));
   }
   wrap.append(svg,label);
   target.appendChild(wrap);
@@ -483,7 +490,8 @@ function selectAnswer(idx,btn){
   const btns=document.querySelectorAll('.opt-btn');
   btns.forEach(b=>b.disabled=true);
   btns[q.ans].classList.add('correct');
-  if(!correct)btn.classList.add('wrong');
+  btns[q.ans].appendChild(node('span','state-mark','✓'));
+  if(!correct){btn.classList.add('wrong');btn.appendChild(node('span','state-mark','✗'));}
   const fb=byId('feedback');
   const fi=byId('fb-icon');
   const ft=byId('fb-text');
@@ -561,13 +569,27 @@ byId('retry-btn').addEventListener('click',retryQuiz);
 byId('other-cat-btn').addEventListener('click',goHome);
 
 byId('pdf-download-btn').addEventListener('click',function(){
+  const btn=this;
   const area=byId('print-area');
   const name=byId('student-name').value.trim();
   const date=new Date().toISOString().slice(0,10).replace(/-/g,'');
   const fn=name?`음악이론_${name}_${date}.pdf`:`음악이론_학습결과_${date}.pdf`;
+  btn.disabled=true;
   area.classList.add('pdf-rendering');
-  const opt={margin:[10,10,10,10],filename:fn,image:{type:'jpeg',quality:.98},html2canvas:{scale:2,useCORS:true,letterRendering:true},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}};
-  html2pdf().set(opt).from(area).save().then(()=>area.classList.remove('pdf-rendering'));
+  // 스크롤을 최상단으로 되돌리고 scrollX/Y를 0으로 고정해야 html2canvas가
+  // 현재 스크롤 오프셋을 빈 공간으로 캡처하지 않고 전체 내용을 담는다.
+  window.scrollTo(0,0);
+  const opt={
+    margin:[10,10,10,10],
+    filename:fn,
+    image:{type:'jpeg',quality:.98},
+    html2canvas:{scale:2,useCORS:true,letterRendering:true,scrollX:0,scrollY:0,windowWidth:document.documentElement.offsetWidth},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+    pagebreak:{mode:['css','legacy'],avoid:'.review-item'}
+  };
+  html2pdf().set(opt).from(area).save()
+    .catch(error=>console.error('PDF 생성에 실패했습니다.',error))
+    .then(()=>{area.classList.remove('pdf-rendering');btn.disabled=false;});
 });
 
 loadStorage();
