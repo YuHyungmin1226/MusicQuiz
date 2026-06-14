@@ -5,148 +5,252 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>음악 이론 퀴즈 — 중학교 음악 교육과정</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   color-scheme:light;
-  --bg:#fafafa;--bg-soft:#f1f1f1;--surface:#ffffff;--surface-strong:#f7f7f7;
-  --text:#232323;--muted:#666666;--faint:#999999;--line:#e0e0e0;
-  --accent:#333333;--accent-strong:#000000;--accent-soft:#eeeeee;
-  --success:#2e7d32;--success-soft:#e8f5e9;--danger:#c62828;--danger-soft:#ffebee;
-  --warning:#ef6c00;--shadow:0 4px 16px rgba(0,0,0,0.03);--ring:0 0 0 3px rgba(51,51,51,0.08);
-  --radius-sm:4px;--radius-md:6px;--radius-lg:8px;--space:8px;
+  --bg:#f8f9fa;--bg-soft:#f1f3f5;--surface:#ffffff;--surface-strong:#f8f9fa;
+  --text:#212529;--muted:#495057;--faint:#868e96;--line:#dee2e6;
+  --accent:#4c6ef5;--accent-strong:#3b5bdb;--accent-soft:#edf2ff;
+  --success:#2b8a3e;--success-soft:#ebfbee;--danger:#c92a2a;--danger-soft:#fff5f5;
+  --warning:#e67e22;--shadow:0 12px 30px rgba(0,0,0,0.03), 0 4px 12px rgba(0,0,0,0.02);--ring:0 0 0 4px rgba(76,110,245,0.12);
+  --radius-sm:6px;--radius-md:10px;--radius-lg:16px;--space:8px;
   --font:"Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 @media(prefers-color-scheme:dark){
   :root{
     color-scheme:dark;
-    --bg:#1a1a1a;--bg-soft:#222222;--surface:#282828;--surface-strong:#2d2d2d;
-    --text:#dddddd;--muted:#a0a0a0;--faint:#6e6e6e;--line:#383838;
-    --accent:#cccccc;--accent-strong:#ffffff;--accent-soft:#333333;
-    --success:#81c784;--success-soft:#1b301c;--danger:#e57373;--danger-soft:#3c1a1a;
-    --warning:#ffb74d;--shadow:0 6px 20px rgba(0,0,0,0.2);--ring:0 0 0 3px rgba(204,204,204,0.12);
+    --bg:#121214;--bg-soft:#1a1a1e;--surface:#1e1e24;--surface-strong:#25252e;
+    --text:#eceef2;--muted:#a9b0c0;--faint:#6b7280;--line:#2e2e38;
+    --accent:#748ffc;--accent-strong:#91a7ff;--accent-soft:#1c233a;
+    --success:#40c057;--success-soft:#142918;--danger:#fa5252;--danger-soft:#2b1515;
+    --warning:#ffd43b;--shadow:0 16px 40px rgba(0,0,0,0.3), 0 6px 16px rgba(0,0,0,0.2);--ring:0 0 0 4px rgba(116,143,252,0.2);
   }
 }
-body{font-family:var(--font);background:linear-gradient(180deg,var(--bg),var(--bg-soft));min-height:100vh;color:var(--text);line-height:1.6}
-button{font:inherit}button:focus-visible,.cat-card:focus-visible{outline:1px solid var(--accent);outline-offset:3px;box-shadow:var(--ring)}
-.app{max-width:860px;margin:0 auto;padding:clamp(20px,5vw,50px)}
-.screen{display:none;animation:fadeIn .24s ease}.screen.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.typora-comment{font-family:Menlo,Monaco,Consolas,"Courier New",monospace;font-style:italic;color:var(--muted);font-size:0.9em;word-break:break-all}
-.hero{padding:clamp(30px,6vw,56px) 0 24px;text-align:left}
-.hero-icon{width:56px;height:56px;border-radius:var(--radius-md);background:var(--surface);display:grid;place-items:center;font-size:28px;border:1px solid var(--line);box-shadow:var(--shadow);margin-bottom:16px}
-.hero h1{font-size:clamp(28px,6vw,44px);letter-spacing:-.04em;line-height:1.1;font-weight:700}
-.hero p{margin-top:10px}
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0 24px}
-.stat-card,.quiz-header,.question-card,.result-card,.review-item{background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius-md)}
-.stat-card{padding:16px 20px;text-align:left}
-.stat-num{font-size:clamp(22px,4vw,30px);font-weight:700;letter-spacing:-.02em}
-.stat-label{font-size:12px;color:var(--muted);margin-top:4px}
-.section-title{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:28px 0 12px}
-.category-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.cat-card{appearance:none;width:100%;text-align:left;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--radius-md);padding:20px;cursor:pointer;transition:border-color .14s ease,background .14s ease;position:relative;overflow:hidden;min-height:120px}
-.cat-card:hover{border-color:var(--accent);background:var(--surface-strong)}
-.cat-accent{width:3px;height:100%;position:absolute;left:0;top:0}
-.cat-icon{display:block;font-size:20px;line-height:1;margin-bottom:12px}
-.cat-title{display:block;font-size:16px;font-weight:700;letter-spacing:-.01em;padding-right:48px}
-.cat-sub{display:block;font-size:12px;color:var(--muted);margin-top:6px;line-height:1.4}
-.cat-badge{font-size:10px;padding:3px 8px;border-radius:var(--radius-sm);position:absolute;top:16px;right:16px;font-weight:700}
+body{font-family:var(--font);background:var(--bg);min-height:100vh;color:var(--text);line-height:1.6;overflow-x:hidden}
+button{font:inherit}
+button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)}
+
+/* Layout Containers */
+.app{width:100%}
+.container{max-width:880px;margin:0 auto;padding:0 24px;width:100%}
+.screen{display:none;animation:fadeIn .3s cubic-bezier(0.16, 1, 0.3, 1)}.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.typora-comment{font-family:"Outfit", Menlo, Monaco, Consolas, monospace;font-style:italic;color:var(--faint);font-size:0.88em;letter-spacing:0.02em}
+
+/* Sticky Navigation Bar */
+.nav-bar{position:sticky;top:0;left:0;right:0;height:56px;background:color-mix(in srgb,var(--bg) 85%,transparent);border-bottom:1px solid var(--line);backdrop-filter:blur(12px);z-index:100;width:100%;transition:background 0.3s ease, border-color 0.3s ease}
+.nav-container{max-width:880px;margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 24px;width:100%}
+.nav-brand{font-family:"Outfit", var(--font);font-size:16px;font-weight:700;letter-spacing:-.02em;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:6px;transition:opacity .15s ease}
+.nav-brand:hover{opacity:0.85}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-link{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;transition:color .15s ease, transform 0.1s ease;background:transparent;border:none;cursor:pointer;padding:6px 0;position:relative}
+.nav-link:hover{color:var(--text)}
+.nav-link::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;background:var(--accent);transition:all 0.2s ease;transform:translateX(-50%)}
+.nav-link:hover::after{width:100%}
+
+/* Hero Section */
+.hero-sec{min-height:calc(85vh - 56px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:60px 0 80px;position:relative}
+.hero-icon{width:64px;height:64px;border-radius:var(--radius-md);background:var(--surface);display:grid;place-items:center;font-size:32px;border:1px solid var(--line);box-shadow:var(--shadow);margin-bottom:24px;transition:transform 0.3s ease}
+.hero-sec:hover .hero-icon{transform:scale(1.05) rotate(5deg)}
+.hero-sec h1{font-family:"Outfit", var(--font);font-size:clamp(36px,8vw,56px);letter-spacing:-.04em;line-height:1.1;font-weight:700;margin-bottom:12px;background:linear-gradient(90deg,var(--text) 40%,var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sec p{margin-top:8px}
+.scroll-down{position:absolute;bottom:40px;left:0;font-size:22px;color:var(--faint);animation:bounce 2s infinite;cursor:pointer;font-family:"Outfit", monospace;font-weight:500;line-height:1;width:40px;height:40px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);transition:color 0.2s ease, border-color 0.2s ease}
+.scroll-down:hover{color:var(--text);border-color:var(--accent)}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+
+/* Features Section */
+.features-sec{padding:100px 0 80px;border-top:1px solid var(--line)}
+.features-sec h2{font-family:"Outfit", var(--font);font-size:28px;font-weight:700;margin-bottom:12px;letter-spacing:-.03em}
+.features-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:center;margin-top:40px}
+.features-text{display:flex;flex-direction:column;gap:24px;text-align:left}
+.feature-item{border-left:3px solid var(--line);padding-left:20px;transition:border-color .2s ease, transform 0.2s ease}
+.feature-item:hover{border-color:var(--accent);transform:translateX(4px)}
+.feature-item h3{font-size:16px;font-weight:700;margin-bottom:6px}
+.feature-item p{font-size:14px;color:var(--muted);line-height:1.6}
+.features-media{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow);display:grid;place-items:center;min-height:260px;aspect-ratio:1.5/1;width:100%;transition:transform 0.3s ease}
+.features-media:hover{transform:scale(1.02)}
+
+/* Quiz Start Section */
+.quiz-sec{padding:100px 0;border-top:1px solid var(--line);text-align:left}
+.quiz-sec h2{font-family:"Outfit", var(--font);font-size:28px;font-weight:700;margin-bottom:8px;letter-spacing:-.03em}
+.category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:36px}
+.cat-card{appearance:none;width:100%;text-align:left;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--radius-md);padding:24px;cursor:pointer;transition:border-color .2s ease,background .2s ease,transform .15s ease,box-shadow .2s ease;position:relative;overflow:hidden;min-height:140px;display:flex;flex-direction:column;justify-content:flex-start;box-shadow:var(--shadow)}
+.cat-card:hover{border-color:var(--accent);background:var(--surface-strong);transform:translateY(-4px);box-shadow:0 18px 36px rgba(0,0,0,0.06)}
+.cat-card:active{transform:translateY(-1px) scale(0.98)}
+.cat-accent{width:4px;height:100%;position:absolute;left:0;top:0;border-radius:2px 0 0 2px}
+.cat-icon{display:block;font-size:24px;line-height:1;margin-bottom:14px}
+.cat-title{display:block;font-size:18px;font-weight:700;letter-spacing:-.015em;padding-right:48px}
+.cat-sub{display:block;font-size:13px;color:var(--muted);margin-top:8px;line-height:1.45;flex-grow:1}
+.cat-badge{font-size:10px;padding:4px 8px;border-radius:var(--radius-sm);position:absolute;top:20px;right:20px;font-weight:700;letter-spacing:0.02em}
 .badge-done{background:var(--success-soft);color:var(--success);border:1px solid color-mix(in srgb,var(--success) 20%,transparent)}
 .badge-new{background:var(--bg-soft);color:var(--muted);border:1px solid var(--line)}
-.quiz-header{border-radius:var(--radius-md);padding:16px;margin-bottom:12px}
-.quiz-meta{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}
-.quiz-category,.quiz-progress-text{font-size:13px;color:var(--muted);font-weight:700}
-.progress-bar{height:6px;background:var(--bg-soft);border-radius:var(--radius-sm);overflow:hidden}
-.progress-fill{height:100%;border-radius:var(--radius-sm);transition:width .28s ease;background:var(--accent)}
-.question-card{padding:clamp(20px,5vw,30px);margin-bottom:12px}
-.q-num{font-size:11px;color:var(--faint);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
-.q-text{font-size:clamp(18px,4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.4}
-.q-image{padding:16px;background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-md);margin:16px 0 4px}
+
+/* About Section */
+.about-sec{padding:80px 0 60px;border-top:1px solid var(--line);text-align:center}
+.about-sec h2{font-family:"Outfit", var(--font);font-size:24px;font-weight:700;margin-bottom:12px}
+.about-sec p{max-width:520px;margin:0 auto 28px;font-size:14px;color:var(--muted);line-height:1.6}
+.about-links{font-size:14px}
+.about-links a{color:var(--text);text-decoration:underline;font-weight:700;transition:opacity .15s ease}
+.about-links a:hover{opacity:.8}
+
+/* Quiz Screen Components */
+.quiz-header{border-radius:var(--radius-md);padding:20px;margin-bottom:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
+.quiz-meta{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}
+.quiz-category{font-size:14px;color:var(--muted);font-weight:700;letter-spacing:-0.01em}
+.quiz-progress-text{font-family:"Outfit", sans-serif;font-size:13px;color:var(--accent);font-weight:700}
+.progress-bar{height:8px;background:var(--bg-soft);border-radius:var(--radius-sm);overflow:hidden}
+.progress-fill{height:100%;border-radius:var(--radius-sm);transition:width .35s cubic-bezier(0.4, 0, 0.2, 1);background:var(--accent)}
+
+.question-card{padding:clamp(24px,5vw,36px);margin-bottom:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius-md)}
+.q-num{font-family:"Outfit", sans-serif;font-size:12px;color:var(--faint);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.q-text{font-size:clamp(20px,4.5vw,26px);font-weight:700;letter-spacing:-.02em;line-height:1.45}
+.q-image{padding:20px;background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-md);margin:20px 0 8px}
 .notation-card{display:flex;flex-direction:column;align-items:center;justify-content:center}
 .notation-card svg{max-width:100%;height:auto}
-.options-grid{display:grid;gap:8px;margin-top:18px}
-.opt-btn{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:14px 16px;text-align:left;cursor:pointer;font-size:14px;color:var(--text);transition:border-color .12s ease,background .12s ease;display:flex;align-items:center;gap:12px;width:100%;min-height:50px}
-.opt-btn:hover:not(:disabled){border-color:var(--accent);background:var(--surface-strong)}
-.opt-label{width:24px;height:24px;border-radius:var(--radius-sm);border:1px solid var(--line);display:grid;place-items:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--muted);background:var(--bg-soft)}
-.opt-text{flex:1}
+
+/* Options & Buttons */
+.options-grid{display:grid;gap:10px;margin-top:24px}
+.opt-btn{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:14px 20px;text-align:left;cursor:pointer;font-size:15px;color:var(--text);transition:border-color .15s ease,background .15s ease,transform .1s ease,box-shadow 0.15s ease;display:flex;align-items:center;gap:14px;width:100%;min-height:54px;box-shadow:var(--shadow)}
+.opt-btn:hover:not(:disabled){border-color:var(--accent);background:var(--surface-strong);box-shadow:0 6px 16px rgba(0,0,0,0.02)}
+.opt-btn:active:not(:disabled){transform:scale(0.995)}
+.opt-label{font-family:"Outfit", sans-serif;width:26px;height:26px;border-radius:var(--radius-sm);border:1px solid var(--line);display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0;color:var(--muted);background:var(--bg-soft)}
+.opt-text{flex:1;word-break:keep-all;line-height:1.4}
 .state-mark{font-weight:700;margin-left:auto}
 .opt-btn.correct{background:var(--success-soft);border-color:var(--success);color:var(--text)}
 .opt-btn.correct .opt-label{background:var(--success);color:#fff;border-color:var(--success)}
 .opt-btn.wrong{background:var(--danger-soft);border-color:var(--danger);color:var(--text)}
 .opt-btn.wrong .opt-label{background:var(--danger);color:#fff;border-color:var(--danger)}
 .opt-btn:disabled{cursor:default}
-.feedback-bar{border-radius:var(--radius-md);padding:14px 16px;margin-bottom:12px;display:none;align-items:flex-start;gap:12px;border:1px solid transparent}
+
+.feedback-bar{border-radius:var(--radius-md);padding:16px 20px;margin-bottom:16px;display:none;align-items:flex-start;gap:14px;border:1px solid transparent;box-shadow:var(--shadow)}
 .feedback-bar.show{display:flex}
 .feedback-bar.ok{background:var(--success-soft);border-color:var(--success)}
 .feedback-bar.ng{background:var(--danger-soft);border-color:var(--danger)}
-.feedback-icon{font-size:16px;flex-shrink:0;font-weight:700}
-.feedback-text{font-size:14px;font-weight:700}
+.feedback-icon{font-size:18px;flex-shrink:0;font-weight:700}
+.feedback-text{font-size:15px;font-weight:700}
 .feedback-text.ok{color:var(--success)}
 .feedback-text.ng{color:var(--danger)}
-.feedback-explain{font-size:13px;color:var(--muted);margin-top:3px}
-.next-btn,.btn-pri{background:var(--accent);color:var(--surface);border:1px solid var(--accent)}
-.next-btn,.btn-sec,.btn-pri{width:100%;border-radius:var(--radius-md);padding:14px;font-size:14px;font-weight:700;cursor:pointer;transition:background .12s ease,border-color .12s ease,color .12s ease}
-.next-btn:hover,.btn-pri:hover{background:var(--accent-strong);border-color:var(--accent-strong);color:var(--surface)}
+.feedback-explain{font-size:14px;color:var(--muted);margin-top:4px;line-height:1.5}
+
+.next-btn,.btn-pri{background:var(--accent);color:var(--surface);border:1px solid var(--accent);box-shadow:0 4px 12px rgba(76,110,245,0.15)}
+.next-btn,.btn-sec,.btn-pri{width:100%;border-radius:var(--radius-md);padding:15px;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s ease,border-color .15s ease,color .15s ease,transform 0.1s ease,box-shadow 0.15s ease;display:inline-flex;align-items:center;justify-content:center}
+.next-btn:hover,.btn-pri:hover{background:var(--accent-strong);border-color:var(--accent-strong);color:var(--surface);box-shadow:0 6px 18px rgba(76,110,245,0.25)}
 .next-btn:active,.btn-sec:active,.btn-pri:active{transform:scale(.99)}
-.result-card{padding:28px;text-align:center;margin-bottom:12px}
-.score-ring{width:96px;height:96px;margin:0 auto 16px;position:relative}
-.score-ring svg{width:96px;height:96px}
-.score-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:20px;font-weight:700}
-.result-title{font-size:22px;font-weight:700;letter-spacing:-.03em}
-.result-sub{font-size:13px;color:var(--muted);margin-top:4px}
-.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
-.r-stat{background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-md);padding:10px}
-.r-stat-n{font-size:18px;font-weight:700}
-.r-stat-l{font-size:11px;color:var(--muted)}
-.review-item{padding:14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start}
-.review-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:6px}
-.review-q{font-size:13px;font-weight:700;margin-bottom:4px}
-.review-a{font-size:12px;color:var(--muted)}
-.btn-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:10px}
+
+/* Result Card */
+.result-card{padding:32px 24px;text-align:center;margin-bottom:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius-md)}
+.score-ring{width:108px;height:108px;margin:0 auto 20px;position:relative}
+.score-ring svg{width:108px;height:108px}
+.score-center{font-family:"Outfit", sans-serif;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:24px;font-weight:700;letter-spacing:-0.02em}
+.result-title{font-size:24px;font-weight:700;letter-spacing:-.03em;margin-top:8px}
+.result-sub{font-size:14px;color:var(--muted);margin-top:6px}
+
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
+.r-stat{background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-md);padding:14px;transition:transform 0.2s ease}
+.r-stat:hover{transform:translateY(-2px)}
+.r-stat-n{font-family:"Outfit", sans-serif;font-size:22px;font-weight:700}
+.r-stat-l{font-size:12px;color:var(--muted);margin-top:2px;font-weight:600}
+
+.result-history-title{margin:32px 0 14px;text-align:left;font-size:16px;font-weight:700;letter-spacing:-0.01em}
+.result-history{margin:0}
+.result-history .stat-card{box-shadow:none;border:1px solid var(--line);background:var(--surface-strong)}
+
+/* 누적 기록 세션 (추가 및 엉성한 클래스 수정) */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+  width: 100%;
+}
+.stat-card {
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.stat-num {
+  font-family:"Outfit", sans-serif;
+  font-size:22px;
+  font-weight:700;
+  color:var(--accent);
+}
+.stat-label {
+  font-size:12px;
+  color:var(--muted);
+  margin-top:4px;
+  font-weight:600;
+}
+
+.review-item{padding:16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius-md);transition:transform 0.2s ease}
+.review-item:hover{transform:translateX(2px)}
+.review-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.review-q{font-size:14px;font-weight:700;margin-bottom:4px;line-height:1.4}
+.review-a{font-size:13px;color:var(--muted);line-height:1.45}
+.btn-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:12px;width:100%}
 .btn-sec{background:var(--surface);border:1px solid var(--line);color:var(--text)}
-.btn-sec:hover{background:var(--surface-strong)}
-.back-btn{background:transparent;border:1px solid var(--line);border-radius:var(--radius-sm);cursor:pointer;color:var(--muted);font-size:12px;padding:6px 12px;margin-bottom:12px;transition:color .12s ease,background .12s ease}
-.back-btn:hover{color:var(--text);background:var(--surface-strong)}
-.print-area{padding:4px 0}.print-header{text-align:center;margin-bottom:18px}.print-header-icon{width:44px;height:44px;border-radius:var(--radius-md);background:var(--surface);display:grid;place-items:center;font-size:22px;border:1px solid var(--line);box-shadow:var(--shadow);margin:0 auto 12px}.print-header h2{font-size:20px;font-weight:700;letter-spacing:-.04em}.print-header .print-date{font-size:13px;color:var(--muted);margin-top:4px}.print-name-row{display:flex;align-items:center;gap:10px;justify-content:center;margin:16px 0 10px}.print-name-row label{font-size:14px;font-weight:700}.print-name-row input{border:none;border-bottom:1.5px solid var(--line);background:transparent;font:inherit;font-size:14px;padding:4px 8px;width:130px;color:var(--text);transition:border-color .16s ease}.print-name-row input:focus{outline:none;border-color:var(--accent)}.print-area.pdf-rendering{--text:#232323;--bg:#fafafa;--surface:#ffffff;--surface-strong:#f7f7f7;--line:#e0e0e0;--muted:#666666;background:#ffffff;color:#232323;border-radius:0;box-shadow:none;width:860px;margin:0 auto}.print-area.pdf-rendering .result-card,.print-area.pdf-rendering .review-item{backdrop-filter:none;background:#ffffff;box-shadow:none}.print-area.pdf-rendering .result-stats,.print-area.pdf-rendering .stats-row{grid-template-columns:repeat(3,1fr)}
-@media(max-width:860px){.category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:620px){.app{padding:16px}.category-grid,.stats-row,.result-stats,.btn-row{grid-template-columns:1fr}.cat-card{min-height:auto}.hero{text-align:left;padding-top:28px}.hero-icon{width:48px;height:48px;font-size:24px}.question-card{padding:16px}.opt-btn{align-items:flex-start}}
+.btn-sec:hover{background:var(--surface-strong);border-color:var(--faint)}
+.back-btn{background:transparent;border:1px solid var(--line);border-radius:var(--radius-sm);cursor:pointer;color:var(--muted);font-size:13px;font-weight:600;padding:8px 16px;margin-bottom:16px;transition:color .12s ease,background .12s ease,border-color 0.12s ease;display:inline-flex;align-items:center;justify-content:center}
+.back-btn:hover{color:var(--text);background:var(--surface-strong);border-color:var(--muted)}
+
+/* Print Area styles */
+.print-area{padding:4px 0}
+.print-header{text-align:center;margin-bottom:24px}
+.print-header-icon{width:52px;height:52px;border-radius:var(--radius-md);background:var(--surface);display:grid;place-items:center;font-size:26px;border:1px solid var(--line);box-shadow:var(--shadow);margin:0 auto 14px}
+.print-header h2{font-family:"Outfit", var(--font);font-size:22px;font-weight:700;letter-spacing:-.04em}
+.print-header .print-date{font-size:13px;color:var(--faint);margin-top:6px}
+.print-name-row{display:flex;align-items:center;gap:12px;justify-content:center;margin:20px 0 14px}
+.print-name-row label{font-size:14px;font-weight:700;color:var(--muted)}
+.print-name-row input{border:none;border-bottom:2px solid var(--line);background:transparent;font:inherit;font-size:14px;padding:4px 8px;width:150px;color:var(--text);transition:border-color .2s ease;text-align:center}
+.print-name-row input:focus{outline:none;border-color:var(--accent)}
+
+/* PDF Rendering Styles (출력용) */
+.print-area.pdf-rendering{--text:#212529;--bg:#ffffff;--surface:#ffffff;--surface-strong:#f8f9fa;--line:#dee2e6;--muted:#495057;background:#ffffff;color:#212529;border-radius:0;box-shadow:none;width:820px;margin:0 auto;padding:20px}
+.print-area.pdf-rendering .result-card,.print-area.pdf-rendering .review-item{backdrop-filter:none;background:#ffffff;box-shadow:none;border:1px solid #dee2e6}
+.print-area.pdf-rendering .result-stats,.print-area.pdf-rendering .stats-row{grid-template-columns:repeat(3,1fr)}
+
+.copyright{margin:40px 0 10px;text-align:center;color:var(--faint);font-size:12px;font-family:"Outfit", monospace;font-style:italic}
+
+/* Responsive Media Queries (가로폭 찌그러짐 원천 차단) */
+@media(max-width:880px){
+  .container{padding:0 20px}
+}
+@media(max-width:768px){
+  .features-grid{grid-template-columns:1fr;gap:36px}
+  .features-media{aspect-ratio:auto;min-height:240px;max-width:480px;margin:0 auto}
+  .category-grid{grid-template-columns:repeat(2,1fr);gap:14px}
+}
+@media(max-width:620px){
+  .nav-container{padding:0 16px}
+  .nav-links{gap:12px}
+  .nav-link{font-size:12px}
+  .hero-sec{text-align:left;padding-top:40px;min-height:calc(90vh - 56px)}
+  .hero-icon{width:56px;height:56px;font-size:28px}
+  .hero-sec h1{font-size:clamp(32px,7.5vw,42px)}
+  .category-grid,.stats-row,.result-stats,.btn-row{grid-template-columns:1fr}
+  .cat-card{min-height:auto;padding:20px}
+  .question-card{padding:20px 16px}
+  .opt-btn{align-items:flex-start;padding:12px 16px;font-size:14px}
+  .opt-label{width:22px;height:22px;font-size:11px}
+  .result-card{padding:24px 16px}
+}
+@media(max-width:360px){
+  .nav-brand{font-size:14px}
+  .nav-links{gap:8px}
+  .nav-link{font-size:11px}
+}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-.result-history-title{margin:24px 0 10px;text-align:left}.result-history{margin:0}.result-history .stat-card{box-shadow:none;border:1px solid var(--line);background:var(--surface-strong)}.copyright{margin:34px 0 4px;text-align:center;color:var(--faint);font-size:12px;font-family:Menlo,Monaco,Consolas,"Courier New",monospace;font-style:italic}
-/* Sticky Navigation Bar */
-.nav-bar{position:sticky;top:0;left:0;right:0;height:50px;background:color-mix(in srgb,var(--surface) 80%,transparent);border-bottom:1px solid var(--line);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:0;z-index:100}
-.nav-brand{font-size:15px;font-weight:700;letter-spacing:-.02em;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:6px}
-.nav-links{display:flex;align-items:center;gap:16px}
-.nav-link{font-size:13px;font-weight:700;color:var(--muted);text-decoration:none;transition:color .12s ease;background:transparent;border:none;cursor:pointer;padding:4px 0}
-.nav-link:hover{color:var(--text)}
-
-/* Hero Section */
-.hero-sec{min-height:calc(100vh - 80px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:40px 0 100px;position:relative}
-.hero-sec h1{font-size:clamp(32px,6.5vw,52px);letter-spacing:-.045em;line-height:1.06;font-weight:700}
-.scroll-down{position:absolute;bottom:40px;left:0;font-size:20px;color:var(--muted);animation:bounce 1.5s infinite;cursor:pointer;font-family:monospace;font-weight:700;line-height:1}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
-
-/* Features Section */
-.features-sec{padding:80px 0 60px;border-top:1px solid var(--line)}
-.features-sec h2{font-size:24px;font-weight:700;margin-bottom:12px;letter-spacing:-.03em}
-.features-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:36px;align-items:center;margin-top:34px}
-.features-text{display:flex;flex-direction:column;gap:22px;text-align:left}
-.feature-item{border-left:2px solid var(--line);padding-left:18px;transition:border-color .16s ease}
-.feature-item:hover{border-color:var(--accent)}
-.feature-item h3{font-size:15px;font-weight:700;margin-bottom:6px}
-.feature-item p{font-size:13px;color:var(--muted);line-height:1.55}
-.features-media{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow);display:grid;place-items:center;min-height:240px;aspect-ratio:1.5/1}
-
-/* Quiz Section */
-.quiz-sec{padding:80px 0;border-top:1px solid var(--line);text-align:left}
-.quiz-sec h2{font-size:24px;font-weight:700;margin-bottom:8px;letter-spacing:-.03em}
-
-/* About Section */
-.about-sec{padding:60px 0 40px;border-top:1px solid var(--line);text-align:center}
-.about-sec h2{font-size:20px;font-weight:700;margin-bottom:12px}
-.about-sec p{max-width:480px;margin:0 auto 24px;font-size:13px;color:var(--muted);line-height:1.6}
-.about-links{font-size:13px}
-.about-links a{color:var(--text);text-decoration:underline;font-weight:700;transition:opacity .12s ease}
-.about-links a:hover{opacity:.8}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
@@ -156,16 +260,18 @@ button{font:inherit}button:focus-visible,.cat-card:focus-visible{outline:1px sol
 <div class="screen active" id="landing-screen">
   <!-- Sticky Nav Bar -->
   <header class="nav-bar">
-    <a href="#hero-sec" class="nav-brand" id="nav-brand-btn">🎵 MusicQuiz</a>
-    <nav class="nav-links">
-      <button class="nav-link" id="nav-features-btn" type="button">Features</button>
-      <button class="nav-link" id="nav-quiz-btn" type="button">Start Quiz</button>
-      <button class="nav-link" id="nav-about-btn" type="button">About</button>
-    </nav>
+    <div class="nav-container">
+      <a href="#hero-sec" class="nav-brand" id="nav-brand-btn">🎵 MusicQuiz</a>
+      <nav class="nav-links">
+        <button class="nav-link" id="nav-features-btn" type="button">Features</button>
+        <button class="nav-link" id="nav-quiz-btn" type="button">Start Quiz</button>
+        <button class="nav-link" id="nav-about-btn" type="button">About</button>
+      </nav>
+    </div>
   </header>
 
   <!-- Hero Section -->
-  <section class="hero-sec" id="hero-sec">
+  <section class="hero-sec container" id="hero-sec">
     <div class="hero-icon">🎵</div>
     <h1>음악 이론 퀴즈</h1>
     <p class="typora-comment">/* 중학교 음악 교육과정 기반 · 7개 영역 · 140개 문제 */</p>
@@ -173,7 +279,7 @@ button{font:inherit}button:focus-visible,.cat-card:focus-visible{outline:1px sol
   </section>
 
   <!-- Features Section -->
-  <section class="features-sec" id="features-sec">
+  <section class="features-sec container" id="features-sec">
     <h2>Simple, yet Educational</h2>
     <p class="typora-comment">/* 음악 시험 준비와 이론 복습에 특화된 기능 */</p>
     <div class="features-grid">
@@ -210,14 +316,14 @@ button{font:inherit}button:focus-visible,.cat-card:focus-visible{outline:1px sol
   </section>
 
   <!-- Quiz Categories Section -->
-  <section class="quiz-sec" id="quiz-sec">
+  <section class="quiz-sec container" id="quiz-sec">
     <h2>Start Music Theory Quiz</h2>
     <p class="typora-comment">/* 아래 영역 중 원하는 학습 주제를 선택해 10문항 복습을 시작하세요. */</p>
     <div class="category-grid" id="cat-grid"></div>
   </section>
 
   <!-- About Section -->
-  <section class="about-sec" id="about-sec">
+  <section class="about-sec container" id="about-sec">
     <h2>About Developer</h2>
     <p>MusicQuiz 프로젝트와 관련된 건의사항이나 학습 문의는 아래 이메일로 전달해 주시기 바랍니다.</p>
     <div class="about-links typora-comment">
@@ -227,85 +333,88 @@ button{font:inherit}button:focus-visible,.cat-card:focus-visible{outline:1px sol
 </div>
 
 <div class="screen" id="quiz-screen">
-  <button class="back-btn" id="quiz-home-btn" type="button">← 홈으로</button>
-  <div class="quiz-header">
-    <div class="quiz-meta">
-      <span class="quiz-category" id="q-cat-name"></span>
-      <span class="quiz-progress-text" id="q-progress"></span>
+  <div class="container">
+    <button class="back-btn" id="quiz-home-btn" type="button">← 홈으로</button>
+    <div class="quiz-header">
+      <div class="quiz-meta">
+        <span class="quiz-category" id="q-cat-name"></span>
+        <span class="quiz-progress-text" id="q-progress"></span>
+      </div>
+      <div class="progress-bar" role="progressbar" aria-label="퀴즈 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="q-progressbar">
+        <div class="progress-fill" id="q-prog-fill" style="width:0%"></div>
+      </div>
     </div>
-    <div class="progress-bar" role="progressbar" aria-label="퀴즈 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="q-progressbar">
-      <div class="progress-fill" id="q-prog-fill" style="width:0%"></div>
+    <div class="question-card">
+      <div class="q-num" id="q-num"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-image" id="q-image" style="display:none"></div>
+      <div class="options-grid" id="q-options" role="group" aria-labelledby="q-text"></div>
     </div>
-  </div>
-  <div class="question-card">
-    <div class="q-num" id="q-num"></div>
-    <div class="q-text" id="q-text"></div>
-    <div class="q-image" id="q-image" style="display:none"></div>
-    <div class="options-grid" id="q-options" role="group" aria-labelledby="q-text"></div>
-  </div>
-  <div class="feedback-bar" id="feedback" aria-live="polite">
-    <div class="feedback-icon" id="fb-icon"></div>
-    <div>
-      <div class="feedback-text" id="fb-text"></div>
-      <div class="feedback-explain" id="fb-explain"></div>
+    <div class="feedback-bar" id="feedback" aria-live="polite">
+      <div class="feedback-icon" id="fb-icon"></div>
+      <div>
+        <div class="feedback-text" id="fb-text"></div>
+        <div class="feedback-explain" id="fb-explain"></div>
+      </div>
     </div>
+    <button class="next-btn" id="next-btn" type="button" style="display:none">다음 문제 →</button>
   </div>
-  <button class="next-btn" id="next-btn" type="button" style="display:none">다음 문제 →</button>
 </div>
 
 <div class="screen" id="result-screen">
-  <button class="back-btn" id="result-home-btn" type="button">← 홈으로</button>
-  <div id="print-area" class="print-area">
-    <div class="print-header">
-      <div class="print-header-icon">🎵</div>
-      <h2>음악 이론 퀴즈 학습 결과</h2>
-      <p class="print-date typora-comment" id="print-date"></p>
-    </div>
-    <div class="print-name-row">
-      <label for="student-name">이름</label>
-      <input type="text" id="student-name" placeholder="이름을 입력하세요" maxlength="20">
-    </div>
-    <div class="result-card">
-      <div class="score-ring">
-        <svg width="100" height="100" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="42" fill="none" stroke="var(--line)" stroke-width="8"/>
-          <circle cx="50" cy="50" r="42" fill="none" stroke-width="8" stroke-linecap="round" id="score-arc" stroke="#6C5CE7" stroke-dasharray="0 264" transform="rotate(-90 50 50)"/>
-        </svg>
-        <div class="score-center" id="score-pct"></div>
+  <div class="container">
+    <button class="back-btn" id="result-home-btn" type="button">← 홈으로</button>
+    <div id="print-area" class="print-area">
+      <div class="print-header">
+        <div class="print-header-icon">🎵</div>
+        <h2>음악 이론 퀴즈 학습 결과</h2>
+        <p class="print-date typora-comment" id="print-date"></p>
       </div>
-      <div class="result-title" id="result-title"></div>
-      <div class="result-sub" id="result-sub"></div>
-      <div class="result-stats">
-        <div class="r-stat"><div class="r-stat-n" id="r-correct" style="color:#639922">0</div><div class="r-stat-l">정답</div></div>
-        <div class="r-stat"><div class="r-stat-n" id="r-wrong" style="color:#E24B4A">0</div><div class="r-stat-l">오답</div></div>
-        <div class="r-stat"><div class="r-stat-n" id="r-time">0s</div><div class="r-stat-l">소요 시간</div></div>
+      <div class="print-name-row">
+        <label for="student-name">이름</label>
+        <input type="text" id="student-name" placeholder="이름을 입력하세요" maxlength="20">
       </div>
-      <div class="section-title result-history-title">누적 학습 기록</div>
-      <div class="stats-row result-history">
-        <div class="stat-card">
-          <div class="stat-num" id="gs-total">0</div>
-          <div class="stat-label">총 풀이</div>
+      <div class="result-card">
+        <div class="score-ring">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="var(--line)" stroke-width="8"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke-width="8" stroke-linecap="round" id="score-arc" stroke="#6C5CE7" stroke-dasharray="0 264" transform="rotate(-90 50 50)"/>
+          </svg>
+          <div class="score-center" id="score-pct"></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-num" id="gs-correct">0%</div>
-          <div class="stat-label">정답률</div>
+        <div class="result-title" id="result-title"></div>
+        <div class="result-sub" id="result-sub"></div>
+        <div class="result-stats">
+          <div class="r-stat"><div class="r-stat-n" id="r-correct" style="color:#639922">0</div><div class="r-stat-l">정답</div></div>
+          <div class="r-stat"><div class="r-stat-n" id="r-wrong" style="color:#E24B4A">0</div><div class="r-stat-l">오답</div></div>
+          <div class="r-stat"><div class="r-stat-n" id="r-time">0s</div><div class="r-stat-l">소요 시간</div></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-num" id="gs-streak">0</div>
-          <div class="stat-label">최고 연속</div>
+        <div class="section-title result-history-title">누적 학습 기록</div>
+        <div class="stats-row result-history">
+          <div class="stat-card">
+            <div class="stat-num" id="gs-total">0</div>
+            <div class="stat-label">총 풀이</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="gs-correct">0%</div>
+            <div class="stat-label">정답률</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="gs-streak">0</div>
+            <div class="stat-label">최고 연속</div>
+          </div>
         </div>
       </div>
+      <div class="section-title">문제 풀이 복습</div>
+      <div id="review-list"></div>
     </div>
-    <div class="section-title">문제 풀이 복습</div>
-    <div id="review-list"></div>
+    <div class="btn-row">
+      <button class="btn-pri" id="pdf-download-btn" type="button">📄 PDF 저장</button>
+      <button class="btn-sec" id="retry-btn" type="button">다시 풀기</button>
+      <button class="btn-pri" id="other-cat-btn" type="button">다른 영역 →</button>
+    </div>
   </div>
-  <div class="btn-row">
-    <button class="btn-pri" id="pdf-download-btn" type="button">📄 PDF 저장</button>
-    <button class="btn-sec" id="retry-btn" type="button">다시 풀기</button>
-    <button class="btn-pri" id="other-cat-btn" type="button">다른 영역 →</button>
-  </div>
-</div>
-<footer class="copyright">/* © 2026 Hyungmin Yoo. All rights reserved. */</footer>
+  <footer class="copyright">/* © 2026 Hyungmin Yoo. All rights reserved. */</footer>
 </main>
 <script>
 const CATS=[
@@ -704,7 +813,6 @@ function showResult(){
 
 function retryQuiz(){startQuiz(state.cat.id);}
 
-byId('intro-start-btn').addEventListener('click',goHome);
 byId('quiz-home-btn').addEventListener('click',goHome);
 byId('result-home-btn').addEventListener('click',goHome);
 byId('next-btn').addEventListener('click',nextQuestion);
@@ -712,10 +820,22 @@ byId('retry-btn').addEventListener('click',retryQuiz);
 byId('other-cat-btn').addEventListener('click',goHome);
 
 function scrollToSection(id){
-  const el=byId(id);
-  if(el){
-    el.scrollIntoView({behavior:'smooth'});
+  if(!byId('landing-screen').classList.contains('active')){
+    goHome();
   }
+  setTimeout(()=>{
+    const el=byId(id);
+    if(el){
+      el.scrollIntoView({behavior:'smooth'});
+      if(id==='quiz-sec'){
+        // 퀴즈 섹션으로 이동 시 카테고리 선택에 주목하도록 살짝 포커스 피드백
+        const grid = byId('cat-grid');
+        grid.style.transition = 'transform 0.3s ease';
+        grid.style.transform = 'scale(1.02)';
+        setTimeout(() => grid.style.transform = 'scale(1)', 300);
+      }
+    }
+  }, 60);
 }
 byId('nav-brand-btn').addEventListener('click',function(e){
   e.preventDefault();
