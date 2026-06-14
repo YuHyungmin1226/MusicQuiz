@@ -125,7 +125,8 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
 .q-text{font-size:clamp(18px,4vw,22px);font-weight:700;line-height:1.5;color:var(--text)}
 .q-image{padding:16px;background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-md);margin:16px 0 8px}
 .notation-card{display:flex;flex-direction:column;align-items:center;justify-content:center}
-.notation-card svg{max-width:100%;height:auto}
+.notation-card svg{height:52px;width:auto;max-width:100%}
+.q-image .notation-card svg{height:88px}
 
 /* Options & Buttons */
 .options-grid{display:grid;gap:8px;margin-top:20px}
@@ -1378,28 +1379,49 @@ function renderNotation(target,notation){
   if(!notation){target.style.display='none';return;}
   target.style.display='block';
   const wrap=node('div','notation-card');
-  const svg=svgNode('svg',{viewBox:'0 0 240 100',width:'240',height:'100',role:'img','aria-label':notation.label||'음악 기호'});
-  const staffY=[28,38,48,58,68];
-  staffY.forEach(y=>svg.appendChild(svgNode('line',{x1:20,y1:y,x2:220,y2:y,stroke:'currentColor','stroke-width':'1',opacity:'.4'})));
-  const midY=48;
+  const svg=svgNode('svg',{viewBox:'0 0 44 60',role:'img','aria-label':notation.label||'음악 기호'});
+  const v=notation.value||'';
+  const dotted=v.indexOf('dotted')===0;
+  const base=v.replace('dotted-','');
   const label=node('div','review-a',notation.label||'');
   label.style.textAlign='center';
   label.style.marginTop='6px';
 
   if(notation.type==='rest'){
-    if(notation.value==='whole')svg.appendChild(svgNode('rect',{x:102,y:30,width:36,height:8,rx:2,fill:'currentColor'}));
-    else if(notation.value==='half')svg.appendChild(svgNode('rect',{x:102,y:48,width:36,height:8,rx:2,fill:'currentColor'}));
-    else svg.appendChild(svgNode('path',{d:'M114,30 l-12,12 l20,6 l-22,18',fill:'none',stroke:'currentColor','stroke-width':'4','stroke-linecap':'round','stroke-linejoin':'round'}));
-  }else{
-    const filled=!['whole','half','dotted-half'].includes(notation.value);
-    const notehead=svgNode('ellipse',{cx:108,cy:midY,rx:8,ry:5.5,transform:'rotate(-18 108 '+midY+')',fill:filled?'currentColor':'none',stroke:'currentColor','stroke-width':'2'});
-    svg.appendChild(notehead);
-    if(notation.value!=='whole'){
-      const stemX=115;
-      svg.appendChild(svgNode('line',{x1:stemX,y1:midY-4,x2:stemX,y2:midY-36,stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
+    if(base==='whole'){
+      // 온쉼표: 기준선 아래에 매달린 직사각형
+      svg.appendChild(svgNode('line',{x1:13,y1:28,x2:31,y2:28,stroke:'currentColor','stroke-width':'1.4',opacity:'.5'}));
+      svg.appendChild(svgNode('rect',{x:16,y:28,width:12,height:6,fill:'currentColor'}));
+    }else if(base==='half'){
+      // 2분쉼표: 기준선 위에 올려진 직사각형
+      svg.appendChild(svgNode('line',{x1:13,y1:32,x2:31,y2:32,stroke:'currentColor','stroke-width':'1.4',opacity:'.5'}));
+      svg.appendChild(svgNode('rect',{x:16,y:26,width:12,height:6,fill:'currentColor'}));
+    }else if(base==='eighth'){
+      // 8분쉼표: 사선 기둥 + 점 1개
+      svg.appendChild(svgNode('path',{d:'M26,16 L16,42',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
+      svg.appendChild(svgNode('circle',{cx:24,cy:18,r:'3.2',fill:'currentColor'}));
+      svg.appendChild(svgNode('path',{d:'M24,18 q-4,2 -8,-1',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
+    }else if(base==='sixteenth'){
+      // 16분쉼표: 사선 기둥 + 점 2개
+      svg.appendChild(svgNode('path',{d:'M28,14 L15,46',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
+      svg.appendChild(svgNode('circle',{cx:26,cy:16,r:'3',fill:'currentColor'}));
+      svg.appendChild(svgNode('path',{d:'M26,16 q-4,2 -8,-1',fill:'none',stroke:'currentColor','stroke-width':'1.8','stroke-linecap':'round'}));
+      svg.appendChild(svgNode('circle',{cx:22,cy:27,r:'3',fill:'currentColor'}));
+      svg.appendChild(svgNode('path',{d:'M22,27 q-4,2 -8,-1',fill:'none',stroke:'currentColor','stroke-width':'1.8','stroke-linecap':'round'}));
+    }else{
+      // 4분쉼표: 지그재그 + 아래 갈고리
+      svg.appendChild(svgNode('path',{d:'M18,15 L25,23 L18,30 L26,38',fill:'none',stroke:'currentColor','stroke-width':'3','stroke-linejoin':'round','stroke-linecap':'round'}));
+      svg.appendChild(svgNode('path',{d:'M26,38 c-5,-2 -9,2 -5,7',fill:'none',stroke:'currentColor','stroke-width':'3','stroke-linecap':'round'}));
     }
-    if(notation.value==='eighth')svg.appendChild(svgNode('path',{d:'M115,14 c6,2 12,8 10,16',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
-    if(notation.value&&notation.value.startsWith('dotted'))svg.appendChild(svgNode('circle',{cx:126,cy:midY+1,r:2.5,fill:'currentColor'}));
+    if(dotted)svg.appendChild(svgNode('circle',{cx:34,cy:29,r:'2.2',fill:'currentColor'}));
+  }else{
+    const midY=44;
+    const filled=!(base==='whole'||base==='half');
+    svg.appendChild(svgNode('ellipse',{cx:16,cy:midY,rx:7,ry:5,transform:'rotate(-20 16 '+midY+')',fill:filled?'currentColor':'none',stroke:'currentColor','stroke-width':'2'}));
+    if(base!=='whole')svg.appendChild(svgNode('line',{x1:22.5,y1:midY-3,x2:22.5,y2:13,stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
+    if(base==='eighth'||base==='sixteenth')svg.appendChild(svgNode('path',{d:'M22.5,13 c6,2 9,7 6,13',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
+    if(base==='sixteenth')svg.appendChild(svgNode('path',{d:'M22.5,20 c6,2 9,7 6,13',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
+    if(dotted)svg.appendChild(svgNode('circle',{cx:28,cy:midY+1,r:'2.2',fill:'currentColor'}));
   }
   wrap.append(svg,label);
   target.appendChild(wrap);
