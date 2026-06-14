@@ -67,7 +67,7 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
 /* Layout Containers */
 .app{width:100%}
 .container{max-width:800px;margin:0 auto;padding:0 24px;width:100%}
-.screen{display:none;animation:fadeIn .3s cubic-bezier(0.16, 1, 0.3, 1)}.screen.active{display:block}
+.screen{display:none;animation:fadeIn .3s cubic-bezier(0.16, 1, 0.3, 1);margin-top:40px;margin-bottom:40px;border-top:1.5px solid var(--line);padding-top:40px}.screen.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .typora-comment{font-family:"Outfit", Menlo, Monaco, Consolas, monospace;font-style:italic;color:var(--faint);font-size:0.88em;letter-spacing:0.02em}
 
@@ -331,7 +331,6 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
 <body>
 <main class="app">
 
-<div class="screen active" id="landing-screen">
   <!-- Sticky Nav Bar -->
   <header class="nav-bar">
     <div class="nav-container">
@@ -396,20 +395,9 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
     <div class="category-grid" id="cat-grid"></div>
   </section>
 
-  <!-- About Section -->
-  <section class="about-sec container" id="about-sec">
-    <h2>About Developer</h2>
-    <p>MusicQuiz 프로젝트와 관련된 건의사항이나 학습 문의는 아래 이메일로 전달해 주시기 바랍니다.</p>
-    <div class="about-links typora-comment">
-      Email: <a href="mailto:dew1052ii@gmail.com">dew1052ii@gmail.com</a>
-    </div>
-  </section>
-  <footer class="copyright">/* © 2026 Hyungmin Yoo. All rights reserved. */</footer>
-</div>
-
-<div class="screen" id="study-screen">
-  <div class="container">
-    <button class="back-btn" id="study-home-btn" type="button">← 홈으로</button>
+  <!-- Study Section Container (동적 스크롤 인라인 배치) -->
+  <div class="screen" id="study-screen">
+    <button class="back-btn" id="study-home-btn" type="button">↑ 카테고리 선택으로</button>
     <div class="study-card">
       <div class="study-header">
         <h2 id="study-title" style="font-size:24px;font-weight:700;">이론 학습</h2>
@@ -421,12 +409,10 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
       <button class="btn-pri" id="study-to-quiz-btn" type="button">이론 마스터! 퀴즈 시작하기 →</button>
     </div>
   </div>
-  <footer class="copyright">/* © 2026 Hyungmin Yoo. All rights reserved. */</footer>
-</div>
 
-<div class="screen" id="quiz-screen">
-  <div class="container">
-    <button class="back-btn" id="quiz-home-btn" type="button">← 홈으로</button>
+  <!-- Quiz Section Container (동적 스크롤 인라인 배치) -->
+  <div class="screen" id="quiz-screen">
+    <button class="back-btn" id="quiz-home-btn" type="button">↑ 카테고리 선택으로</button>
     <div class="quiz-header">
       <div class="quiz-meta">
         <span class="quiz-category" id="q-cat-name"></span>
@@ -451,11 +437,10 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
     </div>
     <button class="next-btn" id="next-btn" type="button" style="display:none">다음 문제 →</button>
   </div>
-</div>
 
-<div class="screen" id="result-screen">
-  <div class="container">
-    <button class="back-btn" id="result-home-btn" type="button">← 홈으로</button>
+  <!-- Result Section Container (동적 스크롤 인라인 배치) -->
+  <div class="screen" id="result-screen">
+    <button class="back-btn" id="result-home-btn" type="button">↑ 카테고리 선택으로</button>
     <div id="print-area" class="print-area">
       <div class="print-header">
         <div class="print-header-icon">🎵</div>
@@ -506,6 +491,15 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
       <button class="btn-pri" id="other-cat-btn" type="button">다른 영역 →</button>
     </div>
   </div>
+
+  <!-- About Section -->
+  <section class="about-sec container" id="about-sec">
+    <h2>About Developer</h2>
+    <p>MusicQuiz 프로젝트와 관련된 건의사항이나 학습 문의는 아래 이메일로 전달해 주시기 바랍니다.</p>
+    <div class="about-links typora-comment">
+      Email: <a href="mailto:dew1052ii@gmail.com">dew1052ii@gmail.com</a>
+    </div>
+  </section>
   <footer class="copyright">/* © 2026 Hyungmin Yoo. All rights reserved. */</footer>
 </main>
 <script>
@@ -1393,9 +1387,36 @@ function renderFormStudy(parent){
 }
 
 function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  byId(id).classList.add('active');
-  window.scrollTo(0,0);
+  if(id === 'landing-screen'){
+    ['study-screen', 'quiz-screen', 'result-screen'].forEach(secId => {
+      const el = byId(secId);
+      if(el) el.style.display = 'none';
+    });
+    byId('quiz-sec').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  
+  if(id === 'study-screen'){
+    const study = byId('study-screen');
+    if(study) study.style.display = 'block';
+    const quiz = byId('quiz-screen');
+    if(quiz) quiz.style.display = 'none';
+    const result = byId('result-screen');
+    if(result) result.style.display = 'none';
+  } else if(id === 'quiz-screen'){
+    const quiz = byId('quiz-screen');
+    if(quiz) quiz.style.display = 'block';
+    const result = byId('result-screen');
+    if(result) result.style.display = 'none';
+  } else if(id === 'result-screen'){
+    const result = byId('result-screen');
+    if(result) result.style.display = 'block';
+  }
+  
+  setTimeout(() => {
+    const el = byId(id);
+    if(el) el.scrollIntoView({behavior:'smooth'});
+  }, 50);
 }
 
 function goHome(){
@@ -1579,15 +1600,12 @@ byId('retry-btn').addEventListener('click',retryQuiz);
 byId('other-cat-btn').addEventListener('click',goHome);
 
 function scrollToSection(id){
-  if(!byId('landing-screen').classList.contains('active')){
-    goHome();
-  }
+  goHome();
   setTimeout(()=>{
     const el=byId(id);
     if(el){
       el.scrollIntoView({behavior:'smooth'});
       if(id==='quiz-sec'){
-        // 퀴즈 섹션으로 이동 시 카테고리 선택에 주목하도록 살짝 포커스 피드백
         const grid = byId('cat-grid');
         grid.style.transition = 'transform 0.3s ease';
         grid.style.transform = 'scale(1.02)';
