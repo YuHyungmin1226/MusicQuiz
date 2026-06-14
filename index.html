@@ -249,7 +249,57 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
   .nav-brand{font-size:14px}
   .nav-links{gap:8px}
   .nav-link{font-size:11px}
-}
+/* Study Screen Styles */
+.study-card{padding:clamp(24px,5vw,36px);background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius-md);margin-bottom:16px}
+.study-content{margin-top:24px;min-height:300px;text-align:left}
+.study-header{margin-bottom:20px;padding-bottom:12px;border-bottom:1.5px solid var(--line)}
+.study-section{margin-bottom:28px}
+.study-section h3{font-size:18px;font-weight:700;margin-bottom:12px;color:var(--text);display:flex;align-items:center;gap:8px}
+.study-section p{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+
+/* Interactive Tools */
+.study-tool{background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-md);padding:20px;margin:16px 0}
+.study-tool-title{font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px}
+
+/* Calculator / Piano Grid styles */
+.calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:16px}
+.calc-btn{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;transition:all 0.15s ease}
+.calc-btn:hover{border-color:var(--accent);background:var(--bg-soft)}
+.calc-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.calc-result{background:var(--surface);border:1.5px dashed var(--accent);border-radius:var(--radius-sm);padding:14px;text-align:center;font-size:15px;font-weight:700}
+
+.piano-kb{display:flex;justify-content:center;background:var(--surface);padding:20px 10px;border-radius:var(--radius-md);border:1px solid var(--line);margin:16px 0;overflow-x:auto}
+.piano-key{width:36px;height:120px;background:#ffffff;border:1px solid #dee2e6;border-radius:0 0 4px 4px;position:relative;cursor:pointer;transition:background 0.1s ease;flex-shrink:0}
+.piano-key.black{width:22px;height:80px;background:#212529;margin-left:-11px;margin-right:-11px;z-index:2;border-radius:0 0 3px 3px}
+.piano-key:hover{background:var(--bg-soft)}
+.piano-key.active-white{background:var(--accent-soft)!important;border-color:var(--accent)}
+.piano-key.active-black{background:var(--accent)!important;border-color:var(--accent)}
+
+.rhythm-bar-container{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.rhythm-beats{display:flex;gap:8px;width:100%}
+.rhythm-beat-node{flex:1;height:54px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;transition:all 0.2s ease}
+.rhythm-beat-node.accent-beat{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.rhythm-beat-node.strong-beat{border-color:var(--danger);background:var(--danger-soft);color:var(--danger)}
+
+.inst-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:620px){.inst-grid{grid-template-columns:1fr}}
+.inst-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:16px}
+.inst-card h4{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--accent)}
+.inst-card ul{list-style:none;padding-left:0}
+.inst-card li{font-size:13px;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.form-diagram{display:flex;align-items:center;justify-content:center;gap:10px;margin:20px 0;flex-wrap:wrap}
+.form-block{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:12px 20px;font-weight:700;font-size:15px;text-align:center;box-shadow:var(--shadow)}
+.form-block.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.form-arrow{font-size:16px;color:var(--faint)}
+
+.cat-actions{display:grid;grid-template-columns:1fr 1.1fr;gap:8px;margin-top:14px;width:100%;z-index:2}
+.cat-btn{background:var(--bg-soft);color:var(--text);border:1px solid var(--line);border-radius:var(--radius-sm);padding:8px;font-size:12px;font-weight:700;cursor:pointer;text-align:center;transition:background .15s ease,border-color .15s ease,transform 0.1s ease;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+.cat-btn:hover{background:var(--surface-strong);border-color:var(--accent)}
+.cat-btn:active{transform:scale(0.97)}
+.cat-btn.pri{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+.cat-btn.pri:hover{background:var(--accent-strong);border-color:var(--accent-strong)}
+
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -330,6 +380,23 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
       Email: <a href="mailto:dew1052ii@gmail.com">dew1052ii@gmail.com</a>
     </div>
   </section>
+  <footer class="copyright">/* © 2026 Hyungmin Yoo. All rights reserved. */</footer>
+</div>
+
+<div class="screen" id="study-screen">
+  <div class="container">
+    <button class="back-btn" id="study-home-btn" type="button">← 홈으로</button>
+    <div class="study-card">
+      <div class="study-header">
+        <h2 id="study-title" style="font-size:24px;font-weight:700;">이론 학습</h2>
+        <p class="typora-comment" id="study-subtitle" style="margin-top:4px;"></p>
+      </div>
+      <div id="study-content" class="study-content"></div>
+    </div>
+    <div class="study-action-row" style="margin-top: 20px;">
+      <button class="btn-pri" id="study-to-quiz-btn" type="button">이론 마스터! 퀴즈 시작하기 →</button>
+    </div>
+  </div>
   <footer class="copyright">/* © 2026 Hyungmin Yoo. All rights reserved. */</footer>
 </div>
 
@@ -627,21 +694,491 @@ function buildCategoryGrid(){
   g.replaceChildren();
   CATS.forEach(c=>{
     const done=storage.catDone[c.id];
-    const btn=node('button','cat-card');
-    btn.type='button';
-    btn.setAttribute('aria-label',`${c.title} 퀴즈 시작`);
-    btn.addEventListener('click',()=>startQuiz(c.id));
+    const card=node('div','cat-card');
+    
     const accent=node('span','cat-accent');
     accent.style.background=c.accent;
-    btn.append(
+    
+    const icon=node('span','cat-icon',c.icon);
+    const title=node('span','cat-title',c.title);
+    const sub=node('span','cat-sub',c.sub);
+    const badge=node('span',done!==undefined?'cat-badge badge-done':'cat-badge badge-new',done!==undefined?`완료 ${done}%`:'NEW');
+    
+    // 학습 및 퀴즈 액션 버튼
+    const actions=node('div','cat-actions');
+    const learnBtn=node('button','cat-btn');
+    learnBtn.type='button';
+    learnBtn.append(node('span',undefined,'📖'), node('span',undefined,'이론 학습'));
+    learnBtn.addEventListener('click',()=>goStudy(c.id));
+    
+    const quizBtn=node('button','cat-btn pri');
+    quizBtn.type='button';
+    quizBtn.append(node('span',undefined,'✍️'), node('span',undefined,'퀴즈 도전'));
+    quizBtn.addEventListener('click',()=>startQuiz(c.id));
+    
+    actions.append(learnBtn, quizBtn);
+    
+    card.append(
       accent,
-      node('span','cat-icon',c.icon),
-      node('span','cat-title',c.title),
-      node('span','cat-sub',c.sub),
-      node('span',done!==undefined?'cat-badge badge-done':'cat-badge badge-new',done!==undefined?`완료 ${done}%`:'NEW')
+      icon,
+      title,
+      sub,
+      badge,
+      actions
     );
-    g.appendChild(btn);
+    g.appendChild(card);
   });
+}
+
+let currentStudyCatId = null;
+
+function goStudy(catId){
+  currentStudyCatId = catId;
+  const cat = CATS.find(c=>c.id===catId);
+  byId('study-title').textContent = cat.title;
+  byId('study-subtitle').textContent = `/* ${cat.sub} · 2022 개정 교육과정 중등 음악 */`;
+  
+  const content = byId('study-content');
+  content.replaceChildren();
+  
+  if(catId === 'note'){
+    renderNoteStudy(content);
+  } else if(catId === 'scale'){
+    renderScaleStudy(content);
+  } else if(catId === 'rhythm'){
+    renderRhythmStudy(content);
+  } else if(catId === 'mark'){
+    renderMarkStudy(content);
+  } else if(catId === 'chord'){
+    renderChordStudy(content);
+  } else if(catId === 'inst'){
+    renderInstStudy(content);
+  } else if(catId === 'form'){
+    renderFormStudy(content);
+  }
+  
+  showScreen('study-screen');
+}
+
+function renderNoteStudy(parent){
+  const sec1 = node('div', 'study-section');
+  sec1.append(
+    node('h3', undefined, '🎼 1. 주요 음표와 쉼표의 음가'),
+    node('p', undefined, '중등 교육과정에서 다루는 기본 음표와 쉼표의 박자 수(음가)를 숙지해 봅시다. 박자 계산 시 음가의 상대적 길이를 이해하는 것이 중요합니다.')
+  );
+  
+  const table = node('table');
+  table.style.width = '100%';
+  table.style.borderCollapse = 'collapse';
+  table.style.fontSize = '13px';
+  table.style.margin = '12px 0';
+  
+  const thead = node('tr');
+  thead.style.borderBottom = '2px solid var(--line)';
+  thead.append(
+    node('th', undefined, '이름'),
+    node('th', undefined, '음표'),
+    node('th', undefined, '쉼표'),
+    node('th', undefined, '기본 박자 수')
+  );
+  table.appendChild(thead);
+  
+  const notesData = [
+    {name:'온음표 / 온쉼표', val:'4박', noteIcon:'whole', restIcon:'whole'},
+    {name:'점2분음표 / 점2분쉼표', val:'3박', noteIcon:'dotted-half', restIcon:'dotted-half'},
+    {name:'2분음표 / 2분쉼표', val:'2박', noteIcon:'half', restIcon:'half'},
+    {name:'점4분음표 / 점4분쉼표', val:'1.5박', noteIcon:'dotted-quarter', restIcon:'dotted-quarter'},
+    {name:'4분음표 / 4분쉼표', val:'1박', noteIcon:'quarter', restIcon:'quarter'},
+    {name:'8분음표 / 8분쉼표', val:'0.5박', noteIcon:'eighth', restIcon:'eighth'},
+    {name:'16분음표 / 16분쉼표', val:'0.25박', noteIcon:'sixteenth', restIcon:'sixteenth'}
+  ];
+  
+  notesData.forEach(d=>{
+    const tr = node('tr');
+    tr.style.borderBottom = '1px solid var(--line)';
+    
+    const tdName = node('td', undefined, d.name);
+    tdName.style.padding = '10px 6px';
+    
+    const tdNote = node('td');
+    tdNote.style.padding = '10px 6px';
+    renderNotation(tdNote, {type:'note', value:d.noteIcon, label:''});
+    
+    const tdRest = node('td');
+    tdRest.style.padding = '10px 6px';
+    renderNotation(tdRest, {type:'rest', value:d.restIcon, label:''});
+    
+    const tdVal = node('td', undefined, d.val);
+    tdVal.style.fontWeight = '700';
+    tdVal.style.padding = '10px 6px';
+    
+    tr.append(tdName, tdNote, tdRest, tdVal);
+    table.appendChild(tr);
+  });
+  sec1.appendChild(table);
+  
+  const sec2 = node('div', 'study-section');
+  sec2.append(
+    node('h3', undefined, '🧮 2. 실시간 박자 계산기'),
+    node('p', undefined, '아래 음표 버튼들을 클릭하여 나만의 리듬 마디를 구성해 보세요. 총 박자수가 실시간으로 합산됩니다.')
+  );
+  
+  const tool = node('div', 'study-tool');
+  const calcTitle = node('div', 'study-tool-title', 'Rhythm Builder');
+  
+  let sum = 0;
+  const resultBox = node('div', 'calc-result', '현재 합산: 0 박자');
+  
+  const grid = node('div', 'calc-grid');
+  const noteBtns = [
+    {label:'온음표 (4박)', weight:4},
+    {label:'점2분음표 (3박)', weight:3},
+    {label:'2분음표 (2박)', weight:2},
+    {label:'점4분음표 (1.5박)', weight:1.5},
+    {label:'4분음표 (1박)', weight:1},
+    {label:'8분음표 (0.5박)', weight:0.5},
+    {label:'16분음표 (0.25박)', weight:0.25}
+  ];
+  
+  const resetBtn = node('button', 'cat-btn pri', '초기화');
+  resetBtn.type = 'button';
+  resetBtn.style.marginTop = '12px';
+  resetBtn.addEventListener('click', () => {
+    sum = 0;
+    resultBox.textContent = '현재 합산: 0 박자';
+  });
+  
+  noteBtns.forEach(b=>{
+    const btn = node('button', 'calc-btn', `+ ${b.label}`);
+    btn.type = 'button';
+    btn.addEventListener('click', ()=>{
+      sum += b.weight;
+      resultBox.textContent = `현재 합산: ${sum} 박자 (예: ${sum/4} 온음표 분량)`;
+    });
+    grid.appendChild(btn);
+  });
+  
+  tool.append(calcTitle, grid, resultBox, resetBtn);
+  sec2.appendChild(tool);
+  parent.append(sec1, sec2);
+}
+
+function renderScaleStudy(parent){
+  const sec1 = node('div', 'study-section');
+  sec1.append(
+    node('h3', undefined, '🎹 1. 장음계(Major Scale)의 반음 구조'),
+    node('p', undefined, '장음계는 으뜸음에서 출발하여 3-4번째 음(미-파)과 7-8번째 음(시-도) 사이가 반음이 되고, 나머지 음들은 온음 간격인 7음계입니다.'),
+    node('p', undefined, '아래 피아노 건반에서 건반을 클릭해 장음계의 반음/온음 간격을 직접 확인하세요. 파란색은 온음 진행, 빨간색은 반음 진행 영역입니다.')
+  );
+  
+  const kb = node('div', 'piano-kb');
+  const keys = [
+    {note:'C', black:false},
+    {note:'C#', black:true},
+    {note:'D', black:false},
+    {note:'D#', black:true},
+    {note:'E', black:false},
+    {note:'F', black:false},
+    {note:'F#', black:true},
+    {note:'G', black:false},
+    {note:'G#', black:true},
+    {note:'A', black:false},
+    {note:'A#', black:true},
+    {note:'B', black:false},
+    {note:'C2', black:false}
+  ];
+  
+  const scaleGuide = node('div', 'calc-result', '건반을 클릭해 음 높이를 확인하세요.');
+  scaleGuide.style.marginBottom = '12px';
+  
+  keys.forEach((k, idx)=>{
+    const keyEl = node('div', k.black?'piano-key black':'piano-key');
+    keyEl.addEventListener('click', ()=>{
+      kb.querySelectorAll('.piano-key').forEach(el=>el.classList.remove('active-white', 'active-black'));
+      keyEl.classList.add(k.black?'active-black':'active-white');
+      
+      let desc = `음이름: ${k.note.replace('2','')}`;
+      if(k.note === 'E' || k.note === 'F'){
+        desc += ` (E-F는 반음 관계 · 장음계의 3-4음)`;
+      } else if(k.note === 'B' || k.note === 'C2'){
+        desc += ` (B-C는 반음 관계 · 장음계의 7-8음)`;
+      } else {
+        desc += ` (온음 관계 영역)`;
+      }
+      scaleGuide.textContent = desc;
+    });
+    kb.appendChild(keyEl);
+  });
+  
+  const tool = node('div', 'study-tool');
+  tool.append(node('div', 'study-tool-title', 'Piano Keyboard Scale Viewer'), kb, scaleGuide);
+  sec1.appendChild(tool);
+  
+  const sec2 = node('div', 'study-section');
+  sec2.append(
+    node('h3', undefined, '♯ / ♭ 조표 붙는 순서 암기법'),
+    node('p', undefined, '조표는 항상 일정한 순서대로 늘어납니다. 음악 이론 시험의 단골 주제입니다.'),
+    node('p', undefined, '• 올림표(♯) 붙는 순서: 파 → 도 → 솔 → 레 → 라 → 미 → 시'),
+    node('p', undefined, '• 내림표(♭) 붙는 순서: 시 → 미 → 라 → 레 → 솔 → 도 → 파 (올림표의 역순)')
+  );
+  
+  parent.append(sec1, sec2);
+}
+
+function renderRhythmStudy(parent){
+  const sec1 = node('div', 'study-section');
+  sec1.append(
+    node('h3', undefined, '🥁 1. 박자표 종류와 강세 패턴'),
+    node('p', undefined, '박자표는 한 마디에 들어가는 기준음표의 개수와 강약을 규정합니다.'),
+    node('p', undefined, '아래 탭을 눌러 각 박자표의 한 마디당 강세(강, 약, 중강) 패턴을 확인해 보세요.')
+  );
+  
+  const tool = node('div', 'study-tool');
+  const tabs = node('div', 'calc-grid');
+  const beatContainer = node('div', 'rhythm-bar-container');
+  
+  const rhythms = [
+    {name:'2/4 박자', sub:'4분음표 2개 (강 - 약)', beats:[{type:'strong', label:'강'}, {type:'normal', label:'약'}]},
+    {name:'3/4 박자', sub:'4분음표 3개 (강 - 약 - 약)', beats:[{type:'strong', label:'강'}, {type:'normal', label:'약'}, {type:'normal', label:'약'}]},
+    {name:'4/4 박자', sub:'4분음표 4개 (강 - 약 - 중강 - 약)', beats:[{type:'strong', label:'강'}, {type:'normal', label:'약'}, {type:'accent', label:'중강'}, {type:'normal', label:'약'}]},
+    {name:'6/8 박자', sub:'8분음표 6개 (강 - 약 - 약 - 중강 - 약 - 약)', beats:[{type:'strong', label:'강'}, {type:'normal', label:'약'}, {type:'normal', label:'약'}, {type:'accent', label:'중강'}, {type:'normal', label:'약'}, {type:'normal', label:'약'}]}
+  ];
+  
+  const descText = node('div', 'calc-result', '박자표를 선택하세요.');
+  
+  rhythms.forEach((r, idx)=>{
+    const btn = node('button', 'calc-btn', r.name);
+    btn.type = 'button';
+    btn.addEventListener('click', ()=>{
+      tabs.querySelectorAll('.calc-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      descText.textContent = `${r.name}: ${r.sub}`;
+      
+      const row = node('div', 'rhythm-beats');
+      r.beats.forEach(b=>{
+        let cls = 'rhythm-beat-node';
+        if(b.type === 'strong') cls += ' strong-beat';
+        else if(b.type === 'accent') cls += ' accent-beat';
+        row.appendChild(node('div', cls, b.label));
+      });
+      beatContainer.replaceChildren(row);
+    });
+    tabs.appendChild(btn);
+  });
+  
+  tool.append(node('div', 'study-tool-title', 'Rhythm & Beat Strong-Weak Visualizer'), tabs, beatContainer, descText);
+  sec1.appendChild(tool);
+  
+  const sec2 = node('div', 'study-section');
+  sec2.append(
+    node('h3', undefined, '당김음(Syncopation)과 셋잇단음표'),
+    node('p', undefined, '• 당김음: 여린박에 걸친 음표가 붙임줄이나 긴 음표에 의해 강세의 위치가 앞으로 이동하는 리듬 현상입니다.'),
+    node('p', undefined, '• 셋잇단음표: 한 박을 셋으로 균등하게 쪼갠 형태로, 8분음표 셋잇단음표 3개는 4분음표 1박과 동일한 길이를 차지합니다.')
+  );
+  parent.append(sec1, sec2);
+}
+
+function renderMarkStudy(parent){
+  const sec1 = node('div', 'study-section');
+  sec1.append(
+    node('h3', undefined, '✦ 1. 악상기호 강도와 빠르기말 조절기'),
+    node('p', undefined, '악곡의 감정과 분위기를 살려주는 세기기호와 빠르기말의 단계적 높낮이를 조작해 봅시다.'),
+    node('p', undefined, '슬라이더를 조절하면 현재 강도/속도에 맞는 악상기호의 정의가 하이라이트됩니다.')
+  );
+  
+  const tool = node('div', 'study-tool');
+  tool.append(node('div', 'study-tool-title', 'Dynamics & Tempo Interactive Scale'));
+  
+  const dynLabel = node('div', 'calc-result', '세기기호: mf (보통 세게)');
+  dynLabel.style.style = 'margin-bottom: 8px;';
+  const dynRange = document.createElement('input');
+  dynRange.type = 'range';
+  dynRange.min = '1';
+  dynRange.max = '6';
+  dynRange.value = '4';
+  dynRange.style.width = '100%';
+  dynRange.style.margin = '10px 0 20px';
+  
+  const dyns = [
+    {s:'pp', l:'피아니시모 (아주 여리게)'},
+    {s:'p', l:'피아노 (여리게)'},
+    {s:'mp', l:'메조피아노 (조금 여리게)'},
+    {s:'mf', l:'메조포르테 (조금 세게)'},
+    {s:'f', l:'포르테 (세게)'},
+    {s:'ff', l:'포르티시모 (아주 세게)'}
+  ];
+  
+  dynRange.addEventListener('input', (e)=>{
+    const v = parseInt(e.target.value) - 1;
+    dynLabel.textContent = `세기기호: ${dyns[v].s} (${dyns[v].l})`;
+  });
+  
+  const tempoLabel = node('div', 'calc-result', '빠르기말: Moderato (보통 빠르게 · 88~112 BPM)');
+  tempoLabel.style.style = 'margin-bottom: 8px;';
+  const tempoRange = document.createElement('input');
+  tempoRange.type = 'range';
+  tempoRange.min = '1';
+  tempoRange.max = '6';
+  tempoRange.value = '4';
+  tempoRange.style.width = '100%';
+  tempoRange.style.margin = '10px 0';
+  
+  const tempos = [
+    {s:'Largo', l:'아주 느리게 (BPM 40~60)'},
+    {s:'Adagio', l:'느리게 (BPM 60~76)'},
+    {s:'Andante', l:'느리게 걷는 속도로 (BPM 76~108)'},
+    {s:'Moderato', l:'보통 빠르기로 (BPM 108~120)'},
+    {s:'Allegro', l:'빠르게 (BPM 120~168)'},
+    {s:'Presto', l:'매우 빠르게 (BPM 168~200)'}
+  ];
+  
+  tempoRange.addEventListener('input', (e)=>{
+    const v = parseInt(e.target.value) - 1;
+    tempoLabel.textContent = `빠르기말: ${tempos[v].s} (${tempos[v].l})`;
+  });
+  
+  tool.append(
+    node('div', undefined, '🔊 음의 세기 크기 조절 (여림 → 세게)'),
+    dynRange, dynLabel,
+    node('div', {style:'margin-top:20px;'}, '⏱️ 빠르기 템포 조절 (느림 → 빠르게)'),
+    tempoRange, tempoLabel
+  );
+  sec1.appendChild(tool);
+  parent.appendChild(sec1);
+}
+
+function renderChordStudy(parent){
+  const sec1 = node('div', 'study-section');
+  sec1.append(
+    node('h3', undefined, '🎹 1. 화음(Chord)과 음정(Interval) 규칙'),
+    node('p', undefined, '음정은 두 음 사이의 높이 차이(도 단위)이며, 3화음은 음계 위에 3도씩 두 번 쌓아 만든 화음입니다.'),
+    node('p', undefined, '장3도(반음 4개)와 단3도(반음 3개)의 결합 방식에 따라 화음 성격이 결정됩니다.')
+  );
+  
+  const tool = node('div', 'study-tool');
+  tool.append(node('div', 'study-tool-title', 'Chord structure analysis'));
+  
+  const select = node('div', 'calc-grid');
+  const result = node('div', 'calc-result', '화음을 선택해 구성 원리를 확인하세요.');
+  
+  const chords = [
+    {name:'C 장화음 (C Major)', desc:'도(C) - 미(E) - 솔(G) · 장3도(4반음) + 단3도(3반음)로 구성되어 밝은 느낌을 줍니다.'},
+    {name:'A 단화음 (A minor)', desc:'라(A) - 도(C) - 미(E) · 단3도(3반음) + 장3도(4반음)로 구성되어 어두운 느낌을 줍니다.'},
+    {name:'C 감화음 (C dim)', desc:'도(C) - 미♭(Eb) - 솔♭(Gb) · 단3도(3반음) + 단3도(3반음)로 구성되어 불안정합니다.'},
+    {name:'C 증화음 (C aug)', desc:'도(C) - 미(E) - 솔#(G#) · 장3도(4반음) + 장3도(4반음)로 구성되어 몽환적입니다.'}
+  ];
+  
+  chords.forEach(c=>{
+    const btn = node('button', 'calc-btn', c.name);
+    btn.type = 'button';
+    btn.addEventListener('click', ()=>{
+      select.querySelectorAll('.calc-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      result.textContent = c.desc;
+    });
+    select.appendChild(btn);
+  });
+  
+  tool.append(select, result);
+  sec1.appendChild(tool);
+  
+  const sec2 = node('div', 'study-section');
+  sec2.append(
+    node('h3', undefined, '🎼 2. C장조 주요 3화음의 구조'),
+    node('p', undefined, '• 으뜸화음 (I도 화음): CEG(도미솔) · 곡의 안정과 종지를 이루는 화음입니다.'),
+    node('p', undefined, '• 버금딸림화음 (IV도 화음): FAC(파라도) · 으뜸화음을 보조하는 폭넓은 화음입니다.'),
+    node('p', undefined, '• 딸림화음 (V도 화음): GBD(솔시레) · 긴장감을 조성해 으뜸화음으로 돌아가려는 성질이 강합니다.')
+  );
+  parent.append(sec1, sec2);
+}
+
+function renderInstStudy(parent){
+  const sec1 = node('div', 'study-section');
+  sec1.append(
+    node('h3', undefined, '🎻 1. 오케스트라 관현악기 분류'),
+    node('p', undefined, '오케스트라 악기들은 소리를 내는 방식과 재질에 따라 네 가지 악기군으로 분류됩니다.')
+  );
+  
+  const grid = node('div', 'inst-grid');
+  const western = [
+    {title:'현악기 (String)', list:['바이올린 (고음)', '비올라 (중음)', '첼로 (저음)', '더블베이스 (최저음)', '하프 (발현현악기)']},
+    {title:'목관악기 (Woodwind)', list:['플루트 (리드 없음)', '오보에 (더블 리드)', '클라리넷 (싱글 리드)', '바순 (더블 리드)', '피콜로 (고음)']},
+    {title:'금관악기 (Brass)', list:['트럼펫 (피스톤 장치)', '호른 (중음 관악기)', '트롬본 (슬라이드 장치)', '튜바 (가장 저음)']},
+    {title:'타악기 (Percussion)', list:['팀파니 (조율가능 타악기)', '심벌즈 (무율 타악기)', '실로폰 (건반 타악기)', '스네어드럼']}
+  ];
+  
+  western.forEach(w=>{
+    const card = node('div', 'inst-card');
+    card.appendChild(node('h4', undefined, w.title));
+    const ul = node('ul');
+    w.list.forEach(item=>ul.appendChild(node('li', undefined, `• ${item}`)));
+    card.appendChild(ul);
+    grid.appendChild(card);
+  });
+  sec1.appendChild(grid);
+  
+  const sec2 = node('div', 'study-section');
+  sec2.append(
+    node('h3', undefined, '🥁 2. 전통 국악기의 갈래'),
+    node('p', undefined, '국악기는 연주 방식에 따라 관/현/타악기로 구분하며, 2022 교과과정의 단골 문제입니다.'),
+    node('p', undefined, '• 현악기 (현을 타거나 문지름): 가야금(12줄, 뜯음), 거문고(6줄, 술대 사용), 해금(2줄, 찰현), 아쟁'),
+    node('p', undefined, '• 관악기 (김을 불어 소리냄): 대금(가로 피리), 피리(세로, 겹황), 단소(세로 피리), 태평소'),
+    node('p', undefined, '• 타악기 (치거나 두드림): 장구(채와 손), 북, 꽹과리, 징, 편종, 편경')
+  );
+  parent.append(sec1, sec2);
+}
+
+function renderFormStudy(parent){
+  const sec1 = node('div', 'study-section');
+  sec1.append(
+    node('h3', undefined, '📜 1. 서양 악곡의 구조적 형식'),
+    node('p', undefined, '음악은 일정한 주제를 제시하고, 대비되는 단락을 배열하며 일정한 형식을 갖춥니다.'),
+    node('p', undefined, '아래 버튼을 눌러 각 형식의 블록 다이어그램을 시각적으로 공부하세요.')
+  );
+  
+  const tool = node('div', 'study-tool');
+  tool.append(node('div', 'study-tool-title', 'Form Block Diagram Builder'));
+  
+  const select = node('div', 'calc-grid');
+  const diag = node('div', 'form-diagram');
+  const desc = node('div', 'calc-result', '형식을 선택하세요.');
+  
+  const forms = [
+    {name:'두도막 형식 (Binary)', blocks:['A', 'B'], desc:'두 개의 서로 다른 악절(a, b)로 구성되는 기본 형식입니다. (보통 16마디)'},
+    {name:'세도막 형식 (Ternary)', blocks:['A', 'B', 'A'], desc:'처음 제시부(A)가 대비부(B)를 거친 후 다시 돌아오는 안정적인 3부 구조입니다.'},
+    {name:'론도 형식 (Rondo)', blocks:['A', 'B', 'A', 'C', 'A'], desc:'주제단락(A)이 매번 새로운 에피소드(B, C)를 끼우고 순환 출현하는 형식입니다.'},
+    {name:'소나타 형식 (Sonata)', blocks:['제시부', '발전부', '재현부'], desc:'고전 교향곡 1악장의 대표적 형식으로, 주제 대조(제시) → 변화(발전) → 복귀(재현) 구조입니다.'}
+  ];
+  
+  forms.forEach(f=>{
+    const btn = node('button', 'calc-btn', f.name);
+    btn.type = 'button';
+    btn.addEventListener('click', ()=>{
+      select.querySelectorAll('.calc-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      desc.textContent = f.desc;
+      
+      diag.replaceChildren();
+      f.blocks.forEach((blk, idx)=>{
+        diag.appendChild(node('div', 'form-block active', blk));
+        if(idx < f.blocks.length - 1){
+          diag.appendChild(node('div', 'form-arrow', '→'));
+        }
+      });
+    });
+    select.appendChild(btn);
+  });
+  
+  tool.append(select, diag, desc);
+  sec1.appendChild(tool);
+  
+  const sec2 = node('div', 'study-section');
+  sec2.append(
+    node('h3', undefined, '🎻 2. 전통 국악의 주요 형식'),
+    node('p', undefined, '• 판소리: 창자(노래하는 이) 한 명과 고수(북 장단을 치는 이)가 대사(아니리)와 노래(소리), 몸짓(발림)을 주고받는 종합 예술입니다.'),
+    node('p', undefined, '• 산조: 민속악의 기악 독주 형식으로, 장구 반주에 맞춰 아주 느린 장단(진양조)에서 출발하여 중모리 → 중중모리 → 자진모리 → 휘모리 등 점차 빠른 장단으로 빨라지며 진행되는 즉흥적 악곡입니다.')
+  );
+  parent.append(sec1, sec2);
 }
 
 function showScreen(id){
@@ -816,6 +1353,8 @@ function retryQuiz(){startQuiz(state.cat.id);}
 
 byId('quiz-home-btn').addEventListener('click',goHome);
 byId('result-home-btn').addEventListener('click',goHome);
+byId('study-home-btn').addEventListener('click',goHome);
+byId('study-to-quiz-btn').addEventListener('click',()=>startQuiz(currentStudyCatId));
 byId('next-btn').addEventListener('click',nextQuestion);
 byId('retry-btn').addEventListener('click',retryQuiz);
 byId('other-cat-btn').addEventListener('click',goHome);
