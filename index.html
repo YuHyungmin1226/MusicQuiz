@@ -112,87 +112,118 @@ button{font:inherit}button:focus-visible,.cat-card:focus-visible{outline:1px sol
 @media(max-width:620px){.app{padding:16px}.category-grid,.stats-row,.result-stats,.btn-row{grid-template-columns:1fr}.cat-card{min-height:auto}.hero{text-align:left;padding-top:28px}.hero-icon{width:48px;height:48px;font-size:24px}.question-card{padding:16px}.opt-btn{align-items:flex-start}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 .result-history-title{margin:24px 0 10px;text-align:left}.result-history{margin:0}.result-history .stat-card{box-shadow:none;border:1px solid var(--line);background:var(--surface-strong)}.copyright{margin:34px 0 4px;text-align:center;color:var(--faint);font-size:12px;font-family:Menlo,Monaco,Consolas,"Courier New",monospace;font-style:italic}
-.intro{max-width:620px;margin:0 auto;padding:clamp(20px,5vw,50px) 0;text-align:center}.intro-hero{margin-bottom:32px}.intro-icon{width:64px;height:64px;border-radius:var(--radius-md);background:var(--surface);display:grid;place-items:center;font-size:32px;border:1px solid var(--line);box-shadow:var(--shadow);margin:0 auto 16px}.intro-title{font-size:clamp(28px,7vw,40px);font-weight:700;letter-spacing:-.04em;line-height:1.1}.intro-tagline{font-size:14px;color:var(--muted);margin-top:8px;line-height:1.5}.intro-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px}.intro-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:18px;text-align:left;box-shadow:var(--shadow)}.intro-card-icon{font-size:20px;margin-bottom:6px}.intro-card-title{font-size:14px;font-weight:700;margin-bottom:4px}.intro-card-text{font-size:13px;color:var(--muted);line-height:1.5}.intro-actions{margin-top:8px}.intro-start{appearance:none;background:var(--accent);color:var(--surface);border:1px solid var(--accent);border-radius:var(--radius-md);padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;transition:all .14s ease;display:inline-flex;align-items:center;gap:6px}.intro-start:hover{background:transparent;color:var(--accent);transform:translateY(-1px)}.intro-start:focus-visible{outline:1px solid var(--accent);outline-offset:3px;box-shadow:var(--ring)}.intro-note{font-size:11px;color:var(--faint);margin-top:14px;line-height:1.5}@media(max-width:620px){.intro-cards{grid-template-columns:1fr}}
-.about-screen-content{max-width:540px;margin:0 auto;padding:24px 0 40px;text-align:center}
-.about-screen-content h2{font-size:24px;font-weight:700;margin-bottom:12px}
-.about-section-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:28px}
-.about-links{margin-bottom:34px;font-size:14px}
+/* Sticky Navigation Bar */
+.nav-bar{position:sticky;top:0;left:0;right:0;height:50px;background:color-mix(in srgb,var(--surface) 80%,transparent);border-bottom:1px solid var(--line);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:0;z-index:100}
+.nav-brand{font-size:15px;font-weight:700;letter-spacing:-.02em;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:6px}
+.nav-links{display:flex;align-items:center;gap:16px}
+.nav-link{font-size:13px;font-weight:700;color:var(--muted);text-decoration:none;transition:color .12s ease;background:transparent;border:none;cursor:pointer;padding:4px 0}
+.nav-link:hover{color:var(--text)}
+
+/* Hero Section */
+.hero-sec{min-height:calc(100vh - 80px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:40px 0 100px;position:relative}
+.hero-sec h1{font-size:clamp(32px,6.5vw,52px);letter-spacing:-.045em;line-height:1.06;font-weight:700}
+.scroll-down{position:absolute;bottom:40px;left:0;font-size:20px;color:var(--muted);animation:bounce 1.5s infinite;cursor:pointer;font-family:monospace;font-weight:700;line-height:1}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+
+/* Features Section */
+.features-sec{padding:80px 0 60px;border-top:1px solid var(--line)}
+.features-sec h2{font-size:24px;font-weight:700;margin-bottom:12px;letter-spacing:-.03em}
+.features-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:36px;align-items:center;margin-top:34px}
+.features-text{display:flex;flex-direction:column;gap:22px;text-align:left}
+.feature-item{border-left:2px solid var(--line);padding-left:18px;transition:border-color .16s ease}
+.feature-item:hover{border-color:var(--accent)}
+.feature-item h3{font-size:15px;font-weight:700;margin-bottom:6px}
+.feature-item p{font-size:13px;color:var(--muted);line-height:1.55}
+.features-media{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow);display:grid;place-items:center;min-height:240px;aspect-ratio:1.5/1}
+
+/* Quiz Section */
+.quiz-sec{padding:80px 0;border-top:1px solid var(--line);text-align:left}
+.quiz-sec h2{font-size:24px;font-weight:700;margin-bottom:8px;letter-spacing:-.03em}
+
+/* About Section */
+.about-sec{padding:60px 0 40px;border-top:1px solid var(--line);text-align:center}
+.about-sec h2{font-size:20px;font-weight:700;margin-bottom:12px}
+.about-sec p{max-width:480px;margin:0 auto 24px;font-size:13px;color:var(--muted);line-height:1.6}
+.about-links{font-size:13px}
 .about-links a{color:var(--text);text-decoration:underline;font-weight:700;transition:opacity .12s ease}
 .about-links a:hover{opacity:.8}
-.feedback-box{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:24px;box-shadow:var(--shadow);text-align:left}
-.feedback-box h3{font-size:16px;font-weight:700;margin-bottom:14px}
-.feedback-form{display:grid;gap:12px}
-.feedback-form textarea{width:100%;height:100px;padding:12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--bg-soft);color:var(--text);font:inherit;font-size:13px;resize:none;transition:border-color .16s ease}
-.feedback-form textarea:focus{outline:none;border-color:var(--accent)}
-.feedback-form button{background:var(--accent);color:var(--surface);border:1px solid var(--accent);border-radius:var(--radius-sm);padding:10px;font-size:13px;font-weight:700;cursor:pointer;transition:all .14s ease}
-.feedback-form button:hover{background:transparent;color:var(--accent)}
-.header-nav{display:flex;justify-content:flex-end;padding:8px 0;margin-bottom:-20px;position:relative;z-index:10}
-.nav-link-btn{background:transparent;border:none;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;transition:color .12s ease;text-decoration:none}
-.nav-link-btn:hover{color:var(--text)}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 <main class="app">
 
-<div class="screen active" id="intro-screen">
-  <div class="intro">
-    <div class="intro-hero">
-      <div class="intro-icon">🎵</div>
-      <h1 class="intro-title">음악 이론 퀴즈</h1>
-      <p class="intro-tagline typora-comment">/* 중학교 음악 교육과정 기반 · 7개 영역 · 140개 문제 */</p>
-    </div>
-    <div class="intro-cards">
-      <div class="intro-card">
-        <div class="intro-card-icon">🎯</div>
-        <div class="intro-card-title">목적</div>
-        <div class="intro-card-text">음악 이론을 빠르게 복습하고 자기주도 학습을 돕는 퀴즈 도구입니다. 시험 전에 핵심 개념을 확인하고 부족한 부분을 찾아 보완할 수 있습니다.</div>
-      </div>
-      <div class="intro-card">
-        <div class="intro-card-icon">👤</div>
-        <div class="intro-card-title">대상</div>
-        <div class="intro-card-text">중학교 음악 시험을 준비하는 학생, 기초 음악 이론을 다시 복습하려는 성인, 수업 자료가 필요한 교사 모두 자유롭게 사용할 수 있습니다.</div>
-      </div>
-      <div class="intro-card">
-        <div class="intro-card-icon">📚</div>
-        <div class="intro-card-title">학습 영역</div>
-        <div class="intro-card-text">음표와 쉼표 · 음계와 조성 · 박자와 리듬 · 악상기호 · 화음과 음정 · 악기 · 음악 형식까지 7개 영역을 골고루 학습합니다.</div>
-      </div>
-      <div class="intro-card">
-        <div class="intro-card-icon">💾</div>
-        <div class="intro-card-title">결과 저장</div>
-        <div class="intro-card-text">학습 결과를 PDF로 저장할 수 있습니다. 이름을 적으면 출력물로 제출하거나 복습 자료로 보관할 수 있습니다.</div>
-      </div>
-    </div>
-    <div class="intro-actions">
-      <button class="intro-start" id="intro-start-btn" type="button">학습 시작하기 →</button>
-      <p class="intro-note">회원가입 없이 바로 사용할 수 있습니다.<br>학습 기록은 이 기기에만 저장됩니다.</p>
-    </div>
-  </div>
-</div>
-<div class="screen" id="home-screen">
-  <div class="header-nav">
-    <button class="nav-link-btn" id="go-about-btn" type="button">About</button>
-  </div>
-  <div class="hero">
+<div class="screen active" id="landing-screen">
+  <!-- Sticky Nav Bar -->
+  <header class="nav-bar">
+    <a href="#hero-sec" class="nav-brand" id="nav-brand-btn">🎵 MusicQuiz</a>
+    <nav class="nav-links">
+      <button class="nav-link" id="nav-features-btn" type="button">Features</button>
+      <button class="nav-link" id="nav-quiz-btn" type="button">Start Quiz</button>
+      <button class="nav-link" id="nav-about-btn" type="button">About</button>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-sec" id="hero-sec">
     <div class="hero-icon">🎵</div>
     <h1>음악 이론 퀴즈</h1>
     <p class="typora-comment">/* 중학교 음악 교육과정 기반 · 7개 영역 · 140개 문제 */</p>
-  </div>
-  <div class="section-title">학습 영역 선택</div>
-  <div class="category-grid" id="cat-grid"></div>
-</div>
+    <div class="scroll-down" id="scroll-down-btn">↓</div>
+  </section>
 
-<div class="screen" id="about-screen">
-  <button class="back-btn" id="about-home-btn" type="button">← 홈으로</button>
-  <div class="about-screen-content">
-    <h2>About MusicQuiz</h2>
-    <p class="about-section-desc">중학교 음악 교육과정 기반 퀴즈 앱으로 핵심 음악 이론 지식을 빠르게 복습하고 학습 상태를 관리할 수 있습니다.</p>
-    
+  <!-- Features Section -->
+  <section class="features-sec" id="features-sec">
+    <h2>Simple, yet Educational</h2>
+    <p class="typora-comment">/* 음악 시험 준비와 이론 복습에 특화된 기능 */</p>
+    <div class="features-grid">
+      <div class="features-text">
+        <div class="feature-item">
+          <h3>🎯 학습 목적 및 대상</h3>
+          <p>중학교 음악 교과과정을 체계적으로 커버하여 중고등 시험 대비와 일반 기초 화성학 입문을 돕습니다.</p>
+        </div>
+        <div class="feature-item">
+          <h3>🎼 SVG 벡터 악보 드로잉</h3>
+          <p>폰트 깨짐 현상이 없는 SVG 그래픽 렌더러가 음표와 쉼표를 정확하게 그려주어 가독성을 보장합니다.</p>
+        </div>
+        <div class="feature-item">
+          <h3>💾 개인 통계 및 결과 인쇄</h3>
+          <p>로컬에 누적된 나의 정답률, 연속 정답 기록을 한 눈에 확인하고 결과를 PDF 리포트로 안전하게 출력합니다.</p>
+        </div>
+      </div>
+      <div class="features-media">
+        <svg width="180" height="120" viewBox="0 0 180 120" style="color:var(--accent);opacity:0.85">
+          <line x1="10" y1="20" x2="170" y2="20" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+          <line x1="10" y1="40" x2="170" y2="40" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+          <line x1="10" y1="60" x2="170" y2="60" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+          <line x1="10" y1="80" x2="170" y2="80" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+          <line x1="10" y1="100" x2="170" y2="100" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+          <ellipse cx="60" cy="80" rx="9" ry="6" transform="rotate(-15 60 80)" fill="currentColor"/>
+          <line x1="68" y1="80" x2="68" y2="30" stroke="currentColor" stroke-width="2.5"/>
+          <path d="M68,30 c12,-2 18,6 18,14 c0,10 -18,10 -18,10" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <ellipse cx="110" cy="60" rx="9" ry="6" transform="rotate(-15 110 60)" fill="currentColor"/>
+          <line x1="118" y1="60" x2="118" y2="10" stroke="currentColor" stroke-width="2.5"/>
+          <path d="M118,10 c12,-2 18,6 18,14 c0,10 -18,10 -18,10" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quiz Categories Section -->
+  <section class="quiz-sec" id="quiz-sec">
+    <h2>Start Music Theory Quiz</h2>
+    <p class="typora-comment">/* 아래 영역 중 원하는 학습 주제를 선택해 10문항 복습을 시작하세요. */</p>
+    <div class="category-grid" id="cat-grid"></div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-sec" id="about-sec">
+    <h2>About Developer</h2>
+    <p>MusicQuiz 프로젝트와 관련된 건의사항이나 학습 문의는 아래 이메일로 전달해 주시기 바랍니다.</p>
     <div class="about-links typora-comment">
       Email: <a href="mailto:dew1052ii@gmail.com">dew1052ii@gmail.com</a>
     </div>
-  </div>
+  </section>
 </div>
 
 <div class="screen" id="quiz-screen">
@@ -444,7 +475,7 @@ form:[
 ],
 };
 
-let state={screen:'home',cat:null,qs:[],cur:0,score:0,answers:[],startTime:0,streak:0,bestStreak:0};
+let state={screen:'landing',cat:null,qs:[],cur:0,score:0,answers:[],startTime:0,streak:0,bestStreak:0};
 let storage={total:0,correct:0,maxStreak:0,catDone:{}};
 const SVG_NS='http://www.w3.org/2000/svg';
 
@@ -510,7 +541,7 @@ function showScreen(id){
 }
 
 function goHome(){
-  showScreen('home-screen');
+  showScreen('landing-screen');
   updateHomeStats();
   buildCategoryGrid();
 }
@@ -680,8 +711,20 @@ byId('next-btn').addEventListener('click',nextQuestion);
 byId('retry-btn').addEventListener('click',retryQuiz);
 byId('other-cat-btn').addEventListener('click',goHome);
 
-byId('go-about-btn').addEventListener('click',()=>showScreen('about-screen'));
-byId('about-home-btn').addEventListener('click',goHome);
+function scrollToSection(id){
+  const el=byId(id);
+  if(el){
+    el.scrollIntoView({behavior:'smooth'});
+  }
+}
+byId('nav-brand-btn').addEventListener('click',function(e){
+  e.preventDefault();
+  scrollToSection('hero-sec');
+});
+byId('scroll-down-btn').addEventListener('click',()=>scrollToSection('features-sec'));
+byId('nav-features-btn').addEventListener('click',()=>scrollToSection('features-sec'));
+byId('nav-quiz-btn').addEventListener('click',()=>scrollToSection('quiz-sec'));
+byId('nav-about-btn').addEventListener('click',()=>scrollToSection('about-sec'));
 
 // 전체 결과를 항상 한 페이지에 담는다.
 // jsPDF/html2canvas 전역이 있으면 A4 한 장에 비율을 유지해 축소 배치하고,
