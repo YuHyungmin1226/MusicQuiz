@@ -1,138 +1,97 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>음악 이론 퀴즈 — 중학교 음악 교육과정</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg-primary:#ffffff;--bg-secondary:#f5f5f5;--bg-tertiary:#efefef;
-  --text-primary:#1a1a1a;--text-secondary:#6b6b6b;--text-tertiary:#9b9b9b;
-  --border-tertiary:rgba(0,0,0,0.12);--border-secondary:rgba(0,0,0,0.22);
-  --radius-md:8px;--radius-lg:12px;
+  color-scheme:light;
+  --bg:#f4f0e8;--bg-soft:#eee7da;--surface:#fffdf8;--surface-strong:#f9f3ea;
+  --text:#201b16;--muted:#70665c;--faint:#9a8f83;--line:#ded3c4;
+  --accent:#2f665a;--accent-strong:#1f4e44;--accent-soft:#dfeee9;
+  --success:#277044;--success-soft:#e2f2e7;--danger:#b9433f;--danger-soft:#f8e3e1;
+  --warning:#a56b22;--shadow:0 22px 70px rgba(70,49,27,.12);--ring:0 0 0 4px rgba(47,102,90,.18);
+  --radius-sm:12px;--radius-md:18px;--radius-lg:28px;--space:8px;
+  --font:"SUIT","Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
 }
 @media(prefers-color-scheme:dark){
-  :root{
-    --bg-primary:#1e1e1e;--bg-secondary:#2a2a2a;--bg-tertiary:#141414;
-    --text-primary:#f0f0f0;--text-secondary:#aaaaaa;--text-tertiary:#666666;
-    --border-tertiary:rgba(255,255,255,0.1);--border-secondary:rgba(255,255,255,0.2);
-  }
+  :root{color-scheme:dark;--bg:#11100e;--bg-soft:#191715;--surface:#201d19;--surface-strong:#29241f;--text:#f7f0e7;--muted:#c6baad;--faint:#8f8376;--line:#3c352e;--accent:#8ac7b4;--accent-strong:#afe0d1;--accent-soft:#223a34;--success:#8fd19e;--success-soft:#203528;--danger:#f09a94;--danger-soft:#3e2423;--warning:#e0b36b;--shadow:0 26px 80px rgba(0,0,0,.35);--ring:0 0 0 4px rgba(138,199,180,.22)}
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg-tertiary);min-height:100vh;color:var(--text-primary)}
-.app{max-width:680px;margin:0 auto;padding:1rem}
-.screen{display:none;animation:fadeIn 0.3s ease}
-.screen.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.hero{text-align:center;padding:2rem 0 1.5rem}
-.hero-icon{font-size:48px;margin-bottom:0.75rem}
-.hero h1{font-size:22px;font-weight:500;color:var(--text-primary);margin-bottom:0.5rem}
-.hero p{font-size:14px;color:var(--text-secondary);line-height:1.6}
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:1.25rem 0}
-.stat-card{background:var(--bg-secondary);border-radius:var(--radius-md);padding:0.75rem;text-align:center}
-.stat-num{font-size:22px;font-weight:500;color:var(--text-primary)}
-.stat-label{font-size:12px;color:var(--text-secondary);margin-top:2px}
-.section-title{font-size:13px;font-weight:500;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.05em;margin:1.5rem 0 0.75rem}
-.category-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.cat-card{background:var(--bg-primary);border:0.5px solid var(--border-tertiary);border-radius:var(--radius-lg);padding:1rem 1.25rem;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
-.cat-card:hover{border-color:var(--border-secondary);background:var(--bg-secondary)}
-.cat-card:active{transform:scale(0.98)}
-.cat-accent{width:3px;height:100%;position:absolute;left:0;top:0;border-radius:4px 0 0 4px}
-.cat-icon{font-size:22px;margin-bottom:6px}
-.cat-title{font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:2px}
-.cat-sub{font-size:12px;color:var(--text-secondary)}
-.cat-badge{font-size:11px;padding:2px 7px;border-radius:9999px;position:absolute;top:10px;right:10px;font-weight:500}
-.badge-done{background:#EAF3DE;color:#3B6D11}
-.badge-new{background:#E6F1FB;color:#185FA5}
-.quiz-header{background:var(--bg-primary);border:0.5px solid var(--border-tertiary);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:1rem}
-.quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem}
-.quiz-category{font-size:13px;color:var(--text-secondary)}
-.quiz-progress-text{font-size:13px;color:var(--text-secondary)}
-.progress-bar{height:5px;background:var(--bg-secondary);border-radius:9999px;overflow:hidden}
-.progress-fill{height:100%;border-radius:9999px;transition:width 0.4s ease;background:#6C5CE7}
-.question-card{background:var(--bg-primary);border:0.5px solid var(--border-tertiary);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
-.q-num{font-size:12px;color:var(--text-tertiary);margin-bottom:0.5rem}
-.q-text{font-size:16px;font-weight:500;color:var(--text-primary);line-height:1.6;margin-bottom:0.5rem}
-.q-image{text-align:center;padding:0.75rem;font-size:28px;background:var(--bg-secondary);border-radius:var(--radius-md);margin:0.75rem 0}
-.options-grid{display:grid;gap:8px;margin-top:1rem}
-.opt-btn{background:var(--bg-primary);border:0.5px solid var(--border-tertiary);border-radius:var(--radius-md);padding:0.75rem 1rem;text-align:left;cursor:pointer;font-size:14px;color:var(--text-primary);transition:all 0.15s;display:flex;align-items:center;gap:0.75rem;font-family:inherit;width:100%}
-.opt-btn:hover:not(:disabled){background:var(--bg-secondary);border-color:var(--border-secondary)}
-.opt-label{width:24px;height:24px;border-radius:50%;border:0.5px solid var(--border-secondary);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;color:var(--text-secondary)}
-.opt-btn.correct{background:#EAF3DE;border-color:#639922;color:#27500A}
-.opt-btn.correct .opt-label{background:#639922;color:#fff;border-color:#639922}
-.opt-btn.wrong{background:#FCEBEB;border-color:#E24B4A;color:#501313}
-.opt-btn.wrong .opt-label{background:#E24B4A;color:#fff;border-color:#E24B4A}
-.opt-btn:disabled{cursor:default}
-.feedback-bar{border-radius:var(--radius-md);padding:0.875rem 1rem;margin-bottom:1rem;display:none;align-items:center;gap:0.75rem}
-.feedback-bar.show{display:flex}
-.feedback-bar.ok{background:#EAF3DE;border:0.5px solid #97C459}
-.feedback-bar.ng{background:#FCEBEB;border:0.5px solid #F09595}
-.feedback-icon{font-size:18px;flex-shrink:0}
-.feedback-text{font-size:14px;font-weight:500;flex:1}
-.feedback-text.ok{color:#27500A}
-.feedback-text.ng{color:#501313}
-.feedback-explain{font-size:13px;color:var(--text-secondary);margin-top:2px}
-.next-btn{width:100%;background:#6C5CE7;color:#fff;border:none;border-radius:var(--radius-md);padding:0.875rem;font-size:15px;font-weight:500;cursor:pointer;transition:opacity 0.15s;font-family:inherit}
-.next-btn:hover{opacity:0.9}
-.next-btn:active{transform:scale(0.99)}
-.result-card{background:var(--bg-primary);border:0.5px solid var(--border-tertiary);border-radius:var(--radius-lg);padding:2rem;text-align:center;margin-bottom:1rem}
-.score-ring{width:100px;height:100px;margin:0 auto 1rem;position:relative}
-.score-ring svg{transform:rotate(-90deg)}
-.score-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:22px;font-weight:500;color:var(--text-primary)}
-.result-title{font-size:20px;font-weight:500;margin-bottom:0.25rem;color:var(--text-primary)}
-.result-sub{font-size:14px;color:var(--text-secondary)}
-.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:1.25rem}
-.r-stat{background:var(--bg-secondary);border-radius:var(--radius-md);padding:0.625rem;text-align:center}
-.r-stat-n{font-size:18px;font-weight:500;color:var(--text-primary)}
-.r-stat-l{font-size:11px;color:var(--text-secondary)}
-.review-item{background:var(--bg-primary);border:0.5px solid var(--border-tertiary);border-radius:var(--radius-md);padding:0.875rem;margin-bottom:8px;display:flex;gap:0.75rem;align-items:flex-start}
-.review-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
-.review-q{font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:2px}
-.review-a{font-size:12px;color:var(--text-secondary)}
-.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0.75rem}
-.btn-sec{background:var(--bg-primary);border:0.5px solid var(--border-secondary);border-radius:var(--radius-md);padding:0.75rem;font-size:14px;cursor:pointer;color:var(--text-primary);font-family:inherit;transition:background 0.15s}
-.btn-sec:hover{background:var(--bg-secondary)}
-.btn-pri{background:#6C5CE7;border:none;border-radius:var(--radius-md);padding:0.75rem;font-size:14px;font-weight:500;cursor:pointer;color:#fff;font-family:inherit;transition:opacity 0.15s}
-.btn-pri:hover{opacity:0.9}
-.back-btn{background:none;border:none;cursor:pointer;color:var(--text-secondary);font-size:13px;padding:0;font-family:inherit;display:flex;align-items:center;gap:4px;margin-bottom:1rem}
-.back-btn:hover{color:var(--text-primary)}
+body{font-family:var(--font);background:radial-gradient(circle at top left,rgba(47,102,90,.18),transparent 34rem),linear-gradient(180deg,var(--bg),var(--bg-soft));min-height:100vh;color:var(--text);line-height:1.55}
+button{font:inherit}button:focus-visible,.cat-card:focus-visible{outline:2px solid var(--accent);outline-offset:4px;box-shadow:var(--ring)}
+.app{max-width:940px;margin:0 auto;padding:clamp(18px,4vw,42px)}
+.screen{display:none;animation:fadeIn .28s ease}.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.hero{padding:clamp(26px,7vw,64px) 0 28px;text-align:left}.hero-icon{width:64px;height:64px;border-radius:22px;background:var(--surface);display:grid;place-items:center;font-size:34px;box-shadow:var(--shadow);margin-bottom:18px}.hero h1{font-size:clamp(30px,7vw,54px);letter-spacing:-.05em;line-height:1.04;font-weight:800}.hero p{font-size:15px;color:var(--muted);margin-top:12px}.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 28px}.stat-card,.quiz-header,.question-card,.result-card,.review-item{background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(10px)}.stat-card{border-radius:var(--radius-md);padding:16px;text-align:left}.stat-num{font-size:clamp(24px,5vw,34px);font-weight:800;letter-spacing:-.03em}.stat-label{font-size:12px;color:var(--muted);margin-top:2px}.section-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.11em;margin:26px 0 12px}.category-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.cat-card{appearance:none;width:100%;text-align:left;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px 18px 16px 22px;cursor:pointer;transition:transform .16s ease,border-color .16s ease,background .16s ease;position:relative;overflow:hidden;min-height:128px}.cat-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent) 55%,var(--line));background:var(--surface-strong)}.cat-accent{width:5px;height:100%;position:absolute;left:0;top:0}.cat-icon{display:block;font-size:24px;line-height:1;margin-bottom:14px}.cat-title{display:block;font-size:17px;font-weight:800;letter-spacing:-.02em;padding-right:58px}.cat-sub{display:block;font-size:13px;color:var(--muted);margin-top:5px;line-height:1.45}.cat-badge{font-size:11px;padding:4px 9px;border-radius:999px;position:absolute;top:14px;right:14px;font-weight:800}.badge-done{background:var(--success-soft);color:var(--success)}.badge-new{background:var(--accent-soft);color:var(--accent-strong)}
+.quiz-header{border-radius:var(--radius-md);padding:18px;margin-bottom:14px}.quiz-meta{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:12px}.quiz-category,.quiz-progress-text{font-size:13px;color:var(--muted);font-weight:700}.progress-bar{height:8px;background:var(--bg-soft);border-radius:999px;overflow:hidden}.progress-fill{height:100%;border-radius:999px;transition:width .35s ease;background:var(--accent)}.question-card{border-radius:var(--radius-lg);padding:clamp(22px,5vw,34px);margin-bottom:14px}.q-num{font-size:12px;color:var(--faint);font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}.q-text{font-size:clamp(20px,4vw,28px);font-weight:800;letter-spacing:-.035em;line-height:1.35}.q-image{padding:18px;background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-md);margin:18px 0 4px}.notation-card{display:flex;flex-direction:column;align-items:center;justify-content:center}.notation-card svg{max-width:100%;height:auto}.options-grid{display:grid;gap:10px;margin-top:20px}.opt-btn{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px;text-align:left;cursor:pointer;font-size:15px;color:var(--text);transition:transform .14s ease,border-color .14s ease,background .14s ease;display:flex;align-items:center;gap:12px;width:100%;min-height:56px}.opt-btn:hover:not(:disabled){transform:translateY(-1px);border-color:var(--accent);background:var(--surface-strong)}.opt-label{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:12px;font-weight:900;flex-shrink:0;color:var(--muted)}.opt-text{flex:1}.state-mark{font-weight:900;margin-left:auto}.opt-btn.correct{background:var(--success-soft);border-color:var(--success);color:var(--text)}.opt-btn.correct .opt-label{background:var(--success);color:#fff;border-color:var(--success)}.opt-btn.wrong{background:var(--danger-soft);border-color:var(--danger);color:var(--text)}.opt-btn.wrong .opt-label{background:var(--danger);color:#fff;border-color:var(--danger)}.opt-btn:disabled{cursor:default}.feedback-bar{border-radius:var(--radius-md);padding:15px 16px;margin-bottom:14px;display:none;align-items:flex-start;gap:12px;border:1px solid transparent}.feedback-bar.show{display:flex}.feedback-bar.ok{background:var(--success-soft);border-color:var(--success)}.feedback-bar.ng{background:var(--danger-soft);border-color:var(--danger)}.feedback-icon{font-size:18px;flex-shrink:0;font-weight:900}.feedback-text{font-size:15px;font-weight:900}.feedback-text.ok{color:var(--success)}.feedback-text.ng{color:var(--danger)}.feedback-explain{font-size:13px;color:var(--muted);margin-top:3px}.next-btn,.btn-pri{background:var(--accent);color:#fff;border:none}.next-btn,.btn-sec,.btn-pri{width:100%;border-radius:16px;padding:15px;font-size:15px;font-weight:900;cursor:pointer;transition:transform .14s ease,opacity .14s ease,background .14s ease}.next-btn:hover,.btn-pri:hover{background:var(--accent-strong)}.next-btn:active,.btn-sec:active,.btn-pri:active{transform:scale(.99)}.result-card{border-radius:var(--radius-lg);padding:32px;text-align:center;margin-bottom:14px}.score-ring{width:116px;height:116px;margin:0 auto 18px;position:relative}.score-ring svg{transform:rotate(-90deg);width:116px;height:116px}.score-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:24px;font-weight:900}.result-title{font-size:24px;font-weight:900;letter-spacing:-.04em}.result-sub{font-size:14px;color:var(--muted);margin-top:4px}.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}.r-stat{background:var(--surface-strong);border:1px solid var(--line);border-radius:16px;padding:12px}.r-stat-n{font-size:20px;font-weight:900}.r-stat-l{font-size:12px;color:var(--muted)}.review-item{border-radius:16px;padding:15px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start}.review-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:7px}.review-q{font-size:14px;font-weight:900;margin-bottom:4px}.review-a{font-size:13px;color:var(--muted)}.btn-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px}.btn-sec{background:var(--surface);border:1px solid var(--line);color:var(--text)}.btn-sec:hover{background:var(--surface-strong)}.back-btn{background:transparent;border:1px solid var(--line);border-radius:999px;cursor:pointer;color:var(--muted);font-size:13px;padding:8px 13px;margin-bottom:14px}.back-btn:hover{color:var(--text);background:var(--surface)}
+.print-area{padding:4px 0}.print-header{text-align:center;margin-bottom:18px}.print-header-icon{width:44px;height:44px;border-radius:14px;background:var(--surface);display:grid;place-items:center;font-size:22px;box-shadow:var(--shadow);margin:0 auto 12px}.print-header h2{font-size:20px;font-weight:800;letter-spacing:-.04em}.print-header .print-date{font-size:13px;color:var(--muted);margin-top:4px}.print-name-row{display:flex;align-items:center;gap:10px;justify-content:center;margin:16px 0 10px}.print-name-row label{font-size:14px;font-weight:700}.print-name-row input{border:none;border-bottom:1.5px solid var(--line);background:transparent;font:inherit;font-size:14px;padding:4px 8px;width:130px;color:var(--text);transition:border-color .16s ease}.print-name-row input:focus{outline:none;border-color:var(--accent)}.print-area.pdf-rendering{--text:#201b16;--bg:#f4f0e8;--surface:#fffdf8;--surface-strong:#f9f3ea;--line:#ded3c4;--muted:#70665c;background:#fffdf8;color:#201b16;border-radius:0;box-shadow:none}.print-area.pdf-rendering .result-card,.print-area.pdf-rendering .review-item{backdrop-filter:none;background:#fffdf8}
+@media(max-width:860px){.category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.app{padding:16px}.category-grid,.stats-row,.result-stats,.btn-row{grid-template-columns:1fr}.cat-card{min-height:auto}.hero{text-align:left;padding-top:28px}.hero-icon{width:56px;height:56px}.question-card{padding:20px}.opt-btn{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.result-history-title{margin:24px 0 10px;text-align:left}.result-history{margin:0}.result-history .stat-card{box-shadow:none;border:1px solid var(--line);background:var(--surface-strong)}.copyright{margin:34px 0 4px;text-align:center;color:var(--faint);font-size:12px}
+.intro{max-width:620px;margin:0 auto;padding:clamp(20px,5vw,50px) 0;text-align:center}.intro-hero{margin-bottom:32px}.intro-icon{width:72px;height:72px;border-radius:24px;background:var(--surface);display:grid;place-items:center;font-size:38px;box-shadow:var(--shadow);margin:0 auto 16px}.intro-title{font-size:clamp(30px,7vw,48px);font-weight:800;letter-spacing:-.05em;line-height:1.05}.intro-tagline{font-size:14px;color:var(--muted);margin-top:8px;line-height:1.5}.intro-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:36px}.intro-card{background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--line);border-radius:var(--radius-md);padding:20px;text-align:left;box-shadow:var(--shadow);backdrop-filter:blur(8px)}.intro-card-icon{font-size:22px;margin-bottom:8px}.intro-card-title{font-size:14px;font-weight:800;margin-bottom:5px}.intro-card-text{font-size:13px;color:var(--muted);line-height:1.55}.intro-actions{margin-top:8px}.intro-start{appearance:none;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-md);padding:16px 38px;font-size:17px;font-weight:900;cursor:pointer;transition:transform .14s ease,background .14s ease;display:inline-flex;align-items:center;gap:6px}.intro-start:hover{background:var(--accent-strong);transform:translateY(-2px)}.intro-start:focus-visible{outline:2px solid var(--accent);outline-offset:4px;box-shadow:var(--ring)}.intro-note{font-size:12px;color:var(--faint);margin-top:16px;line-height:1.6}@media(max-width:620px){.intro-cards{grid-template-columns:1fr}}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-<div class="app">
+<main class="app">
 
-<div class="screen active" id="home-screen">
+<div class="screen active" id="intro-screen">
+  <div class="intro">
+    <div class="intro-hero">
+      <div class="intro-icon">🎵</div>
+      <h1 class="intro-title">음악 이론 퀴즈</h1>
+      <p class="intro-tagline">중학교 음악 교육과정 기반 · 7개 영역 · 140개 문제</p>
+    </div>
+    <div class="intro-cards">
+      <div class="intro-card">
+        <div class="intro-card-icon">🎯</div>
+        <div class="intro-card-title">목적</div>
+        <div class="intro-card-text">음악 이론을 빠르게 복습하고 자기주도 학습을 돕는 퀴즈 도구입니다. 시험 전에 핵심 개념을 확인하고 부족한 부분을 찾아 보완할 수 있습니다.</div>
+      </div>
+      <div class="intro-card">
+        <div class="intro-card-icon">👤</div>
+        <div class="intro-card-title">대상</div>
+        <div class="intro-card-text">중학교 음악 시험을 준비하는 학생, 기초 음악 이론을 다시 복습하려는 성인, 수업 자료가 필요한 교사 모두 자유롭게 사용할 수 있습니다.</div>
+      </div>
+      <div class="intro-card">
+        <div class="intro-card-icon">📚</div>
+        <div class="intro-card-title">학습 영역</div>
+        <div class="intro-card-text">음표와 쉼표 · 음계와 조성 · 박자와 리듬 · 악상기호 · 화음과 음정 · 악기 · 음악 형식까지 7개 영역을 골고루 학습합니다.</div>
+      </div>
+      <div class="intro-card">
+        <div class="intro-card-icon">💾</div>
+        <div class="intro-card-title">결과 저장</div>
+        <div class="intro-card-text">학습 결과를 PDF로 저장할 수 있습니다. 이름을 적으면 출력물로 제출하거나 복습 자료로 보관할 수 있습니다.</div>
+      </div>
+    </div>
+    <div class="intro-actions">
+      <button class="intro-start" id="intro-start-btn" type="button">학습 시작하기 →</button>
+      <p class="intro-note">회원가입 없이 바로 사용할 수 있습니다.<br>학습 기록은 이 기기에만 저장됩니다.</p>
+    </div>
+  </div>
+</div>
+<div class="screen" id="home-screen">
   <div class="hero">
     <div class="hero-icon">🎵</div>
     <h1>음악 이론 퀴즈</h1>
     <p>중학교 음악 교육과정 기반 · 7개 영역 · 140개 문제</p>
-  </div>
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-num" id="gs-total">0</div>
-      <div class="stat-label">총 풀이</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" id="gs-correct">0%</div>
-      <div class="stat-label">정답률</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" id="gs-streak">0</div>
-      <div class="stat-label">최고 연속</div>
-    </div>
   </div>
   <div class="section-title">학습 영역 선택</div>
   <div class="category-grid" id="cat-grid"></div>
 </div>
 
 <div class="screen" id="quiz-screen">
-  <button class="back-btn" onclick="goHome()">← 홈으로</button>
+  <button class="back-btn" id="quiz-home-btn" type="button">← 홈으로</button>
   <div class="quiz-header">
     <div class="quiz-meta">
       <span class="quiz-category" id="q-cat-name"></span>
       <span class="quiz-progress-text" id="q-progress"></span>
     </div>
-    <div class="progress-bar">
+    <div class="progress-bar" role="progressbar" aria-label="퀴즈 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="q-progressbar">
       <div class="progress-fill" id="q-prog-fill" style="width:0%"></div>
     </div>
   </div>
@@ -140,51 +99,78 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="q-num" id="q-num"></div>
     <div class="q-text" id="q-text"></div>
     <div class="q-image" id="q-image" style="display:none"></div>
-    <div class="options-grid" id="q-options"></div>
+    <div class="options-grid" id="q-options" role="group" aria-labelledby="q-text"></div>
   </div>
-  <div class="feedback-bar" id="feedback">
+  <div class="feedback-bar" id="feedback" aria-live="polite">
     <div class="feedback-icon" id="fb-icon"></div>
     <div>
       <div class="feedback-text" id="fb-text"></div>
       <div class="feedback-explain" id="fb-explain"></div>
     </div>
   </div>
-  <button class="next-btn" id="next-btn" onclick="nextQuestion()" style="display:none">다음 문제 →</button>
+  <button class="next-btn" id="next-btn" type="button" style="display:none">다음 문제 →</button>
 </div>
 
 <div class="screen" id="result-screen">
-  <button class="back-btn" onclick="goHome()">← 홈으로</button>
-  <div class="result-card">
-    <div class="score-ring">
-      <svg width="100" height="100" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="42" fill="none" stroke="var(--bg-secondary)" stroke-width="8"/>
-        <circle cx="50" cy="50" r="42" fill="none" stroke-width="8" stroke-linecap="round" id="score-arc" stroke="#6C5CE7" stroke-dasharray="0 264"/>
-      </svg>
-      <div class="score-center" id="score-pct"></div>
+  <button class="back-btn" id="result-home-btn" type="button">← 홈으로</button>
+  <div id="print-area" class="print-area">
+    <div class="print-header">
+      <div class="print-header-icon">🎵</div>
+      <h2>음악 이론 퀴즈 학습 결과</h2>
+      <p class="print-date" id="print-date"></p>
     </div>
-    <div class="result-title" id="result-title"></div>
-    <div class="result-sub" id="result-sub"></div>
-    <div class="result-stats">
-      <div class="r-stat"><div class="r-stat-n" id="r-correct" style="color:#639922">0</div><div class="r-stat-l">정답</div></div>
-      <div class="r-stat"><div class="r-stat-n" id="r-wrong" style="color:#E24B4A">0</div><div class="r-stat-l">오답</div></div>
-      <div class="r-stat"><div class="r-stat-n" id="r-time">0s</div><div class="r-stat-l">소요 시간</div></div>
+    <div class="print-name-row">
+      <label for="student-name">이름</label>
+      <input type="text" id="student-name" placeholder="이름을 입력하세요" maxlength="20">
     </div>
+    <div class="result-card">
+      <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="var(--line)" stroke-width="8"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke-width="8" stroke-linecap="round" id="score-arc" stroke="#6C5CE7" stroke-dasharray="0 264"/>
+        </svg>
+        <div class="score-center" id="score-pct"></div>
+      </div>
+      <div class="result-title" id="result-title"></div>
+      <div class="result-sub" id="result-sub"></div>
+      <div class="result-stats">
+        <div class="r-stat"><div class="r-stat-n" id="r-correct" style="color:#639922">0</div><div class="r-stat-l">정답</div></div>
+        <div class="r-stat"><div class="r-stat-n" id="r-wrong" style="color:#E24B4A">0</div><div class="r-stat-l">오답</div></div>
+        <div class="r-stat"><div class="r-stat-n" id="r-time">0s</div><div class="r-stat-l">소요 시간</div></div>
+      </div>
+      <div class="section-title result-history-title">누적 학습 기록</div>
+      <div class="stats-row result-history">
+        <div class="stat-card">
+          <div class="stat-num" id="gs-total">0</div>
+          <div class="stat-label">총 풀이</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="gs-correct">0%</div>
+          <div class="stat-label">정답률</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="gs-streak">0</div>
+          <div class="stat-label">최고 연속</div>
+        </div>
+      </div>
+    </div>
+    <div class="section-title">문제 풀이 복습</div>
+    <div id="review-list"></div>
   </div>
   <div class="btn-row">
-    <button class="btn-sec" onclick="retryQuiz()">다시 풀기</button>
-    <button class="btn-pri" onclick="goHome()">다른 영역 →</button>
+    <button class="btn-pri" id="pdf-download-btn" type="button">📄 PDF 저장</button>
+    <button class="btn-sec" id="retry-btn" type="button">다시 풀기</button>
+    <button class="btn-pri" id="other-cat-btn" type="button">다른 영역 →</button>
   </div>
-  <div class="section-title">문제 풀이 복습</div>
-  <div id="review-list"></div>
 </div>
-
-</div>
+<footer class="copyright">© 2026 Hyungmin Yoo. All rights reserved.</footer>
+</main>
 <script>
 const CATS=[
-  {id:'note',title:'음표와 쉼표',sub:'음표 종류·음가·점음표',icon:'♩',accent:'#6C5CE7'},
+  {id:'note',title:'음표와 쉼표',sub:'음표 종류·음가·점음표',icon:'🎵',accent:'#6C5CE7'},
   {id:'scale',title:'음계와 조성',sub:'장음계·단음계·조표',icon:'🎼',accent:'#00B894'},
   {id:'rhythm',title:'박자와 리듬',sub:'박자표·박·리듬꼴',icon:'🥁',accent:'#E17055'},
-  {id:'mark',title:'악상기호',sub:'세기·빠르기·나타냄말',icon:'𝆒',accent:'#0984E3'},
+  {id:'mark',title:'악상기호',sub:'세기·빠르기·나타냄말',icon:'✦',accent:'#0984E3'},
   {id:'chord',title:'화음과 음정',sub:'음정·장단화음·으뜸화음',icon:'🎹',accent:'#c0901e'},
   {id:'inst',title:'악기',sub:'관현악기·국악기·분류',icon:'🎻',accent:'#E84393'},
   {id:'form',title:'음악 형식',sub:'형식·악곡·음악사',icon:'📜',accent:'#00CEC9'},
@@ -192,25 +178,25 @@ const CATS=[
 
 const QUESTIONS={
 note:[
-  {q:'온음표의 박자 수는?',opts:['1박','2박','3박','4박'],ans:3,explain:'온음표(𝅝)는 기본 단위로 4박을 가집니다.'},
-  {q:'2분음표의 박자 수는?',opts:['1박','2박','3박','4박'],ans:1,explain:'2분음표(𝅗𝅥)는 온음표의 절반인 2박입니다.'},
-  {q:'4분음표의 박자 수는?',opts:['1박','2박','3박','4박'],ans:0,explain:'4분음표(♩)는 가장 기본적인 음표로 1박을 나타냅니다.'},
-  {q:'8분음표(♪)는 몇 박인가요?',opts:['½박','1박','2박','4박'],ans:0,explain:'8분음표는 4분음표의 절반인 ½박입니다.'},
-  {q:'점2분음표의 박자 수는?',opts:['2박','2.5박','3박','3.5박'],ans:2,explain:'점음표는 원래 음표의 1.5배이므로, 점2분음표 = 2 × 1.5 = 3박입니다.'},
-  {q:'4분쉼표가 쉬는 시간은?',opts:['½박','1박','2박','4박'],ans:1,explain:'쉼표는 해당 음표와 같은 길이만큼 소리를 내지 않습니다. 4분쉼표 = 1박.'},
+  {q:'4분음표를 1박으로 할 때, 온음표의 박자 수는?',opts:['1박','2박','3박','4박'],ans:3,notation:{type:'note',value:'whole',label:'온음표'},explain:'온음표는 4분음표 4개와 같은 길이입니다.'},
+  {q:'4분음표를 1박으로 할 때, 2분음표의 박자 수는?',opts:['1박','2박','3박','4박'],ans:1,notation:{type:'note',value:'half',label:'2분음표'},explain:'2분음표는 온음표의 절반, 4분음표 2개와 같은 길이입니다.'},
+  {q:'4분음표를 1박으로 할 때, 점8분음표의 박자 수는?',opts:['½박','¾박','1박','1½박'],ans:1,notation:{type:'note',value:'dotted-eighth',label:'점8분음표'},explain:'점음표는 원래 음표 길이의 절반을 더합니다. 점8분음표 = ½박 + ¼박 = ¾박입니다.'},
+  {q:'4분음표를 1박으로 할 때, 8분음표는 몇 박인가요?',opts:['½박','1박','2박','4박'],ans:0,notation:{type:'note',value:'eighth',label:'8분음표'},explain:'8분음표는 4분음표의 절반인 ½박입니다.'},
+  {q:'4분음표를 1박으로 할 때, 점2분음표의 박자 수는?',opts:['2박','2.5박','3박','3.5박'],ans:2,notation:{type:'note',value:'dotted-half',label:'점2분음표'},explain:'점음표는 원래 음표 길이의 절반을 더하므로, 점2분음표 = 2박 + 1박 = 3박입니다.'},
+  {q:'4분음표를 1박으로 할 때, 4분쉼표가 쉬는 시간은?',opts:['½박','1박','2박','4박'],ans:1,notation:{type:'rest',value:'quarter',label:'4분쉼표'},explain:'쉼표는 해당 음표와 같은 길이만큼 소리를 내지 않습니다. 4분쉼표 = 1박입니다.'},
   {q:'16분음표 2개는 어느 음표와 같은가요?',opts:['온음표','2분음표','4분음표','8분음표'],ans:3,explain:'16분음표 = 8분음표의 절반이므로, 16분음표 2개 = 8분음표 1개.'},
   {q:'온음표 쉼표의 모양 설명으로 맞는 것은?',opts:['선 위에 매달린 직사각형','선 아래에 붙은 직사각형','빈 마름모','채워진 마름모'],ans:1,explain:'온음표 쉼표는 4번 선 아래에 붙은 납작한 직사각형으로 표기됩니다.'},
-  {q:'점4분음표의 박자 수는?',opts:['1박','1.5박','2박','2.5박'],ans:1,explain:'점음표는 원래 음표의 1.5배입니다. 점4분음표 = 1 × 1.5 = 1.5박.'},
-  {q:'다음 중 틀린 것은?',opts:['♩ = 1박','𝅗𝅥 = 2박','𝅝 = 4박','♪ = 1박'],ans:3,explain:'8분음표(♪)는 ½박입니다. 1박은 4분음표(♩)입니다.'},
-  {q:'온음표 4개는 몇 박인가요?',opts:['4박','8박','16박','12박'],ans:2,explain:'온음표 1개 = 4박이므로, 4개 × 4박 = 16박입니다.'},
+  {q:'4분음표를 1박으로 할 때, 점4분음표의 박자 수는?',opts:['1박','1.5박','2박','2.5박'],ans:1,notation:{type:'note',value:'dotted-quarter',label:'점4분음표'},explain:'점음표는 원래 음표 길이의 절반을 더합니다. 점4분음표 = 1박 + ½박 = 1.5박입니다.'},
+  {q:'4분음표를 1박으로 할 때, 다음 중 틀린 것은?',opts:['4분음표 = 1박','2분음표 = 2박','온음표 = 4박','8분음표 = 1박'],ans:3,explain:'8분음표는 ½박입니다. 1박은 4분음표입니다.'},
+  {q:'4분음표를 1박으로 할 때, 온음표 4개는 몇 박인가요?',opts:['4박','8박','16박','12박'],ans:2,explain:'온음표 1개 = 4박이므로, 4개 × 4박 = 16박입니다.'},
   {q:'겹점음표는 원래 음표의 몇 배인가요?',opts:['1.5배','1.75배','2배','2.5배'],ans:1,explain:'겹점음표는 원래 음표 + 절반 + 1/4, 즉 1.75배입니다.'},
   {q:'당김음(Syncopation)이란?',opts:['여린박이 강박처럼 강조됨','강박에 음이 오는 것','빠르게 연주하는 기법','쉼표가 많은 리듬'],ans:0,explain:'당김음은 여린박에 시작한 음이 강박까지 이어져 강박처럼 들리는 효과입니다.'},
   {q:'4분음표 4개로 만들 수 있는 박자는?',opts:['2/4박자','3/4박자','4/4박자','6/8박자'],ans:2,explain:'4/4박자는 한 마디에 4분음표가 4개 들어가는 박자입니다.'},
-  {q:'2분음표 쉼표의 모양은?',opts:['선 아래에 붙음','선 위에 매달림','삐죽한 모양','와구리 모양'],ans:1,explain:'2분음표 쉼표는 3번 선 위에 올려놓은 납작한 직사각형으로, 온음표 쉼표와 반대 방향입니다.'},
+  {q:'2분음표 쉼표의 모양은?',opts:['선 아래에 붙음','선 위에 있는 직사각형','삐죽한 모양','물결 모양'],ans:1,explain:'2분음표 쉼표는 3번 선 위에 올려놓은 납작한 직사각형으로, 온음표 쉼표와 반대 방향입니다.'},
   {q:'셋잇단음표(Triplet)에서 3개의 음표가 차지하는 시간은?',opts:['같은 종류 1개 길이','같은 종류 2개 길이','같은 종류 3개 길이','같은 종류 4개 길이'],ans:1,explain:'8분음표 셋잇단음표 3개는 8분음표 2개(= 4분음표 1박)와 같은 시간을 차지합니다.'},
   {q:'온음표 쉼표와 2분음표 쉼표를 구별하는 방법은?',opts:['크기가 다르다','위치가 반대이다','색이 다르다','획수가 다르다'],ans:1,explain:'온음표 쉼표는 선 아래에, 2분음표 쉼표는 선 위에 붙습니다.'},
   {q:'붙임줄(Tie)의 역할은?',opts:['음을 꾸미는 것','같은 음을 연결해 길이를 늘리는 것','빠르기를 표시','음의 세기를 표시'],ans:1,explain:'붙임줄은 같은 높이의 음표 두 개를 연결하여 하나의 긴 음으로 연주하게 합니다.'},
-  {q:'이음줄(Slur)의 역할은?',opts:['음을 부드럽게 연결','음의 길이를 연장','음의 세기 증가','빠르게 연주'],ans:0,explain:'이음줄은 서로 다른 높이의 음표를 부드럽게(레가토) 연결하는 기호입니다.'},
+  {q:'이음줄(Slur)의 역할은?',opts:['음을 부드럽게 연결','음의 길이를 연장','음의 세기 증가','빠르게 연주'],ans:0,explain:'이음줄은 다른 음들을 부드럽게 이어 레가토로 연주하게 하는 기호입니다.'},
   {q:'한 마디에 4분음표 4박이 들어가는 박자 표기는?',opts:['2/4','3/4','4/4','6/8'],ans:2,explain:'4/4박자: 분모 4는 4분음표, 분자 4는 한 마디에 4박임을 나타냅니다.'},
 ],
 scale:[
@@ -229,7 +215,7 @@ scale:[
   {q:'5도권에서 ♯이 하나씩 늘어나는 순서는?',opts:['C→G→D→A→E','C→F→B♭→E♭','C→D→E→F','C→B→A→G'],ans:0,explain:'장조의 ♯ 순서: C(0)→G(1)→D(2)→A(3)→E(4)→B(5)→F♯(6)→C♯(7)'},
   {q:'"도"에서 옥타브 위의 "도"까지 반음 개수는?',opts:['10개','11개','12개','13개'],ans:2,explain:'한 옥타브는 12개의 반음(반음 간격)으로 구성됩니다.'},
   {q:'장음계에서 으뜸음(Tonic)은 몇 번째 음인가요?',opts:['1번째','3번째','5번째','7번째'],ans:0,explain:'으뜸음(Tonic)은 음계의 첫 번째 음으로, 조성의 중심음입니다.'},
-  {q:'반음계(Chromatic scale)는 옥타브 안에 몇 개의 음이 있나요?',opts:['7개','10개','12개','13개'],ans:2,explain:'반음계는 한 옥타브 안에 12개의 반음으로 이루어진 음계입니다.'},
+  {q:'한 옥타브 안의 서로 다른 반음계 음은 몇 개인가요?',opts:['7개','10개','12개','13개'],ans:2,explain:'반음계는 한 옥타브 안에서 12개의 서로 다른 반음계 음으로 이루어집니다. 옥타브 위의 같은 음까지 세면 13번째 음이 됩니다.'},
   {q:'E장조의 ♯ 개수는?',opts:['2개','3개','4개','5개'],ans:2,explain:'E장조는 F♯, C♯, G♯, D♯ 네 개의 올림표를 가집니다.'},
   {q:'가단조(A minor)의 나란한조(관계장조)는?',opts:['C장조','G장조','F장조','D장조'],ans:0,explain:'가단조의 으뜸음 라(A)에서 단3도 위인 다(C)장조가 나란한조입니다.'},
   {q:'올림표(♯)의 역할은?',opts:['음을 반음 올린다','음을 반음 낮춘다','음을 온음 올린다','이전 변화표를 취소'],ans:0,explain:'올림표(♯)는 해당 음을 반음 높여 연주하도록 지시합니다.'},
@@ -238,24 +224,24 @@ scale:[
 rhythm:[
   {q:'4/4박자에서 가장 강한 박은?',opts:['1박','2박','3박','4박'],ans:0,explain:'4/4박자의 강세: 강(1박) - 약(2박) - 중강(3박) - 약(4박)'},
   {q:'3/4박자의 강세 패턴은?',opts:['강-약-약','강-약-강','강-강-약','약-강-약'],ans:0,explain:'3/4박자: 강(1박) - 약(2박) - 약(3박)으로, 왈츠 리듬이 대표적입니다.'},
-  {q:'6/8박자에서 한 박(beat)의 단위 음표는?',opts:['4분음표','8분음표','2분음표','점4분음표'],ans:3,explain:'6/8박자는 겹박자(compound time)로, 한 박은 점4분음표(8분음표 3개 묶음)입니다. 지휘할 때에도 2박으로 합니다.'},
+  {q:'6/8박자에서 보통 한 박의 단위가 되는 음표는?',opts:['4분음표','8분음표','2분음표','점4분음표'],ans:3,explain:'6/8박자는 보통 8분음표 3개를 한 묶음으로 보아 점4분음표를 한 박처럼 느끼며 2박으로 셉니다.'},
   {q:'2/4박자 한 마디에 들어가는 4분음표의 수는?',opts:['2개','3개','4개','8개'],ans:0,explain:'2/4박자: 분자 2는 2박, 분모 4는 4분음표 기준임을 나타냅니다.'},
   {q:'박자표 3/8에서 분모 8이 나타내는 것은?',opts:['8분음표가 기준','3박','8마디','8분쉼표'],ans:0,explain:'박자표의 분모는 기준이 되는 음표의 종류입니다. 8=8분음표.'},
   {q:'3/4박자를 대표하는 춤곡은?',opts:['왈츠','마치','폴카','탱고'],ans:0,explain:'왈츠(Waltz)는 3/4박자의 대표적인 춤곡으로 "쿵-짝-짝" 리듬이 특징입니다.'},
   {q:'혼합박자 5/4박자의 강세는 보통 어떻게 나뉘나요?',opts:['3+2 또는 2+3','4+1','5개 동등','1+4'],ans:0,explain:'5/4박자는 보통 3+2 또는 2+3으로 나뉘어 강세를 가집니다.'},
   {q:'4/4박자 한 마디에 8분음표는 몇 개까지 들어가나요?',opts:['4개','6개','8개','16개'],ans:2,explain:'4/4박자 = 4박 = 8분음표 기준 8개.'},
-  {q:'"알레그로"는 어떤 빠르기인가요?',opts:['느리게','보통 빠르게','빠르게','아주 느리게'],ans:2,explain:'Allegro(알레그로)는 ♩=120~168 bpm 수준의 빠른 빠르기입니다.'},
+  {q:'"알레그로"는 어떤 빠르기인가요?',opts:['느리게','보통 빠르게','빠르게','아주 느리게'],ans:2,explain:'Allegro(알레그로)는 빠르고 활기 있게 연주하라는 빠르기말입니다. BPM 범위는 시대와 악보에 따라 달라질 수 있습니다.'},
   {q:'리타르단도(rit.)의 의미는?',opts:['점점 빠르게','점점 느리게','갑자기 빠르게','일정한 빠르기'],ans:1,explain:'Ritardando(리타르단도, rit.)는 점점 느리게 연주하라는 빠르기 변화 기호입니다.'},
   {q:'아첼레란도(accel.)의 의미는?',opts:['점점 느리게','점점 빠르게','갑자기 느리게','빠르기 유지'],ans:1,explain:'Accelerando(아첼레란도, accel.)는 점점 빠르게 연주하라는 지시입니다.'},
   {q:'템포 루바토(Tempo rubato)란?',opts:['빠르기를 자유롭게 변화','일정 빠르기 유지','아주 느리게','박자 없이 연주'],ans:0,explain:'루바토는 감정 표현을 위해 빠르기를 자유롭게 신축적으로 변화시키는 것입니다.'},
   {q:'메트로놈(Metronome)의 역할은?',opts:['음의 높이 측정','정확한 빠르기 표시','음량 측정','악기 조율'],ans:1,explain:'메트로놈은 분당 박자 수(BPM)를 기계적으로 표시하여 정확한 빠르기를 알려줍니다.'},
-  {q:'♩=60 BPM은 1분에 4분음표가 몇 개인가요?',opts:['30개','60개','120개','240개'],ans:1,explain:'BPM(Beats Per Minute): ♩=60은 1분에 4분음표 60박을 연주합니다.'},
+  {q:'4분음표 = 60 BPM은 1분에 4분음표가 몇 개인가요?',opts:['30개','60개','120개','240개'],ans:1,explain:'BPM(Beats Per Minute): 4분음표 = 60은 1분에 4분음표 60박을 연주한다는 뜻입니다.'},
   {q:'복박자(compound time)란?',opts:['각 박이 3으로 나뉘는 박자','홀수 박의 박자','각 박이 2로 나뉘는 박자','강박이 없는 박자'],ans:0,explain:'복박자는 한 박이 8분음표 3개(점4분음표)로 구성되어 3으로 나뉘는 박자입니다. 6/8, 9/8, 12/8이 대표적입니다.'},
   {q:'당김음 리듬이 자주 쓰이는 음악 장르는?',opts:['클래식','재즈','그레고리안 성가','인도 음악'],ans:1,explain:'당김음(Syncopation)은 재즈, 팝, 블루스에서 스윙감을 주는 핵심 리듬 기법입니다.'},
   {q:'점4분음표와 8분음표의 조합은 어떤 리듬인가요?',opts:['점리듬(Dotted rhythm)','셋잇단음표','당김음','2연음'],ans:0,explain:'점4분음표+8분음표는 "쿵-짝" 형태의 점리듬(Dotted rhythm)입니다.'},
   {q:'4/4박자에서 3번째 박의 강세는?',opts:['강','약','중강','없음'],ans:2,explain:'4/4박자: 강(1)·약(2)·중강(3)·약(4)으로, 3번째 박은 중강박입니다.'},
   {q:'다음 중 복박자(compound time)에 해당하는 것은?',opts:['2/4박자','3/4박자','6/8박자','4/4박자'],ans:2,explain:'6/8박자는 겹2박자로, 한 마디에 점4분음표가 2개(한 박이 8분음표 3개씩) 들어가는 대표적인 복박자입니다.'},
-  {q:'안다체(Andante)의 뜻은?',opts:['아주 느리게','느리게 걷는 속도로','빠르게','아주 빠르게'],ans:1,explain:'Andante(안다체)는 이탈리아어로 "걷는 속도로"를 뜻합니다.'},
+  {q:'안단테(Andante)의 뜻은?',opts:['아주 느리게','느리게 걷는 속도로','빠르게','아주 빠르게'],ans:1,explain:'Andante(안단테)는 이탈리아어로 "걷는 속도로"를 뜻합니다.'},
 ],
 mark:[
   {q:'ff(포르티시모)의 의미는?',opts:['여리게','아주 세게','보통 세기','아주 여리게'],ans:1,explain:'ff(fortissimo)는 "아주 세게"를 의미하는 악상기호입니다.'},
@@ -266,16 +252,16 @@ mark:[
   {q:'sfz(스포르찬도)의 의미는?',opts:['점점 세게','특별히 강하게 강조','점점 여리게','유지하며 세게'],ans:1,explain:'sfz(sforzando)는 특정 음을 갑자기 강하게 강조하는 기호입니다.'},
   {q:'레가토(legato)는 어떻게 연주하나요?',opts:['음을 끊어서','음을 부드럽게 연결','아주 짧게','강하게 강조'],ans:1,explain:'레가토(legato)는 음과 음 사이를 부드럽게 연결하여 연주하는 주법입니다.'},
   {q:'스타카토(staccato)의 기호는?',opts:['음표 위/아래 점(·)','음표 위 선(-)','물결 기호(~)','꺾인 화살표'],ans:0,explain:'스타카토는 음표 위나 아래에 작은 점(·)으로 표기하며, 음을 짧고 끊어서 연주합니다.'},
-  {q:'페르마타(𝄐)의 의미는?',opts:['빠르게','자유롭게 늘여서','여리게','반복'],ans:1,explain:'페르마타(𝄐)는 해당 음표 위에 표기되며, 적절히 길게 늘여서 연주하는 기호입니다.'},
+  {q:'페르마타의 의미는?',opts:['빠르게','자유롭게 늘여서','여리게','반복'],ans:1,explain:'페르마타는 해당 음표나 쉼표를 적절히 길게 늘여서 연주하라는 기호입니다.'},
   {q:'Adagio(아다지오)의 빠르기는?',opts:['아주 빠르게','빠르게','느리게','아주 느리게'],ans:2,explain:'Adagio는 이탈리아어로 "편안하게, 느리게"를 의미합니다.'},
   {q:'Presto(프레스토)는?',opts:['매우 빠르게','빠르게','보통으로','느리게'],ans:0,explain:'Presto는 매우 빠른 빠르기로, Allegro보다 빠릅니다.'},
   {q:'Moderato(모데라토)의 뜻은?',opts:['느리게','보통 빠르기로','빠르게','아주 빠르게'],ans:1,explain:'Moderato는 "중간 정도의" 빠르기를 의미합니다.'},
   {q:'p(피아노)와 f(포르테) 사이의 세기 순서(여린→센 순)는?',opts:['pp-p-mp-mf-f-ff','pp-p-mf-mp-f-ff','p-pp-mp-mf-f-ff','pp-mp-p-mf-f-ff'],ans:0,explain:'세기 순서: pp < p < mp < mf < f < ff'},
   {q:'"Dolce"의 뜻은?',opts:['강하게','부드럽고 달콤하게','빠르게','슬프게'],ans:1,explain:'Dolce(돌체)는 "달콤하게, 부드럽게"를 의미하는 나타냄말입니다.'},
-  {q:'"Vivace"의 빠르기는?',opts:['아주 느리게','느리게','빠르게','아주 빠르게'],ans:2,explain:'Vivace(비바체)는 "생기 있게, 활발하게"를 뜻하는 빠른 빠르기입니다.'},
-  {q:'반복 기호 𝄇𝄆의 의미는?',opts:['처음부터 반복','그 부분만 반복','3번 반복','끝까지 반복 후 종료'],ans:1,explain:'반복 기호(𝄆 ... 𝄇)로 묶인 구간을 한 번 반복합니다.'},
+  {q:'"Vivace"의 빠르기는?',opts:['아주 느리게','느리게','빠르게','아주 빠르게'],ans:3,explain:'Vivace(비바체)는 "생기 있게, 활발하게"를 뜻하며 Allegro보다 빠른 매우 빠른 빠르기입니다.'},
+  {q:'왼쪽·오른쪽 반복 기호로 묶인 구간의 의미는?',opts:['처음부터 반복','그 부분만 반복','3번 반복','끝까지 반복 후 종료'],ans:1,explain:'왼쪽 반복 기호와 오른쪽 반복 기호로 묶인 구간을 한 번 반복합니다.'},
   {q:'Da capo(D.C.)의 의미는?',opts:['처음으로 돌아가','표시된 곳으로 돌아가','끝','중간부터'],ans:0,explain:'Da capo(D.C.)는 "처음부터"를 뜻하며, 곡의 처음으로 돌아가 연주하라는 지시입니다.'},
-  {q:'Dal segno(D.S.)의 의미는?',opts:['처음으로','𝄋 기호 있는 곳으로','마지막으로','두 번 반복'],ans:1,explain:'Dal segno(D.S.)는 세뇨(𝄋) 기호가 있는 곳으로 돌아가라는 지시입니다.'},
+  {q:'Dal segno(D.S.)의 의미는?',opts:['처음으로','세뇨(Segno) 표시가 있는 곳으로','마지막으로','두 번 반복'],ans:1,explain:'Dal segno(D.S.)는 세뇨(Segno) 표시가 있는 곳으로 돌아가라는 지시입니다.'},
   {q:'"Fine"의 의미는?',opts:['시작','끝','반복','느리게'],ans:1,explain:'Fine(피네)는 "끝"을 의미하며 D.C. al Fine와 함께 쓰여 그곳에서 곡이 끝납니다.'},
   {q:'테누토(tenuto)기호(-)의 의미는?',opts:['짧게 끊어','음 길이를 충분히 유지','크게 강조','아주 여리게'],ans:1,explain:'테누토는 음표의 충분한 길이를 유지하면서 가볍게 강조하는 주법입니다.'},
 ],
@@ -299,7 +285,7 @@ chord:[
   {q:'장2도의 반음 수는?',opts:['1반음','2반음','3반음','4반음'],ans:1,explain:'장2도 = 2반음(온음 1개). 예: 도~레.'},
   {q:'단2도의 반음 수는?',opts:['1반음','2반음','3반음','4반음'],ans:0,explain:'단2도 = 1반음(반음 1개). 예: 미~파, 시~도.'},
   {q:'C장조 II도 화음은?',opts:['CEG','DFA','EGB','GBD'],ans:1,explain:'II도 화음은 음계 2번째 음에서 시작합니다. C장조: D-F-A (단화음).'},
-  {q:'전위화음이란?',opts:['으뜸음이 베이스에 오지 않는 화음','반음이 없는 화음','5음이 없는 화음','7음이 추가된 화음'],ans:0,explain:'전위화음은 화음의 구성음 중 으뜸음이 아닌 다른 음이 베이스에 오는 화음입니다.'},
+  {q:'전위화음이란?',opts:['근음이 아닌 구성음이 베이스에 오는 화음','반음이 없는 화음','5음이 없는 화음','7음이 추가된 화음'],ans:0,explain:'전위화음은 화음의 근음(기본음)이 아닌 다른 구성음이 베이스에 오는 화음입니다.'},
 ],
 inst:[
   {q:'현악기에 해당하지 않는 것은?',opts:['바이올린','첼로','클라리넷','비올라'],ans:2,explain:'클라리넷은 목관악기입니다. 현악기: 바이올린, 비올라, 첼로, 콘트라베이스.'},
@@ -347,43 +333,68 @@ form:[
 ],
 };
 
-let state={screen:'home',cat:null,qs:[],cur:0,score:0,answers:[],startTime:0,streak:0};
+let state={screen:'home',cat:null,qs:[],cur:0,score:0,answers:[],startTime:0,streak:0,bestStreak:0};
 let storage={total:0,correct:0,maxStreak:0,catDone:{}};
+const SVG_NS='http://www.w3.org/2000/svg';
+
+function byId(id){return document.getElementById(id)}
+function node(tag,className,text){
+  const el=document.createElement(tag);
+  if(className)el.className=className;
+  if(text!==undefined)el.textContent=text;
+  return el;
+}
+function svgNode(tag,attrs={}){
+  const el=document.createElementNS(SVG_NS,tag);
+  Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,String(v)));
+  return el;
+}
 
 function loadStorage(){
-  try{const s=JSON.parse(localStorage.getItem('mqz')||'{}');
-  storage={total:s.total||0,correct:s.correct||0,maxStreak:s.maxStreak||0,catDone:s.catDone||{}};}
-  catch(e){}
+  try{
+    const s=JSON.parse(localStorage.getItem('mqz')||'{}');
+    storage={total:s.total||0,correct:s.correct||0,maxStreak:s.maxStreak||0,catDone:s.catDone||{}};
+  }catch(error){
+    console.warn('저장된 학습 기록을 불러오지 못했습니다.',error);
+  }
 }
-function saveStorage(){try{localStorage.setItem('mqz',JSON.stringify(storage));}catch(e){}}
+function saveStorage(){
+  try{localStorage.setItem('mqz',JSON.stringify(storage));}
+  catch(error){console.warn('학습 기록을 저장하지 못했습니다.',error);}
+}
 
 function updateHomeStats(){
   const pct=storage.total>0?Math.round(storage.correct/storage.total*100):0;
-  document.getElementById('gs-total').textContent=storage.total;
-  document.getElementById('gs-correct').textContent=pct+'%';
-  document.getElementById('gs-streak').textContent=storage.maxStreak;
+  byId('gs-total').textContent=storage.total;
+  byId('gs-correct').textContent=pct+'%';
+  byId('gs-streak').textContent=storage.maxStreak;
 }
 
 function buildCategoryGrid(){
-  const g=document.getElementById('cat-grid');
-  g.innerHTML='';
+  const g=byId('cat-grid');
+  g.replaceChildren();
   CATS.forEach(c=>{
     const done=storage.catDone[c.id];
-    const div=document.createElement('div');
-    div.className='cat-card';
-    div.innerHTML=`<div class="cat-accent" style="background:${c.accent}"></div>
-<div class="cat-icon">${c.icon}</div>
-<div class="cat-title">${c.title}</div>
-<div class="cat-sub">${c.sub}</div>
-${done!==undefined?`<span class="cat-badge badge-done">완료 ${done}%</span>`:`<span class="cat-badge badge-new">NEW</span>`}`;
-    div.onclick=()=>startQuiz(c.id);
-    g.appendChild(div);
+    const btn=node('button','cat-card');
+    btn.type='button';
+    btn.setAttribute('aria-label',`${c.title} 퀴즈 시작`);
+    btn.addEventListener('click',()=>startQuiz(c.id));
+    const accent=node('span','cat-accent');
+    accent.style.background=c.accent;
+    btn.append(
+      accent,
+      node('span','cat-icon',c.icon),
+      node('span','cat-title',c.title),
+      node('span','cat-sub',c.sub),
+      node('span',done!==undefined?'cat-badge badge-done':'cat-badge badge-new',done!==undefined?`완료 ${done}%`:'NEW')
+    );
+    g.appendChild(btn);
   });
 }
 
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  byId(id).classList.add('active');
   window.scrollTo(0,0);
 }
 
@@ -393,41 +404,77 @@ function goHome(){
   buildCategoryGrid();
 }
 
-function shuffle(arr){return arr.slice().sort(()=>Math.random()-0.5)}
+function shuffle(arr){
+  const copy=arr.slice();
+  for(let i=copy.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [copy[i],copy[j]]=[copy[j],copy[i]];
+  }
+  return copy;
+}
+
+function renderNotation(target,notation){
+  target.replaceChildren();
+  if(!notation){target.style.display='none';return;}
+  target.style.display='block';
+  const wrap=node('div','notation-card');
+  const svg=svgNode('svg',{viewBox:'0 0 220 96',width:'220',height:'96',role:'img','aria-label':notation.label||'음악 기호'});
+  for(let y=24;y<=64;y+=10)svg.appendChild(svgNode('line',{x1:18,y1:y,x2:202,y2:y,stroke:'currentColor','stroke-width':'1.4',opacity:'.55'}));
+  const label=node('div','review-a',notation.label||'');
+  label.style.textAlign='center';
+  label.style.marginTop='6px';
+
+  if(notation.type==='rest'){
+    svg.append(svgNode('rect',{x:94,y:44,width:32,height:9,rx:2,fill:'currentColor'}),svgNode('path',{d:'M100 54c5 9 14 9 20 0',fill:'none',stroke:'currentColor','stroke-width':3,'stroke-linecap':'round'}));
+  }else{
+    const filled=!['whole','half','dotted-half'].includes(notation.value);
+    const notehead=svgNode('ellipse',{cx:108,cy:52,rx:18,ry:11,transform:'rotate(-18 108 52)',fill:filled?'currentColor':'none',stroke:'currentColor','stroke-width':'3'});
+    svg.appendChild(notehead);
+    if(notation.value!=='whole')svg.appendChild(svgNode('line',{x1:123,y1:49,x2:123,y2:15,stroke:'currentColor','stroke-width':3,'stroke-linecap':'round'}));
+    if(notation.value==='eighth')svg.appendChild(svgNode('path',{d:'M123 15c23 8 24 20 8 30',fill:'none',stroke:'currentColor','stroke-width':3,'stroke-linecap':'round'}));
+    if(notation.value&&notation.value.startsWith('dotted'))svg.appendChild(svgNode('circle',{cx:144,cy:49,r:3.5,fill:'currentColor'}));
+  }
+  wrap.append(svg,label);
+  target.appendChild(wrap);
+}
 
 function startQuiz(catId){
   const cat=CATS.find(c=>c.id===catId);
   const allQ=QUESTIONS[catId];
   const qs=shuffle(allQ).slice(0,10).map(q=>({...q}));
-  state={screen:'quiz',cat,qs,cur:0,score:0,answers:[],startTime:Date.now(),streak:0};
-  document.getElementById('q-cat-name').textContent=cat.title;
-  document.querySelector('.progress-fill').style.background=cat.accent;
+  state={screen:'quiz',cat,qs,cur:0,score:0,answers:[],startTime:Date.now(),streak:0,bestStreak:0};
+  byId('q-cat-name').textContent=cat.title;
+  byId('q-prog-fill').style.background=cat.accent;
   renderQuestion();
   showScreen('quiz-screen');
+  byId('q-text').focus?.();
 }
 
 function renderQuestion(){
   const q=state.qs[state.cur];
   const n=state.cur+1;
   const total=state.qs.length;
-  document.getElementById('q-num').textContent=`문제 ${n}`;
-  document.getElementById('q-progress').textContent=`${n} / ${total}`;
-  document.getElementById('q-prog-fill').style.width=`${(n-1)/total*100}%`;
-  document.getElementById('q-text').textContent=q.q;
-  const img=document.getElementById('q-image');
-  if(q.img){img.textContent=q.img;img.style.display='block';}else{img.style.display='none';}
-  const opts=document.getElementById('q-options');
+  const progress=Math.round((n-1)/total*100);
+  byId('q-num').textContent=`문제 ${n}`;
+  byId('q-progress').textContent=`${n} / ${total}`;
+  byId('q-prog-fill').style.width=`${progress}%`;
+  byId('q-progressbar').setAttribute('aria-valuenow',String(progress));
+  byId('q-text').textContent=q.q;
+  renderNotation(byId('q-image'),q.notation);
+  const opts=byId('q-options');
   const labels=['A','B','C','D'];
-  opts.innerHTML='';
+  opts.replaceChildren();
   q.opts.forEach((o,i)=>{
     const btn=document.createElement('button');
     btn.className='opt-btn';
-    btn.innerHTML=`<span class="opt-label">${labels[i]}</span><span>${o}</span>`;
-    btn.onclick=()=>selectAnswer(i,btn);
+    btn.type='button';
+    btn.append(node('span','opt-label',labels[i]),node('span','opt-text',o));
+    btn.addEventListener('click',()=>selectAnswer(i,btn));
     opts.appendChild(btn);
   });
-  document.getElementById('feedback').className='feedback-bar';
-  document.getElementById('next-btn').style.display='none';
+  byId('feedback').className='feedback-bar';
+  byId('feedback').removeAttribute('tabindex');
+  byId('next-btn').style.display='none';
 }
 
 function selectAnswer(idx,btn){
@@ -437,12 +484,13 @@ function selectAnswer(idx,btn){
   btns.forEach(b=>b.disabled=true);
   btns[q.ans].classList.add('correct');
   if(!correct)btn.classList.add('wrong');
-  const fb=document.getElementById('feedback');
-  const fi=document.getElementById('fb-icon');
-  const ft=document.getElementById('fb-text');
-  const fe=document.getElementById('fb-explain');
+  const fb=byId('feedback');
+  const fi=byId('fb-icon');
+  const ft=byId('fb-text');
+  const fe=byId('fb-explain');
   if(correct){
     state.score++;state.streak++;
+    if(state.streak>state.bestStreak)state.bestStreak=state.streak;
     fi.textContent='✓';ft.textContent='정답입니다!';ft.className='feedback-text ok';fb.className='feedback-bar show ok';
   }else{
     state.streak=0;
@@ -450,8 +498,12 @@ function selectAnswer(idx,btn){
   }
   fe.textContent=q.explain||'';
   state.answers.push({q:q.q,opts:q.opts,ans:q.ans,chosen:idx,correct,explain:q.explain||''});
-  document.getElementById('next-btn').style.display='block';
-  document.getElementById('q-prog-fill').style.width=`${(state.cur+1)/state.qs.length*100}%`;
+  const done=Math.round((state.cur+1)/state.qs.length*100);
+  byId('next-btn').style.display='block';
+  byId('q-prog-fill').style.width=`${done}%`;
+  byId('q-progressbar').setAttribute('aria-valuenow',String(done));
+  fb.setAttribute('tabindex','-1');
+  fb.focus({preventScroll:true});
 }
 
 function nextQuestion(){
@@ -464,37 +516,59 @@ function showResult(){
   const pct=Math.round(state.score/state.qs.length*100);
   storage.total+=state.qs.length;
   storage.correct+=state.score;
-  if(state.streak>storage.maxStreak)storage.maxStreak=state.streak;
+  if(state.bestStreak>storage.maxStreak)storage.maxStreak=state.bestStreak;
   storage.catDone[state.cat.id]=pct;
   saveStorage();
+  updateHomeStats();
   const arc=document.getElementById('score-arc');
   const circ=2*Math.PI*42;
   arc.setAttribute('stroke-dasharray',`${circ*pct/100} ${circ}`);
   arc.setAttribute('stroke',pct>=80?'#639922':pct>=60?'#BA7517':'#E24B4A');
-  document.getElementById('score-pct').textContent=pct+'%';
+  byId('score-pct').textContent=pct+'%';
   const msgs=pct>=90?['완벽해요!','음악 천재 🎵']:pct>=70?['잘했어요!','꾸준히 공부해요']:pct>=50?['절반 이상!','복습이 필요해요']:['더 노력해요','열심히 공부해봐요'];
-  document.getElementById('result-title').textContent=msgs[0];
-  document.getElementById('result-sub').textContent=`${state.score}/${state.qs.length} 정답 · ${msgs[1]}`;
-  document.getElementById('r-correct').textContent=state.score;
-  document.getElementById('r-wrong').textContent=state.qs.length-state.score;
-  document.getElementById('r-time').textContent=elapsed+'s';
-  const rl=document.getElementById('review-list');
-  rl.innerHTML='';
+  byId('result-title').textContent=msgs[0];
+  byId('result-sub').textContent=`${state.score}/${state.qs.length} 정답 · ${msgs[1]}`;
+  byId('r-correct').textContent=state.score;
+  byId('r-wrong').textContent=state.qs.length-state.score;
+  byId('r-time').textContent=elapsed+'s';
+  byId('print-date').textContent=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});
+  const rl=byId('review-list');
+  rl.replaceChildren();
   state.answers.forEach((a,i)=>{
-    const div=document.createElement('div');
-    div.className='review-item';
-    div.innerHTML=`<div class="review-dot" style="background:${a.correct?'#639922':'#E24B4A'}"></div>
-<div>
-<div class="review-q">${i+1}. ${a.q}</div>
-<div class="review-a">${a.correct?'✓ 정답':'✗ 내 답: '+a.opts[a.chosen]+' · 정답: '+a.opts[a.ans]}</div>
-<div class="review-a" style="margin-top:2px;opacity:0.75">${a.explain}</div>
-</div>`;
+    const div=node('div','review-item');
+    const dot=node('div','review-dot');
+    dot.style.background=a.correct?'var(--success)':'var(--danger)';
+    const body=node('div');
+    const question=node('div','review-q',`${i+1}. ${a.q}`);
+    const answer=node('div','review-a',a.correct?'✓ 정답':`✗ 내 답: ${a.opts[a.chosen]} · 정답: ${a.opts[a.ans]}`);
+    const explain=node('div','review-a',a.explain);
+    explain.style.marginTop='2px';
+    explain.style.opacity='.78';
+    body.append(question,answer,explain);
+    div.append(dot,body);
     rl.appendChild(div);
   });
   showScreen('result-screen');
 }
 
 function retryQuiz(){startQuiz(state.cat.id);}
+
+byId('intro-start-btn').addEventListener('click',goHome);
+byId('quiz-home-btn').addEventListener('click',goHome);
+byId('result-home-btn').addEventListener('click',goHome);
+byId('next-btn').addEventListener('click',nextQuestion);
+byId('retry-btn').addEventListener('click',retryQuiz);
+byId('other-cat-btn').addEventListener('click',goHome);
+
+byId('pdf-download-btn').addEventListener('click',function(){
+  const area=byId('print-area');
+  const name=byId('student-name').value.trim();
+  const date=new Date().toISOString().slice(0,10).replace(/-/g,'');
+  const fn=name?`음악이론_${name}_${date}.pdf`:`음악이론_학습결과_${date}.pdf`;
+  area.classList.add('pdf-rendering');
+  const opt={margin:[10,10,10,10],filename:fn,image:{type:'jpeg',quality:.98},html2canvas:{scale:2,useCORS:true,letterRendering:true},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}};
+  html2pdf().set(opt).from(area).save().then(()=>area.classList.remove('pdf-rendering'));
+});
 
 loadStorage();
 updateHomeStats();
