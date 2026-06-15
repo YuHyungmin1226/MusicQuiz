@@ -1377,7 +1377,7 @@ function shuffle(arr){
 function renderNotation(target,notation){
   target.replaceChildren();
   if(!notation){target.style.display='none';return;}
-  target.style.display='block';
+  target.style.display='';
   const wrap=node('div','notation-card');
   const svg=svgNode('svg',{viewBox:'0 0 44 60',role:'img','aria-label':notation.label||'음악 기호'});
   const v=notation.value||'';
