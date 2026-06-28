@@ -37,32 +37,9 @@
   --space:8px;
   --font:"Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
-@media(prefers-color-scheme:dark){
-  :root{
-    color-scheme:dark;
-    --bg:#15161d;
-    --bg-soft:#1c1e27;
-    --surface:#20222c;
-    --surface-strong:#272a36;
-    --text:#e9eaf2;
-    --muted:#a6abbd;
-    --faint:#6b7088;
-    --line:#2f323e;
-    --accent:#8b7cff;
-    --accent-strong:#a99dff;
-    --accent-soft:#262339;
-    --success:#4ade80;
-    --success-soft:#15331f;
-    --danger:#f87171;
-    --danger-soft:#3a1f22;
-    --warning:#fbbf24;
-    --shadow:0 8px 28px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.3);
-    --ring:0 0 0 3px rgba(139,124,255,0.35);
-  }
-}
 body{font-family:var(--font);background:var(--bg);min-height:100vh;color:var(--text);line-height:1.7;overflow-x:hidden}
 button{font:inherit}
-button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)}
+button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
 
 /* Layout Containers */
 .app{width:100%}
@@ -95,7 +72,7 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
 .feature-mini p{font-size:12.5px;color:var(--muted);line-height:1.5}
 @media(max-width:600px){.feature-strip{grid-template-columns:1fr}}
 .category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:30px}
-.cat-card{appearance:none;width:100%;text-align:left;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--radius-md);padding:20px;cursor:pointer;transition:all .15s ease;position:relative;overflow:hidden;min-height:140px;display:flex;flex-direction:column;justify-content:flex-start;box-shadow:var(--shadow)}
+.cat-card{appearance:none;width:100%;text-align:left;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--radius-md);padding:20px;transition:all .15s ease;position:relative;overflow:hidden;min-height:140px;display:flex;flex-direction:column;justify-content:flex-start;box-shadow:var(--shadow)}
 .cat-card:hover{border-color:var(--accent);background:var(--surface-strong);transform:translateY(-2px)}
 .cat-accent{width:3px;height:100%;position:absolute;left:0;top:0}
 .cat-icon{display:block;font-size:22px;margin-bottom:12px}
@@ -256,9 +233,9 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
   .result-card{padding:20px 14px}
 }
 @media(max-width:360px){
-  .nav-brand{font-size:13px}
-  .nav-links{gap:6px}
-  .nav-link{font-size:10.5px}
+  .brand{font-size:14px}
+  .appnav{gap:6px}
+  .navbtn{font-size:12px;padding:6px 10px}
 }
 
 /* Study Screen Styles */
@@ -323,7 +300,7 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
   <header class="appbar">
     <div class="appbar-inner">
       <button class="brand" id="nav-brand-btn" type="button">🎵 MusicQuiz</button>
-      <nav class="appnav">
+      <nav class="appnav" aria-label="주요 화면">
         <button class="navbtn" id="nav-home-btn" type="button">홈</button>
         <button class="navbtn" id="nav-about-btn" type="button">소개</button>
       </nav>
@@ -334,7 +311,7 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
   <div class="screen active" id="home-screen">
     <section class="hero">
       <span class="hero-badge">🎵 중등 음악 이론</span>
-      <h1>음악 이론 퀴즈</h1>
+      <h1 id="home-title" tabindex="-1">음악 이론 퀴즈</h1>
       <p class="lead">중학교 음악 교육과정 기반 · 7개 영역 · 140문항. 이론을 익히고 퀴즈로 점검한 뒤, 결과를 PDF 리포트로 저장하세요.</p>
     </section>
 
@@ -356,11 +333,11 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
   </div>
 
   <!-- Study Section Container (동적 스크롤 인라인 배치) -->
-  <div class="screen" id="study-screen">
+  <div class="screen" id="study-screen" hidden aria-hidden="true">
     <button class="back-btn" id="study-home-btn" type="button">← 홈으로</button>
     <div class="study-card">
       <div class="study-header">
-        <h2 id="study-title" style="font-size:24px;font-weight:700;">이론 학습</h2>
+        <h2 id="study-title" tabindex="-1" style="font-size:24px;font-weight:700;">이론 학습</h2>
         <p class="typora-comment" id="study-subtitle" style="margin-top:4px;"></p>
       </div>
       <div id="study-content" class="study-content"></div>
@@ -371,7 +348,7 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
   </div>
 
   <!-- Quiz Section Container (동적 스크롤 인라인 배치) -->
-  <div class="screen" id="quiz-screen">
+  <div class="screen" id="quiz-screen" hidden aria-hidden="true">
     <button class="back-btn" id="quiz-home-btn" type="button">← 홈으로</button>
     <div class="quiz-header">
       <div class="quiz-meta">
@@ -384,11 +361,11 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
     </div>
     <div class="question-card">
       <div class="q-num" id="q-num"></div>
-      <div class="q-text" id="q-text"></div>
+      <div class="q-text" id="q-text" tabindex="-1"></div>
       <div class="q-image" id="q-image" style="display:none"></div>
       <div class="options-grid" id="q-options" role="group" aria-labelledby="q-text"></div>
     </div>
-    <div class="feedback-bar" id="feedback" aria-live="polite">
+    <div class="feedback-bar" id="feedback" aria-live="polite" role="status">
       <div class="feedback-icon" id="fb-icon"></div>
       <div>
         <div class="feedback-text" id="fb-text"></div>
@@ -399,7 +376,7 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
   </div>
 
   <!-- Result Section Container (동적 스크롤 인라인 배치) -->
-  <div class="screen" id="result-screen">
+  <div class="screen" id="result-screen" hidden aria-hidden="true">
     <button class="back-btn" id="result-home-btn" type="button">← 홈으로</button>
     <div id="print-area" class="print-area">
       <div class="print-header">
@@ -419,7 +396,7 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
           </svg>
           <div class="score-center" id="score-pct"></div>
         </div>
-        <div class="result-title" id="result-title"></div>
+        <div class="result-title" id="result-title" tabindex="-1"></div>
         <div class="result-sub" id="result-sub"></div>
         <div class="result-stats">
           <div class="r-stat"><div class="r-stat-n" id="r-correct" style="color:#639922">0</div><div class="r-stat-l">정답</div></div>
@@ -453,10 +430,10 @@ button:focus-visible,.cat-card:focus-visible{outline:none;box-shadow:var(--ring)
   </div>
 
   <!-- About Screen -->
-  <div class="screen" id="about-screen">
+  <div class="screen" id="about-screen" hidden aria-hidden="true">
     <button class="back-btn" id="about-home-btn" type="button">← 홈으로</button>
     <section class="about">
-      <h2 class="section-h">소개</h2>
+      <h2 class="section-h" id="about-title" tabindex="-1">소개</h2>
       <p>MusicQuiz는 중학교 음악 교육과정을 기반으로 한 이론 학습·퀴즈 도구입니다. 회원가입 없이 바로 사용할 수 있으며, 학습 기록은 이 기기에만 저장됩니다.</p>
       <p>건의사항이나 학습 문의는 아래 이메일로 전달해 주세요.</p>
       <p class="about-email">Email · <a href="mailto:dew1052ii@gmail.com">dew1052ii@gmail.com</a></p>
@@ -649,12 +626,37 @@ function svgNode(tag,attrs={}){
   return el;
 }
 
+function nonNegativeInt(value){
+  const n=Number(value);
+  return Number.isFinite(n)&&n>0?Math.floor(n):0;
+}
+
+function percentValue(value){
+  const n=Number(value);
+  if(!Number.isFinite(n))return undefined;
+  return Math.min(100,Math.max(0,Math.round(n)));
+}
+
 function loadStorage(){
   try{
     const s=JSON.parse(localStorage.getItem('mqz')||'{}');
-    storage={total:s.total||0,correct:s.correct||0,maxStreak:s.maxStreak||0,catDone:s.catDone||{}};
+    const catDone={};
+    if(s.catDone&&typeof s.catDone==='object'&&!Array.isArray(s.catDone)){
+      CATS.forEach(c=>{
+        const pct=percentValue(s.catDone[c.id]);
+        if(pct!==undefined)catDone[c.id]=pct;
+      });
+    }
+    storage={
+      total:nonNegativeInt(s.total),
+      correct:nonNegativeInt(s.correct),
+      maxStreak:nonNegativeInt(s.maxStreak),
+      catDone
+    };
+    if(storage.correct>storage.total)storage.correct=storage.total;
   }catch(error){
     console.warn('저장된 학습 기록을 불러오지 못했습니다.',error);
+    storage={total:0,correct:0,maxStreak:0,catDone:{}};
   }
 }
 function saveStorage(){
@@ -674,7 +676,7 @@ function buildCategoryGrid(){
   g.replaceChildren();
   CATS.forEach(c=>{
     const done=storage.catDone[c.id];
-    const card=node('div','cat-card');
+    const card=node('article','cat-card');
     
     const accent=node('span','cat-accent');
     accent.style.background=c.accent;
@@ -688,11 +690,13 @@ function buildCategoryGrid(){
     const actions=node('div','cat-actions');
     const learnBtn=node('button','cat-btn');
     learnBtn.type='button';
+    learnBtn.setAttribute('aria-label',`${c.title} 이론 학습`);
     learnBtn.append(node('span',undefined,'📖'), node('span',undefined,'이론 학습'));
     learnBtn.addEventListener('click',()=>goStudy(c.id));
     
     const quizBtn=node('button','cat-btn pri');
     quizBtn.type='button';
+    quizBtn.setAttribute('aria-label',`${c.title} 퀴즈 도전`);
     quizBtn.append(node('span',undefined,'✍️'), node('span',undefined,'퀴즈 도전'));
     quizBtn.addEventListener('click',()=>startQuiz(c.id));
     
@@ -772,7 +776,7 @@ function goStudy(catId){
     renderFormStudy(content);
   }
   
-  showScreen('study-screen');
+  showScreen('study-screen','study-title');
 }
 
 function renderNoteStudy(parent){
@@ -1348,11 +1352,43 @@ function renderFormStudy(parent){
   parent.append(sec1, sec2, sec3);
 }
 
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+function updateNavState(id){
+  const homeBtn=byId('nav-home-btn');
+  const aboutBtn=byId('nav-about-btn');
+  if(id==='home-screen')homeBtn.setAttribute('aria-current','page');else homeBtn.removeAttribute('aria-current');
+  if(id==='about-screen')aboutBtn.setAttribute('aria-current','page');else aboutBtn.removeAttribute('aria-current');
+}
+
+function focusScreenTarget(id){
   const el=byId(id);
-  if(el)el.classList.add('active');
+  if(!el)return;
+  requestAnimationFrame(()=>el.focus({preventScroll:true}));
+}
+
+function showScreen(id,focusTargetId){
+  document.querySelectorAll('.screen').forEach(s=>{
+    const active=s.id===id;
+    s.classList.toggle('active',active);
+    s.hidden=!active;
+    s.setAttribute('aria-hidden',String(!active));
+  });
+  const el=byId(id);
+  if(el){
+    el.classList.add('active');
+    el.hidden=false;
+    el.setAttribute('aria-hidden','false');
+  }
+  const screenName={
+    'home-screen':'home',
+    'study-screen':'study',
+    'quiz-screen':'quiz',
+    'result-screen':'result',
+    'about-screen':'about'
+  }[id];
+  if(screenName)state.screen=screenName;
+  updateNavState(id);
   window.scrollTo(0,0);
+  if(focusTargetId)focusScreenTarget(focusTargetId);
 }
 
 function goHome(){
@@ -1360,12 +1396,14 @@ function goHome(){
     clearInterval(window.metroInterval);
     window.metroInterval = null;
   }
-  showScreen('home-screen');
+  state.screen='home';
+  showScreen('home-screen','home-title');
   updateHomeStats();
   buildCategoryGrid();
 }
 
 function shuffle(arr){
+  if(!Array.isArray(arr))return [];
   const copy=arr.slice();
   for(let i=copy.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
@@ -1434,17 +1472,25 @@ function startQuiz(catId){
   }
   const cat=CATS.find(c=>c.id===catId);
   const allQ=QUESTIONS[catId];
+  if(!cat||!Array.isArray(allQ)||allQ.length===0){
+    console.warn('Invalid quiz category:',catId);
+    goHome();
+    return;
+  }
   const qs=shuffle(allQ).slice(0,10).map(q=>({...q}));
   state={screen:'quiz',cat,qs,cur:0,score:0,answers:[],startTime:Date.now(),streak:0,bestStreak:0};
   byId('q-cat-name').textContent=cat.title;
   byId('q-prog-fill').style.background=cat.accent;
   renderQuestion();
-  showScreen('quiz-screen');
-  byId('q-text').focus?.();
+  showScreen('quiz-screen','q-text');
 }
 
 function renderQuestion(){
   const q=state.qs[state.cur];
+  if(!q){
+    showResult();
+    return;
+  }
   const n=state.cur+1;
   const total=state.qs.length;
   const progress=Math.round((n-1)/total*100);
@@ -1452,6 +1498,7 @@ function renderQuestion(){
   byId('q-progress').textContent=`${n} / ${total}`;
   byId('q-prog-fill').style.width=`${progress}%`;
   byId('q-progressbar').setAttribute('aria-valuenow',String(progress));
+  byId('q-progressbar').setAttribute('aria-valuetext',`${n} / ${total}`);
   byId('q-text').textContent=q.q;
   renderNotation(byId('q-image'),q.notation);
   const opts=byId('q-options');
@@ -1471,9 +1518,12 @@ function renderQuestion(){
 }
 
 function selectAnswer(idx,btn){
+  if(state.screen!=='quiz'||state.answers.length>state.cur)return;
   const q=state.qs[state.cur];
+  if(!q||!Number.isInteger(idx)||idx<0||idx>=q.opts.length)return;
   const correct=idx===q.ans;
   const btns=document.querySelectorAll('.opt-btn');
+  if(!btns[q.ans])return;
   btns.forEach(b=>b.disabled=true);
   btns[q.ans].classList.add('correct');
   btns[q.ans].appendChild(node('span','state-mark','✓'));
@@ -1496,16 +1546,24 @@ function selectAnswer(idx,btn){
   byId('next-btn').style.display='block';
   byId('q-prog-fill').style.width=`${done}%`;
   byId('q-progressbar').setAttribute('aria-valuenow',String(done));
+  byId('q-progressbar').setAttribute('aria-valuetext',`${state.cur+1} / ${state.qs.length} 완료`);
   fb.setAttribute('tabindex','-1');
   fb.focus({preventScroll:true});
 }
 
 function nextQuestion(){
+  if(state.screen!=='quiz'||state.answers.length<=state.cur)return;
   state.cur++;
-  if(state.cur>=state.qs.length){showResult();}else{renderQuestion();}
+  if(state.cur>=state.qs.length){showResult();}else{renderQuestion();focusScreenTarget('q-text');}
 }
 
 function showResult(){
+  if(state.screen==='result')return;
+  if(!state.qs.length){
+    goHome();
+    return;
+  }
+  state.screen='result';
   const elapsed=Math.round((Date.now()-state.startTime)/1000);
   const pct=Math.round(state.score/state.qs.length*100);
   storage.total+=state.qs.length;
@@ -1543,10 +1601,10 @@ function showResult(){
     div.append(dot,body);
     rl.appendChild(div);
   });
-  showScreen('result-screen');
+  showScreen('result-screen','result-title');
 }
 
-function retryQuiz(){startQuiz(state.cat.id);}
+function retryQuiz(){if(state.cat)startQuiz(state.cat.id);}
 
 byId('quiz-home-btn').addEventListener('click',goHome);
 byId('result-home-btn').addEventListener('click',goHome);
@@ -1558,16 +1616,22 @@ byId('other-cat-btn').addEventListener('click',goHome);
 
 byId('nav-brand-btn').addEventListener('click',goHome);
 byId('nav-home-btn').addEventListener('click',goHome);
-byId('nav-about-btn').addEventListener('click',()=>showScreen('about-screen'));
+byId('nav-about-btn').addEventListener('click',()=>showScreen('about-screen','about-title'));
 byId('about-home-btn').addEventListener('click',goHome);
 
 // 전체 결과를 항상 한 페이지에 담는다.
 // jsPDF/html2canvas 전역이 있으면 A4 한 장에 비율을 유지해 축소 배치하고,
 // 노출되지 않은 환경에서는 콘텐츠 크기에 맞춘 단일 페이지로 생성한다(둘 다 1페이지).
 function savePdf(area,fn){
+  if(!area){
+    return Promise.reject(new Error('PDF area is missing.'));
+  }
   const jsPDFCtor=(window.jspdf&&window.jspdf.jsPDF)||window.jsPDF;
   if(window.html2canvas&&jsPDFCtor){
     return window.html2canvas(area,{scale:2,useCORS:true,scrollX:0,scrollY:0,backgroundColor:'#fffdf8'}).then(function(canvas){
+      if(!canvas.width||!canvas.height){
+        throw new Error('PDF canvas is empty.');
+      }
       const pdf=new jsPDFCtor({unit:'mm',format:'a4',orientation:'portrait'});
       const pageW=pdf.internal.pageSize.getWidth();
       const pageH=pdf.internal.pageSize.getHeight();
@@ -1579,7 +1643,10 @@ function savePdf(area,fn){
     });
   }
   // 폴백: 페이지 크기를 콘텐츠 크기에 맞춘 단일 페이지(인쇄 시 용지에 맞게 축소됨)
-  const cw=area.offsetWidth,ch=area.offsetHeight;
+  if(!window.html2pdf){
+    return Promise.reject(new Error('PDF 라이브러리를 불러오지 못했습니다.'));
+  }
+  const cw=Math.max(1,area.offsetWidth),ch=Math.max(1,area.offsetHeight);
   const opt={margin:0,filename:fn,image:{type:'jpeg',quality:.98},html2canvas:{scale:2,useCORS:true,scrollX:0,scrollY:0},jsPDF:{unit:'px',format:[cw,ch+10],orientation:'portrait'},pagebreak:{mode:[]}};
   return html2pdf().set(opt).from(area).save();
 }
@@ -1591,16 +1658,17 @@ byId('pdf-download-btn').addEventListener('click',function(){
   const date=new Date().toISOString().slice(0,10).replace(/-/g,'');
   const fn=name?`음악이론_${name}_${date}.pdf`:`음악이론_학습결과_${date}.pdf`;
   btn.disabled=true;
-  area.classList.add('pdf-rendering');
+  if(area)area.classList.add('pdf-rendering');
   window.scrollTo(0,0);
   savePdf(area,fn)
     .catch(error=>console.error('PDF 생성에 실패했습니다.',error))
-    .then(()=>{area.classList.remove('pdf-rendering');btn.disabled=false;});
+    .finally(()=>{if(area)area.classList.remove('pdf-rendering');btn.disabled=false;});
 });
 
 loadStorage();
 updateHomeStats();
 buildCategoryGrid();
+showScreen('home-screen','home-title');
 </script>
 </body>
 </html>

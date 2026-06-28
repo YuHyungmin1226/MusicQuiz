@@ -14,6 +14,19 @@ function extractConst(name) {
   return Function(`return (${match[1].slice(0, -1)});`)();
 }
 
+function extractFunction(name) {
+  const start = html.indexOf(`function ${name}(`);
+  assert.ok(start >= 0, `${name} function should exist`);
+  const braceStart = html.indexOf('{', start);
+  let depth = 0;
+  for (let i = braceStart; i < html.length; i++) {
+    if (html[i] === '{') depth++;
+    if (html[i] === '}') depth--;
+    if (depth === 0) return html.slice(start, i + 1);
+  }
+  assert.fail(`${name} function should be complete`);
+}
+
 test('question data is complete and internally consistent', () => {
   const cats = extractConst('CATS');
   const questions = extractConst('QUESTIONS');
@@ -43,7 +56,8 @@ test('unsafe rendering patterns are not used for quiz data', () => {
 });
 
 test('result review list is contained inside result screen', () => {
-  const resultStart = html.indexOf('<div class="screen" id="result-screen">');
+  const resultMatch = html.match(/<div\s+[^>]*class="screen"[^>]*id="result-screen"[^>]*>/);
+  const resultStart = resultMatch ? resultMatch.index : -1;
   const reviewList = html.indexOf('<div id="review-list"></div>', resultStart);
   const footerStart = html.indexOf('<footer class="copyright">', resultStart);
   const resultEnd = html.lastIndexOf('</div>', footerStart);
@@ -59,6 +73,47 @@ test('shuffle and streak logic use production-safe implementation', () => {
   assert.match(html, /for\(let i=copy\.length-1;i>0;i--\)/);
   assert.match(html, /bestStreak/);
   assert.match(html, /state\.bestStreak>storage\.maxStreak/);
+});
+
+test('corrupt localStorage stats are normalized before display', () => {
+  const cats = extractConst('CATS');
+  const stored = {
+    total: '8.9',
+    correct: 99,
+    maxStreak: '-4',
+    catDone: { [cats[0].id]: 120.2, [cats[1].id]: 'bad', unknown: 50 }
+  };
+
+  const storage = Function(
+    'CATS',
+    'stored',
+    `
+    let storage={total:0,correct:0,maxStreak:0,catDone:{}};
+    const localStorage={getItem(){return JSON.stringify(stored);}};
+    const console={warn(){}};
+    ${extractFunction('nonNegativeInt')}
+    ${extractFunction('percentValue')}
+    ${extractFunction('loadStorage')}
+    loadStorage();
+    return storage;
+    `
+  )(cats, stored);
+
+  assert.deepEqual(storage, {
+    total: 8,
+    correct: 8,
+    maxStreak: 0,
+    catDone: { [cats[0].id]: 100 }
+  });
+});
+
+test('quiz state transitions and pdf save have defensive guards', () => {
+  assert.match(html, /if\(!cat\|\|!Array\.isArray\(allQ\)\|\|allQ\.length===0\)/);
+  assert.match(html, /if\(state\.screen!=='quiz'\|\|state\.answers\.length>state\.cur\)return/);
+  assert.match(html, /if\(state\.screen!=='quiz'\|\|state\.answers\.length<=state\.cur\)return/);
+  assert.match(html, /if\(!state\.qs\.length\)/);
+  assert.match(html, /if\(!area\)/);
+  assert.match(html, /\.finally\(\(\)=>\{if\(area\)area\.classList\.remove\('pdf-rendering'\);btn\.disabled=false;\}\)/);
 });
 
 test('music theory wording corrections are present', () => {
