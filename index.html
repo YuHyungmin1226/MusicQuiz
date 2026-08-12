@@ -1412,6 +1412,11 @@ function shuffle(arr){
   return copy;
 }
 
+function shuffleQuestionOptions(q){
+  const order=shuffle(q.opts.map((_,i)=>i));
+  return {...q,opts:order.map(i=>q.opts[i]),ans:order.indexOf(q.ans)};
+}
+
 const INTERVAL_OFFSETS={'min2':6,'maj2':8,'min3':11,'maj3':14,'perfect5':22,'perfect8':38};
 
 function renderNotation(target,notation){
@@ -1523,7 +1528,7 @@ function startQuiz(catId){
     goHome();
     return;
   }
-  const qs=shuffle(allQ).slice(0,10).map(q=>({...q}));
+  const qs=shuffle(allQ).slice(0,10).map(shuffleQuestionOptions);
   state={screen:'quiz',cat,qs,cur:0,score:0,answers:[],startTime:Date.now(),streak:0,bestStreak:0};
   byId('q-cat-name').textContent=cat.title;
   byId('q-prog-fill').style.background=cat.accent;
