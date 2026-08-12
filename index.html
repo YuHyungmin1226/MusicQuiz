@@ -288,7 +288,8 @@ svg.icon{flex-shrink:0}
 
 .form-diagram{display:flex;align-items:center;justify-content:center;gap:8px;margin:16px 0;flex-wrap:wrap}
 .form-block{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:10px 16px;font-weight:700;font-size:14px;text-align:center;box-shadow:var(--shadow)}
-.form-block.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.form-block.active{border-color:var(--cat-c,var(--accent));background:var(--accent-soft);color:var(--cat-c,var(--accent))}
+.q-image .form-diagram{margin:0}
 .form-arrow{font-size:14px;color:var(--faint)}
 
 .cat-actions{display:grid;grid-template-columns:1fr 1.1fr;gap:6px;margin-top:12px;width:100%;z-index:2}
@@ -475,15 +476,15 @@ note:[
   {q:'4분음표를 1박으로 할 때, 점4분음표의 박자 수는?',opts:['1박','1.5박','2박','2.5박'],ans:1,notation:{type:'note',value:'dotted-quarter',label:'점4분음표'},explain:'점음표는 원래 음표 길이의 절반을 더합니다. 점4분음표 = 1박 + ½박 = 1.5박입니다.'},
   {q:'4분음표를 1박으로 할 때, 다음 중 틀린 것은?',opts:['4분음표 = 1박','2분음표 = 2박','온음표 = 4박','8분음표 = 1박'],ans:3,explain:'8분음표는 ½박입니다. 1박은 4분음표입니다.'},
   {q:'4분음표를 1박으로 할 때, 온음표 4개는 몇 박인가요?',opts:['4박','8박','16박','12박'],ans:2,notation:{type:'note',value:'whole',label:'온음표'},explain:'온음표 1개 = 4박이므로, 4개 × 4박 = 16박입니다.'},
-  {q:'겹점음표는 원래 음표의 몇 배인가요?',opts:['1.5배','1.75배','2배','2.5배'],ans:1,explain:'겹점음표는 원래 음표 + 절반 + 1/4, 즉 1.75배입니다.'},
+  {q:'겹점음표는 원래 음표의 몇 배인가요?',opts:['1.5배','1.75배','2배','2.5배'],ans:1,notation:{type:'note',value:'dotted2-quarter',label:'겹점4분음표'},explain:'겹점음표는 원래 음표 + 절반 + 1/4, 즉 1.75배입니다.'},
   {q:'당김음(Syncopation)이란?',opts:['여린박이 강박처럼 강조됨','강박에 음이 오는 것','빠르게 연주하는 기법','쉼표가 많은 리듬'],ans:0,explain:'당김음은 여린박에 시작한 음이 강박까지 이어져 강박처럼 들리는 효과입니다.'},
   {q:'4분음표 4개로 만들 수 있는 박자는?',opts:['2/4박자','3/4박자','4/4박자','6/8박자'],ans:2,notation:{type:'note',value:'quarter',label:'4분음표'},explain:'4/4박자는 한 마디에 4분음표가 4개 들어가는 박자입니다.'},
   {q:'2분음표 쉼표의 모양은?',opts:['선 아래에 붙음','선 위에 있는 직사각형','삐죽한 모양','물결 모양'],ans:1,explain:'2분음표 쉼표는 3번 선 위에 올려놓은 납작한 직사각형으로, 온음표 쉼표와 반대 방향입니다.'},
-  {q:'셋잇단음표(Triplet)에서 3개의 음표가 차지하는 시간은?',opts:['같은 종류 1개 길이','같은 종류 2개 길이','같은 종류 3개 길이','같은 종류 4개 길이'],ans:1,explain:'8분음표 셋잇단음표 3개는 8분음표 2개(= 4분음표 1박)와 같은 시간을 차지합니다.'},
+  {q:'셋잇단음표(Triplet)에서 3개의 음표가 차지하는 시간은?',opts:['같은 종류 1개 길이','같은 종류 2개 길이','같은 종류 3개 길이','같은 종류 4개 길이'],ans:1,notation:{type:'noteseq',value:['eighth','eighth','eighth'],bracket:true,label:'셋잇단음표'},explain:'8분음표 셋잇단음표 3개는 8분음표 2개(= 4분음표 1박)와 같은 시간을 차지합니다.'},
   {q:'온음표 쉼표와 2분음표 쉼표를 구별하는 방법은?',opts:['크기가 다르다','위치가 반대이다','색이 다르다','획수가 다르다'],ans:1,explain:'온음표 쉼표는 선 아래에, 2분음표 쉼표는 선 위에 붙습니다.'},
-  {q:'붙임줄(Tie)의 역할은?',opts:['음을 꾸미는 것','같은 음을 연결해 길이를 늘리는 것','빠르기를 표시','음의 세기를 표시'],ans:1,explain:'붙임줄은 같은 높이의 음표 두 개를 연결하여 하나의 긴 음으로 연주하게 합니다.'},
-  {q:'이음줄(Slur)의 역할은?',opts:['음을 부드럽게 연결','음의 길이를 연장','음의 세기 증가','빠르게 연주'],ans:0,explain:'이음줄은 다른 음들을 부드럽게 이어 레가토로 연주하게 하는 기호입니다.'},
-  {q:'한 마디에 4분음표 4박이 들어가는 박자 표기는?',opts:['2/4','3/4','4/4','6/8'],ans:2,explain:'4/4박자: 분모 4는 4분음표, 분자 4는 한 마디에 4박임을 나타냅니다.'},
+  {q:'붙임줄(Tie)의 역할은?',opts:['음을 꾸미는 것','같은 음을 연결해 길이를 늘리는 것','빠르기를 표시','음의 세기를 표시'],ans:1,notation:{type:'mark',value:'tie',label:'붙임줄'},explain:'붙임줄은 같은 높이의 음표 두 개를 연결하여 하나의 긴 음으로 연주하게 합니다.'},
+  {q:'이음줄(Slur)의 역할은?',opts:['음을 부드럽게 연결','음의 길이를 연장','음의 세기 증가','빠르게 연주'],ans:0,notation:{type:'mark',value:'legato',label:'이음줄'},explain:'이음줄은 다른 음들을 부드럽게 이어 레가토로 연주하게 하는 기호입니다.'},
+  {q:'한 마디에 4분음표 4박이 들어가는 박자 표기는?',opts:['2/4','3/4','4/4','6/8'],ans:2,notation:{type:'note',value:'quarter',label:'4분음표'},explain:'4/4박자: 분모 4는 4분음표, 분자 4는 한 마디에 4박임을 나타냅니다.'},
 ],
 scale:[
   {q:'C장조의 음계 순서는?',opts:['도레미파솔라시도','도레미♭파솔라시도','도레♭미파솔라시도','도레미파♭솔라시도'],ans:0,explain:'C장조는 검은 건반 없이 흰 건반만으로 이루어진 기본 장음계입니다.'},
@@ -494,18 +495,18 @@ scale:[
   {q:'자연단음계와 장음계의 차이점은?',opts:['3·6·7번째 음이 반음 낮음','2·4·6번째 음이 반음 높음','1·3·5번째 음만 다름','모든 음이 반음 낮음'],ans:0,explain:'자연단음계는 장음계의 3, 6, 7번째 음을 각각 반음 낮춰서 만듭니다.'},
   {q:'D장조의 올림표(♯) 수는?',opts:['1개','2개','3개','4개'],ans:1,explain:'D장조는 F♯, C♯ 두 개의 올림표를 가집니다.'},
   {q:'♯이 3개인 장조는?',opts:['G장조','D장조','A장조','E장조'],ans:2,notation:{type:'keysig',value:'sharp3',label:'♯ 3개'},explain:'♯ 3개 = A장조입니다. (F♯, C♯, G♯)'},
-  {q:'반음(Half step)이란?',opts:['피아노에서 인접한 두 건반의 음정','두 음의 음정 간격이 온음인 것','두 옥타브 차이','3도 음정'],ans:0,explain:'반음은 피아노에서 바로 이웃한 두 건반 사이의 가장 작은 음정 간격입니다.'},
+  {q:'반음(Half step)이란?',opts:['피아노에서 인접한 두 건반의 음정','두 음의 음정 간격이 온음인 것','두 옥타브 차이','3도 음정'],ans:0,notation:{type:'interval',value:'min2',label:'반음 (예: 미~파)'},explain:'반음은 피아노에서 바로 이웃한 두 건반 사이의 가장 작은 음정 간격입니다.'},
   {q:'솔페지오에서 "시"의 음이름은?',opts:['A','B','C','G'],ans:1,explain:'도=C, 레=D, 미=E, 파=F, 솔=G, 라=A, 시=B입니다.'},
   {q:'♭이 2개인 조성은?',opts:['F장조','B♭장조','E♭장조','A♭장조'],ans:1,notation:{type:'keysig',value:'flat2',label:'♭ 2개'},explain:'B♭장조는 B♭, E♭ 두 개의 내림표를 가집니다.'},
   {q:'화성단음계(Harmonic minor)의 특징은?',opts:['7번째 음을 반음 올림','6번째 음을 반음 올림','3번째 음을 반음 올림','5번째 음을 반음 올림'],ans:0,explain:'화성단음계는 자연단음계의 7번째 음을 반음 올려서 이끈음 효과를 만듭니다.'},
   {q:'5도권에서 ♯이 하나씩 늘어나는 순서는?',opts:['C→G→D→A→E','C→F→B♭→E♭','C→D→E→F','C→B→A→G'],ans:0,explain:'장조의 ♯ 순서: C(0)→G(1)→D(2)→A(3)→E(4)→B(5)→F♯(6)→C♯(7)'},
-  {q:'"도"에서 옥타브 위의 "도"까지 반음 개수는?',opts:['10개','11개','12개','13개'],ans:2,explain:'한 옥타브는 12개의 반음(반음 간격)으로 구성됩니다.'},
+  {q:'"도"에서 옥타브 위의 "도"까지 반음 개수는?',opts:['10개','11개','12개','13개'],ans:2,notation:{type:'interval',value:'perfect8',label:'옥타브 (도~도)'},explain:'한 옥타브는 12개의 반음(반음 간격)으로 구성됩니다.'},
   {q:'장음계에서 으뜸음(Tonic)은 몇 번째 음인가요?',opts:['1번째','3번째','5번째','7번째'],ans:0,explain:'으뜸음(Tonic)은 음계의 첫 번째 음으로, 조성의 중심음입니다.'},
-  {q:'한 옥타브 안의 서로 다른 반음계 음은 몇 개인가요?',opts:['7개','10개','12개','13개'],ans:2,explain:'반음계는 한 옥타브 안에서 12개의 서로 다른 반음계 음으로 이루어집니다. 옥타브 위의 같은 음까지 세면 13번째 음이 됩니다.'},
+  {q:'한 옥타브 안의 서로 다른 반음계 음은 몇 개인가요?',opts:['7개','10개','12개','13개'],ans:2,notation:{type:'interval',value:'perfect8',label:'한 옥타브'},explain:'반음계는 한 옥타브 안에서 12개의 서로 다른 반음계 음으로 이루어집니다. 옥타브 위의 같은 음까지 세면 13번째 음이 됩니다.'},
   {q:'E장조의 ♯ 개수는?',opts:['2개','3개','4개','5개'],ans:2,explain:'E장조는 F♯, C♯, G♯, D♯ 네 개의 올림표를 가집니다.'},
   {q:'가단조(A minor)의 나란한조(관계장조)는?',opts:['C장조','G장조','F장조','D장조'],ans:0,explain:'가단조의 으뜸음 라(A)에서 단3도 위인 다(C)장조가 나란한조입니다.'},
-  {q:'올림표(♯)의 역할은?',opts:['음을 반음 올린다','음을 반음 낮춘다','음을 온음 올린다','이전 변화표를 취소'],ans:0,explain:'올림표(♯)는 해당 음을 반음 높여 연주하도록 지시합니다.'},
-  {q:'내림표(♭)의 역할은?',opts:['음을 반음 올린다','음을 반음 낮춘다','음을 온음 올린다','온음 낮춘다'],ans:1,explain:'내림표(♭)는 해당 음을 반음 낮춰 연주하도록 지시합니다.'},
+  {q:'올림표(♯)의 역할은?',opts:['음을 반음 올린다','음을 반음 낮춘다','음을 온음 올린다','이전 변화표를 취소'],ans:0,notation:{type:'keysig',value:'sharp1',label:'♯'},explain:'올림표(♯)는 해당 음을 반음 높여 연주하도록 지시합니다.'},
+  {q:'내림표(♭)의 역할은?',opts:['음을 반음 올린다','음을 반음 낮춘다','음을 온음 올린다','온음 낮춘다'],ans:1,notation:{type:'keysig',value:'flat1',label:'♭'},explain:'내림표(♭)는 해당 음을 반음 낮춰 연주하도록 지시합니다.'},
 ],
 rhythm:[
   {q:'4/4박자에서 가장 강한 박은?',opts:['1박','2박','3박','4박'],ans:0,explain:'4/4박자의 강세: 강(1박) - 약(2박) - 중강(3박) - 약(4박)'},
@@ -522,11 +523,11 @@ rhythm:[
   {q:'템포 루바토(Tempo rubato)란?',opts:['빠르기를 자유롭게 변화','일정 빠르기 유지','아주 느리게','박자 없이 연주'],ans:0,explain:'루바토는 감정 표현을 위해 빠르기를 자유롭게 신축적으로 변화시키는 것입니다.'},
   {q:'메트로놈(Metronome)의 역할은?',opts:['음의 높이 측정','정확한 빠르기 표시','음량 측정','악기 조율'],ans:1,explain:'메트로놈은 분당 박자 수(BPM)를 기계적으로 표시하여 정확한 빠르기를 알려줍니다.'},
   {q:'4분음표 = 60 BPM은 1분에 4분음표가 몇 개인가요?',opts:['30개','60개','120개','240개'],ans:1,notation:{type:'note',value:'quarter',label:'4분음표'},explain:'BPM(Beats Per Minute): 4분음표 = 60은 1분에 4분음표 60박을 연주한다는 뜻입니다.'},
-  {q:'복박자(compound time)란?',opts:['각 박이 3으로 나뉘는 박자','홀수 박의 박자','각 박이 2로 나뉘는 박자','강박이 없는 박자'],ans:0,explain:'복박자는 한 박이 8분음표 3개(점4분음표)로 구성되어 3으로 나뉘는 박자입니다. 6/8, 9/8, 12/8이 대표적입니다.'},
+  {q:'복박자(compound time)란?',opts:['각 박이 3으로 나뉘는 박자','홀수 박의 박자','각 박이 2로 나뉘는 박자','강박이 없는 박자'],ans:0,notation:{type:'note',value:'dotted-quarter',label:'점4분음표 (1박=8분음표 3개)'},explain:'복박자는 한 박이 8분음표 3개(점4분음표)로 구성되어 3으로 나뉘는 박자입니다. 6/8, 9/8, 12/8이 대표적입니다.'},
   {q:'당김음 리듬이 자주 쓰이는 음악 장르는?',opts:['클래식','재즈','그레고리안 성가','인도 음악'],ans:1,explain:'당김음(Syncopation)은 재즈, 팝, 블루스에서 스윙감을 주는 핵심 리듬 기법입니다.'},
-  {q:'점4분음표와 8분음표의 조합은 어떤 리듬인가요?',opts:['점리듬(Dotted rhythm)','셋잇단음표','당김음','2연음'],ans:0,explain:'점4분음표+8분음표는 "쿵-짝" 형태의 점리듬(Dotted rhythm)입니다.'},
+  {q:'점4분음표와 8분음표의 조합은 어떤 리듬인가요?',opts:['점리듬(Dotted rhythm)','셋잇단음표','당김음','2연음'],ans:0,notation:{type:'noteseq',value:['dotted-quarter','eighth'],label:'점4분음표 + 8분음표'},explain:'점4분음표+8분음표는 "쿵-짝" 형태의 점리듬(Dotted rhythm)입니다.'},
   {q:'4/4박자에서 3번째 박의 강세는?',opts:['강','약','중강','없음'],ans:2,explain:'4/4박자: 강(1)·약(2)·중강(3)·약(4)으로, 3번째 박은 중강박입니다.'},
-  {q:'다음 중 복박자(compound time)에 해당하는 것은?',opts:['2/4박자','3/4박자','6/8박자','4/4박자'],ans:2,explain:'6/8박자는 겹2박자로, 한 마디에 점4분음표가 2개(한 박이 8분음표 3개씩) 들어가는 대표적인 복박자입니다.'},
+  {q:'다음 중 복박자(compound time)에 해당하는 것은?',opts:['2/4박자','3/4박자','6/8박자','4/4박자'],ans:2,notation:{type:'note',value:'dotted-quarter',label:'점4분음표 (1박=3분할)'},explain:'6/8박자는 겹2박자로, 한 마디에 점4분음표가 2개(한 박이 8분음표 3개씩) 들어가는 대표적인 복박자입니다.'},
   {q:'안단테(Andante)의 뜻은?',opts:['아주 느리게','느리게 걷는 속도로','빠르게','아주 빠르게'],ans:1,explain:'Andante(안단테)는 이탈리아어로 "걷는 속도로"를 뜻합니다.'},
 ],
 mark:[
@@ -566,8 +567,8 @@ chord:[
   {q:'증화음(Augmented chord)의 구성은?',opts:['장3도+장3도','단3도+단3도','장3도+단3도','단3도+장3도'],ans:0,explain:'증화음 = 장3도+장3도, 즉 8반음으로 이루어집니다.'},
   {q:'"종지(Cadence)"란?',opts:['화음 진행의 종지 방식','음계의 이름','박자의 종류','악기 조율법'],ans:0,explain:'종지는 악구나 곡을 마무리하는 화음 진행 방식입니다. V→I(정격종지)가 대표적입니다.'},
   {q:'정격종지란?',opts:['V→I 진행','I→V 진행','IV→I 진행','V→IV 진행'],ans:0,explain:'정격종지(Authentic cadence)는 딸림화음(V)에서 으뜸화음(I)으로 진행하는 가장 완결된 종지입니다.'},
-  {q:'C-E-G 화음은 어떤 종류인가요?',opts:['C단화음','C장화음','C감화음','C증화음'],ans:1,explain:'C-E-G는 장3도(C-E) + 단3도(E-G)로 구성된 C장화음입니다.'},
-  {q:'"아르페지오(Arpeggio)"란?',opts:['화음을 동시에','화음을 순서대로 연주','빠르게 반복','슬라이드 연주'],ans:1,explain:'아르페지오는 화음의 구성음을 아래에서 위로 순서대로 하나씩 연주하는 기법입니다.'},
+  {q:'C-E-G 화음은 어떤 종류인가요?',opts:['C단화음','C장화음','C감화음','C증화음'],ans:1,notation:{type:'triad',value:'major',label:'C-E-G'},explain:'C-E-G는 장3도(C-E) + 단3도(E-G)로 구성된 C장화음입니다.'},
+  {q:'"아르페지오(Arpeggio)"란?',opts:['화음을 동시에','화음을 순서대로 연주','빠르게 반복','슬라이드 연주'],ans:1,notation:{type:'mark',value:'arpeggio',label:'아르페지오'},explain:'아르페지오는 화음의 구성음을 아래에서 위로 순서대로 하나씩 연주하는 기법입니다.'},
   {q:'장2도의 반음 수는?',opts:['1반음','2반음','3반음','4반음'],ans:1,notation:{type:'interval',value:'maj2',label:'장2도 (도~레)'},explain:'장2도 = 2반음(온음 1개). 예: 도~레.'},
   {q:'단2도의 반음 수는?',opts:['1반음','2반음','3반음','4반음'],ans:0,notation:{type:'interval',value:'min2',label:'단2도 (미~파)'},explain:'단2도 = 1반음(반음 1개). 예: 미~파, 시~도.'},
   {q:'C장조 II도 화음은?',opts:['CEG','DFA','EGB','GBD'],ans:1,explain:'II도 화음은 음계 2번째 음에서 시작합니다. C장조: D-F-A (단화음).'},
@@ -596,11 +597,11 @@ inst:[
   {q:'심벌즈(Cymbals)는 어떤 악기인가요?',opts:['현악기','관악기','타악기','건반악기'],ans:2,explain:'심벌즈는 두 개의 금속 원판을 부딪쳐 소리를 내는 타악기입니다.'},
 ],
 form:[
-  {q:'두도막 형식(AB)의 특징은?',opts:['두 개의 서로 다른 악절','세 개의 악절','같은 악절 반복','무정형'],ans:0,explain:'두도막 형식(AB)은 a와 b 두 악절로 구성됩니다.'},
-  {q:'세도막 형식(ABA)의 특징은?',opts:['처음 악절이 마지막에 반복','세 악절이 모두 다름','가운데만 반복','끝없이 반복'],ans:0,explain:'세도막 형식(ABA)은 A부분-B부분-A부분 재현의 3부 구조입니다.'},
+  {q:'두도막 형식(AB)의 특징은?',opts:['두 개의 서로 다른 악절','세 개의 악절','같은 악절 반복','무정형'],ans:0,formDiagram:{blocks:[{notation:{type:'phrase',value:'A',label:'A'}},{notation:{type:'phrase',value:'B',label:'B'}}]},explain:'두도막 형식(AB)은 a와 b 두 악절로 구성됩니다.'},
+  {q:'세도막 형식(ABA)의 특징은?',opts:['처음 악절이 마지막에 반복','세 악절이 모두 다름','가운데만 반복','끝없이 반복'],ans:0,formDiagram:{blocks:[{notation:{type:'phrase',value:'A',label:'A'}},{notation:{type:'phrase',value:'B',label:'B'}},{notation:{type:'phrase',value:'A',label:'A'}}]},explain:'세도막 형식(ABA)은 A부분-B부분-A부분 재현의 3부 구조입니다.'},
   {q:'론도 형식(Rondo)이란?',opts:['ABACADA... 주제가 반복','ABA 구조','변주곡 형식','소나타 형식'],ans:0,explain:'론도 형식은 주제(A)가 다른 에피소드(B, C, D) 사이에 반복 등장하는 ABACADA... 형식입니다.'},
   {q:'소나타 형식의 3요소는?',opts:['제시부-발전부-재현부','A부-B부-A부','서주-주제-코다','노출-절정-결말'],ans:0,explain:'소나타 형식: 제시부(주제 제시)→발전부(주제 발전)→재현부(주제 재현).'},
-  {q:'변주곡(Variation)이란?',opts:['주제를 여러 방식으로 변화','두 주제를 교차','즉흥 연주','3박자 춤곡'],ans:0,explain:'변주곡은 하나의 주제를 리듬·선율·화성·조성 등을 변화시켜 반복하는 형식입니다.'},
+  {q:'변주곡(Variation)이란?',opts:['주제를 여러 방식으로 변화','두 주제를 교차','즉흥 연주','3박자 춤곡'],ans:0,formDiagram:{blocks:[{notation:{type:'phrase',value:'A',label:'주제'}},{notation:{type:'phrase',value:'A_VAR',label:'변주 1'}}]},explain:'변주곡은 하나의 주제를 리듬·선율·화성·조성 등을 변화시켜 반복하는 형식입니다.'},
   {q:'푸가(Fuga)의 특징은?',opts:['하나의 주제가 여러 성부에서 모방','두 주제가 대비','자유로운 즉흥','강한 리듬'],ans:0,explain:'푸가는 하나의 주제(Subject)가 여러 성부에서 차례로 모방되며 전개되는 대위법적 형식입니다.'},
   {q:'바로크 시대(Baroque)의 대표 작곡가는?',opts:['모차르트','베토벤','바흐','슈베르트'],ans:2,explain:'요한 제바스티안 바흐(J.S. Bach, 1685~1750)는 바로크 시대의 대표 작곡가입니다.'},
   {q:'고전주의(Classical)시대의 대표 작곡가는?',opts:['바흐','헨델','모차르트','브람스'],ans:2,explain:'볼프강 아마데우스 모차르트(Mozart, 1756~1791)는 고전주의 시대를 대표합니다.'},
@@ -608,8 +609,8 @@ form:[
   {q:'"교향곡(Symphony)"은 보통 몇 악장으로 구성되나요?',opts:['1악장','2악장','3악장','4악장'],ans:3,explain:'교향곡은 일반적으로 4개의 악장으로 구성됩니다.'},
   {q:'소나타(Sonata)와 교향곡의 주요 차이는?',opts:['소나타는 독주·실내악, 교향곡은 오케스트라','소나타는 느림, 교향곡은 빠름','악장 수가 다름','조성이 다름'],ans:0,explain:'소나타는 독주 또는 소편성 실내악, 교향곡은 대편성 오케스트라를 위한 형식입니다.'},
   {q:'협주곡(Concerto)의 특징은?',opts:['독주악기와 오케스트라','합창과 오케스트라','현악기만 사용','무반주 성악'],ans:0,explain:'협주곡은 독주악기와 오케스트라가 대비·협력하며 연주하는 형식입니다.'},
-  {q:'악곡의 코다(Coda)란?',opts:['도입부','전개부','마무리 부분','반복 부분'],ans:2,explain:'코다(Coda)는 이탈리아어로 "꼬리"를 의미하며, 악곡을 마무리하는 종결 부분입니다.'},
-  {q:'4악장 교향곡에서 2악장의 일반적인 특징은?',opts:['빠르고 활발함','느리고 서정적','왈츠 리듬','강렬한 종결'],ans:1,explain:'4악장 교향곡의 2악장은 일반적으로 느리고 서정적인 성격을 가집니다.'},
+  {q:'악곡의 코다(Coda)란?',opts:['도입부','전개부','마무리 부분','반복 부분'],ans:2,formDiagram:{blocks:[{notation:{type:'phrase',value:'A',label:'A'}},{notation:{type:'phrase',value:'B',label:'B'}},{notation:{type:'phrase',value:'A',label:'A'}},{notation:{type:'mark',value:'fermata',label:'Coda'}}],highlight:3},explain:'코다(Coda)는 이탈리아어로 "꼬리"를 의미하며, 악곡을 마무리하는 종결 부분입니다.'},
+  {q:'4악장 교향곡에서 2악장의 일반적인 특징은?',opts:['빠르고 활발함','느리고 서정적','왈츠 리듬','강렬한 종결'],ans:1,formDiagram:{blocks:[{notation:{type:'phrase',value:'NEUTRAL',label:'1악장'}},{notation:{type:'phrase',value:'NEUTRAL',label:'2악장'}},{notation:{type:'phrase',value:'NEUTRAL',label:'3악장'}},{notation:{type:'phrase',value:'NEUTRAL',label:'4악장'}}],highlight:1},explain:'4악장 교향곡의 2악장은 일반적으로 느리고 서정적인 성격을 가집니다.'},
   {q:'한국 전통음악 "판소리"의 특징은?',opts:['독창+고수 반주','합창+오케스트라','무반주 기악','2인 2창'],ans:0,explain:'판소리는 소리꾼(독창) 한 명이 고수(북 반주)의 장단에 맞춰 이야기를 노래하는 형식입니다.'},
   {q:'국악의 "산조"는 어떤 형식인가요?',opts:['독주 기악곡','합창곡','무용음악','의식음악'],ans:0,explain:'산조는 독주 악기와 장구 반주로 이루어진 기악 독주 형식으로, 빠르기가 점차 빨라집니다.'},
   {q:'"가곡(Lied)"이 발전한 시대는?',opts:['바로크','고전주의','낭만주의','현대'],ans:2,explain:'독일 가곡(Lied)은 슈베르트·슈만·브람스 등 낭만주의 시대에 크게 발전했습니다.'},
@@ -1489,17 +1490,20 @@ function shuffleQuestionOptions(q){
 }
 
 const INTERVAL_OFFSETS={'min2':6,'maj2':8,'min3':11,'maj3':14,'perfect5':22,'perfect8':38};
+const PHRASE_SHAPES={A:[6,3,1,3],B:[1,3,5,7],NEUTRAL:[5,3,5,3],A_VAR:[6,4,1,2]};
+const TRIAD_GAPS={major:[14,11],minor:[11,14],diminished:[11,11],augmented:[14,14]};
 
 function renderNotation(target,notation){
   target.replaceChildren();
   if(!notation){target.style.display='none';return;}
   target.style.display='';
   const wrap=node('div','notation-card');
-  const viewBox=notation.type==='mark'?'0 0 64 56':notation.type==='interval'?'0 0 60 70':notation.type==='keysig'?'0 0 116 46':'0 0 44 60';
+  const seqLen=Array.isArray(notation.value)?notation.value.length:1;
+  const viewBox=notation.type==='mark'?'0 0 64 56':notation.type==='interval'?'0 0 60 70':notation.type==='keysig'?'0 0 116 46':notation.type==='phrase'?'0 0 72 42':notation.type==='triad'?'0 0 40 76':notation.type==='noteseq'?`0 0 ${16+seqLen*28} 60`:'0 0 44 60';
   const svg=svgNode('svg',{viewBox,role:'img','aria-label':notation.label||'음악 기호'});
-  const v=notation.value||'';
-  const dotted=v.indexOf('dotted')===0;
-  const base=v.replace('dotted-','');
+  const v=typeof notation.value==='string'?notation.value:'';
+  const dotCount=v.indexOf('dotted2-')===0?2:v.indexOf('dotted-')===0?1:0;
+  const base=v.replace('dotted2-','').replace('dotted-','');
   const label=node('div','review-a',notation.label||'');
   label.style.textAlign='center';
   label.style.marginTop='6px';
@@ -1524,6 +1528,20 @@ function renderNotation(target,notation){
       svg.appendChild(svgNode('line',{x1:22,y1:6,x2:22,y2:50,stroke:'currentColor','stroke-width':'5'}));
       svg.appendChild(svgNode('circle',{cx:32,cy:20,r:'3',fill:'currentColor'}));
       svg.appendChild(svgNode('circle',{cx:32,cy:36,r:'3',fill:'currentColor'}));
+    }else if(base==='tie'){
+      // 붙임줄: 같은 높이의 두 음표를 아래쪽 곡선으로 연결
+      svg.appendChild(svgNode('ellipse',{cx:14,cy:34,rx:6,ry:4.5,transform:'rotate(-15 14 34)',fill:'currentColor'}));
+      svg.appendChild(svgNode('ellipse',{cx:50,cy:34,rx:6,ry:4.5,transform:'rotate(-15 50 34)',fill:'currentColor'}));
+      svg.appendChild(svgNode('line',{x1:20,y1:31,x2:20,y2:14,stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
+      svg.appendChild(svgNode('line',{x1:56,y1:31,x2:56,y2:14,stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
+      svg.appendChild(svgNode('path',{d:'M14,42 Q32,52 50,42',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
+    }else if(base==='arpeggio'){
+      // 아르페지오: 세로로 쌓인 화음 옆에 물결선을 그려 순서대로 연주함을 표시
+      [44,34,24].forEach(y=>{
+        svg.appendChild(svgNode('ellipse',{cx:26,cy:y,rx:6.5,ry:4.6,transform:`rotate(-15 26 ${y})`,fill:'currentColor'}));
+      });
+      svg.appendChild(svgNode('line',{x1:32,y1:44,x2:32,y2:10,stroke:'currentColor','stroke-width':'1.8','stroke-linecap':'round'}));
+      svg.appendChild(svgNode('path',{d:'M14,48 q4,-6 0,-12 q-4,-6 0,-12 q4,-6 0,-12',fill:'none',stroke:'currentColor','stroke-width':'1.6','stroke-linecap':'round'}));
     }else{
       // 테누토: 음표 바로 위에 붙은 짧은 가로선
       svg.appendChild(svgNode('ellipse',{cx:28,cy:42,rx:7,ry:5,transform:'rotate(-20 28 42)',fill:'currentColor'}));
@@ -1536,6 +1554,49 @@ function renderNotation(target,notation){
     svg.appendChild(svgNode('line',{x1:30,y1:lowY,x2:30,y2:upY,stroke:'currentColor','stroke-width':'1.4','stroke-dasharray':'2,3',opacity:'.5'}));
     svg.appendChild(svgNode('ellipse',{cx:20,cy:lowY,rx:7,ry:5,transform:'rotate(-15 20 '+lowY+')',fill:'currentColor'}));
     svg.appendChild(svgNode('ellipse',{cx:40,cy:upY,rx:7,ry:5,transform:'rotate(-15 40 '+upY+')',fill:'currentColor'}));
+  }else if(notation.type==='phrase'){
+    // 짧은 선율 악구: 5선 보표 위에 윤곽선을 그려 서로 다른 악상(주제)을 시각적으로 구분
+    for(let i=0;i<5;i++){
+      const y=6+i*7;
+      svg.appendChild(svgNode('line',{x1:4,y1:y,x2:68,y2:y,stroke:'currentColor','stroke-width':1,opacity:.4}));
+    }
+    const levels=PHRASE_SHAPES[v]||PHRASE_SHAPES.NEUTRAL;
+    const pts=levels.map((lv,i)=>({x:14+i*15,y:6+lv*3.5}));
+    svg.appendChild(svgNode('path',{d:'M'+pts.map(p=>`${p.x},${p.y}`).join(' L'),fill:'none',stroke:'currentColor','stroke-width':1.3,opacity:.55,'stroke-linecap':'round','stroke-linejoin':'round'}));
+    pts.forEach(p=>{
+      svg.appendChild(svgNode('ellipse',{cx:p.x,cy:p.y,rx:3.4,ry:2.6,transform:`rotate(-15 ${p.x} ${p.y})`,fill:'currentColor'}));
+    });
+  }else if(notation.type==='noteseq'){
+    // 음표 여러 개를 나란히: 셋잇단음표, 점리듬 조합 등 두 개 이상 음표의 관계를 보여줄 때 사용
+    const seq=Array.isArray(notation.value)?notation.value:[notation.value];
+    const midY=44;
+    seq.forEach((val,i)=>{
+      const nDotted=val.indexOf('dotted-')===0;
+      const nBase=val.replace('dotted-','');
+      const cx=16+i*28;
+      const filled=!(nBase==='whole'||nBase==='half');
+      svg.appendChild(svgNode('ellipse',{cx,cy:midY,rx:6.5,ry:4.6,transform:`rotate(-20 ${cx} ${midY})`,fill:filled?'currentColor':'none',stroke:'currentColor','stroke-width':'1.8'}));
+      if(nBase!=='whole')svg.appendChild(svgNode('line',{x1:cx+6,y1:midY-3,x2:cx+6,y2:15,stroke:'currentColor','stroke-width':'1.8','stroke-linecap':'round'}));
+      if(nBase==='eighth'||nBase==='sixteenth')svg.appendChild(svgNode('path',{d:`M${cx+6},15 c5.5,2 8,6.5 5.5,12`,fill:'none',stroke:'currentColor','stroke-width':'1.8','stroke-linecap':'round'}));
+      if(nDotted)svg.appendChild(svgNode('circle',{cx:cx+11,cy:midY+1,r:'2',fill:'currentColor'}));
+    });
+    if(notation.bracket){
+      const x1=16,x2=16+(seq.length-1)*28;
+      svg.appendChild(svgNode('path',{d:`M${x1},10 Q${(x1+x2)/2},2 ${x2},10`,fill:'none',stroke:'currentColor','stroke-width':1.2}));
+      const t=svgNode('text',{x:(x1+x2)/2,y:9,'font-size':9,'text-anchor':'middle',fill:'currentColor'});
+      t.textContent='3';
+      svg.appendChild(t);
+    }
+  }else if(notation.type==='triad'){
+    // 3화음 스택: 근음 위에 두 개의 3도를 쌓아 화음의 폭(음정 구성)을 시각적으로 보여줌
+    const gaps=TRIAD_GAPS[v]||TRIAD_GAPS.major;
+    const y0=64,y1=y0-gaps[0],y2=y1-gaps[1];
+    [y0,y1,y2].forEach((y,i)=>{
+      if(i>0)svg.appendChild(svgNode('line',{x1:20,y1:[y0,y1,y2][i-1],x2:20,y2:y,stroke:'currentColor','stroke-width':1.2,opacity:.4}));
+    });
+    [y0,y1,y2].forEach(y=>{
+      svg.appendChild(svgNode('ellipse',{cx:20,cy:y,rx:7,ry:5,transform:`rotate(-15 20 ${y})`,fill:'currentColor'}));
+    });
   }else if(notation.type==='keysig'){
     // 조표: 5선 보표 위에 올림표/내림표 개수만큼 배치(정확한 줄 위치보다 개수 파악용 개략 표기)
     for(let i=0;i<5;i++){
@@ -1577,7 +1638,7 @@ function renderNotation(target,notation){
       svg.appendChild(svgNode('path',{d:'M18,15 L25,23 L18,30 L26,38',fill:'none',stroke:'currentColor','stroke-width':'3','stroke-linejoin':'round','stroke-linecap':'round'}));
       svg.appendChild(svgNode('path',{d:'M26,38 c-5,-2 -9,2 -5,7',fill:'none',stroke:'currentColor','stroke-width':'3','stroke-linecap':'round'}));
     }
-    if(dotted)svg.appendChild(svgNode('circle',{cx:34,cy:29,r:'2.2',fill:'currentColor'}));
+    for(let d=0;d<dotCount;d++)svg.appendChild(svgNode('circle',{cx:34+d*5,cy:29,r:'2.2',fill:'currentColor'}));
   }else{
     const midY=44;
     const filled=!(base==='whole'||base==='half');
@@ -1585,7 +1646,7 @@ function renderNotation(target,notation){
     if(base!=='whole')svg.appendChild(svgNode('line',{x1:22.5,y1:midY-3,x2:22.5,y2:13,stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
     if(base==='eighth'||base==='sixteenth')svg.appendChild(svgNode('path',{d:'M22.5,13 c6,2 9,7 6,13',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
     if(base==='sixteenth')svg.appendChild(svgNode('path',{d:'M22.5,20 c6,2 9,7 6,13',fill:'none',stroke:'currentColor','stroke-width':'2','stroke-linecap':'round'}));
-    if(dotted)svg.appendChild(svgNode('circle',{cx:28,cy:midY+1,r:'2.2',fill:'currentColor'}));
+    for(let d=0;d<dotCount;d++)svg.appendChild(svgNode('circle',{cx:28+d*5,cy:midY+1,r:'2.2',fill:'currentColor'}));
   }
   wrap.append(svg,label);
   target.appendChild(wrap);
@@ -1611,6 +1672,20 @@ function startQuiz(catId){
   beginQuiz(cat,shuffle(allQ).slice(0,10));
 }
 
+function renderFormDiagram(target,diagram){
+  target.replaceChildren();
+  if(!diagram||!Array.isArray(diagram.blocks)||!diagram.blocks.length){target.style.display='none';return;}
+  target.style.display='';
+  const wrap=node('div','form-diagram');
+  diagram.blocks.forEach((b,i)=>{
+    const block=node('div',i===diagram.highlight?'form-block active':'form-block');
+    renderNotation(block,b.notation);
+    wrap.appendChild(block);
+    if(i<diagram.blocks.length-1)wrap.appendChild(node('div','form-arrow','→'));
+  });
+  target.appendChild(wrap);
+}
+
 function renderQuestion(){
   const q=state.qs[state.cur];
   if(!q){
@@ -1626,7 +1701,8 @@ function renderQuestion(){
   byId('q-progressbar').setAttribute('aria-valuenow',String(progress));
   byId('q-progressbar').setAttribute('aria-valuetext',`${n} / ${total}`);
   byId('q-text').textContent=q.q;
-  renderNotation(byId('q-image'),q.notation);
+  if(q.formDiagram){renderFormDiagram(byId('q-image'),q.formDiagram);}
+  else{renderNotation(byId('q-image'),q.notation);}
   const opts=byId('q-options');
   const labels=['A','B','C','D'];
   opts.replaceChildren();
