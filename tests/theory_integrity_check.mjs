@@ -505,8 +505,8 @@ for (const q of allQuestions) {
 
 for (const q of allQuestions) {
   if (q.notation !== undefined) {
-    if (!q.notation.type || !['note', 'rest'].includes(q.notation.type)) {
-      error(q.cat, q.idx, `notation.type="${q.notation.type}" is not "note" or "rest"`, q.q);
+    if (!q.notation.type || !['note', 'rest', 'mark', 'interval', 'keysig'].includes(q.notation.type)) {
+      error(q.cat, q.idx, `notation.type="${q.notation.type}" is not "note", "rest", "mark", "interval", or "keysig"`, q.q);
     }
     if (!q.notation.value) {
       error(q.cat, q.idx, 'notation is missing "value" field', q.q);

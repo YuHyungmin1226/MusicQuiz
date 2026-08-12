@@ -56,7 +56,7 @@ for (const [cat, qs] of Object.entries(QUESTIONS)) {
     
     // Check notation consistency
     if (q.notation) {
-      if (!['note', 'rest'].includes(q.notation.type)) {
+      if (!['note', 'rest', 'mark', 'interval', 'keysig'].includes(q.notation.type)) {
         errors.push(`${cat}[${i}]: unknown notation type "${q.notation.type}"`);
       }
     }
