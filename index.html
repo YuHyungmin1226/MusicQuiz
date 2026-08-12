@@ -5,41 +5,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>음악 이론 퀴즈 — 중학교 음악 교육과정</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   color-scheme:light;
-  --bg:#f4f5f9;
-  --bg-soft:#e9ebf2;
+  --bg:#faf9f6;
+  --bg-soft:#f0efe9;
   --surface:#ffffff;
-  --surface-strong:#f6f7fc;
-  --text:#191b29;
-  --muted:#5a6072;
-  --faint:#9a9fb2;
-  --line:#e5e7f0;
-  --accent:#6c5ce7;
-  --accent-strong:#5a49d6;
-  --accent-soft:#ecebfc;
-  --success:#16a34a;
-  --success-soft:#e7f7ec;
-  --danger:#e23b3b;
-  --danger-soft:#fdecec;
-  --warning:#d97706;
-  --shadow:0 6px 24px rgba(28,28,60,0.07), 0 1px 3px rgba(28,28,60,0.05);
-  --ring:0 0 0 3px rgba(108,92,231,0.28);
-  --radius-sm:8px;
-  --radius-md:14px;
-  --radius-lg:20px;
+  --surface-strong:#f5f4ef;
+  --text:#17160f;
+  --muted:#66655c;
+  --faint:#a19f93;
+  --line:#e4e2d8;
+  --line-strong:#cbc9bc;
+  --accent:#17160f;
+  --accent-strong:#000000;
+  --accent-soft:#eeece3;
+  --success:#276b41;
+  --success-soft:#e9f2ea;
+  --danger:#a13327;
+  --danger-soft:#f7ece9;
+  --warning:#8a5a10;
+  --warning-soft:#f5eee0;
+  --shadow:none;
+  --ring:0 0 0 3px rgba(23,22,15,0.22);
+  --radius-sm:3px;
+  --radius-md:7px;
+  --radius-lg:12px;
   --space:8px;
   --font:"Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 body{font-family:var(--font);background:var(--bg);min-height:100vh;color:var(--text);line-height:1.7;overflow-x:hidden}
 button{font:inherit}
 button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
+svg.icon{flex-shrink:0}
 
 /* Layout Containers */
 .app{width:100%}
@@ -49,25 +49,27 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
 .typora-comment{color:var(--muted);font-size:13.5px;line-height:1.6}
 
 /* App Bar */
-.appbar{position:sticky;top:0;z-index:100;width:100%;background:color-mix(in srgb,var(--bg) 86%,transparent);border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+.appbar{position:sticky;top:0;z-index:100;width:100%;background:var(--bg);border-bottom:1px solid var(--line)}
 .appbar-inner{max-width:860px;margin:0 auto;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;gap:16px}
-.brand{font-family:"Outfit",var(--font);font-size:17px;font-weight:700;letter-spacing:-.02em;color:var(--text);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;padding:4px 0}
+.brand{font-size:17px;font-weight:700;letter-spacing:-.02em;color:var(--text);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:7px;padding:4px 0}
+.brand-icon{display:inline-flex;align-items:center;flex-shrink:0}
 .appnav{display:flex;align-items:center;gap:8px}
-.navbtn{font-size:13.5px;font-weight:600;color:var(--muted);background:transparent;border:1px solid transparent;border-radius:999px;cursor:pointer;padding:7px 14px;transition:all .15s ease}
+.navbtn{font-size:13.5px;font-weight:600;color:var(--muted);background:transparent;border:1px solid transparent;border-radius:var(--radius-sm);cursor:pointer;padding:7px 14px;transition:all .15s ease}
 .navbtn:hover{color:var(--text);background:var(--surface-strong)}
+.navbtn[aria-current="page"]{color:var(--text);border-color:var(--line-strong)}
 
 /* Home / Hero */
 .hero{padding:14px 0 6px}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--accent);background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 22%,transparent);padding:5px 12px;border-radius:999px;margin-bottom:16px}
-.hero h1{font-family:"Outfit",var(--font);font-size:clamp(30px,6vw,44px);letter-spacing:-.03em;line-height:1.15;font-weight:700;margin-bottom:12px;color:var(--text)}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--line-strong);padding:5px 11px;border-radius:var(--radius-sm);margin-bottom:18px}
+.hero h1{font-size:clamp(30px,6vw,44px);letter-spacing:-.03em;line-height:1.15;font-weight:700;margin-bottom:12px;color:var(--text)}
 .lead{font-size:15px;color:var(--muted);line-height:1.7;text-wrap:pretty}
-.section-h{font-family:"Outfit",var(--font);font-size:20px;font-weight:700;letter-spacing:-.02em;margin:34px 0 4px}
+.section-h{font-size:20px;font-weight:700;letter-spacing:-.02em;margin:34px 0 4px}
 .section-sub{font-size:13.5px;color:var(--muted);margin-bottom:18px}
 
 /* Feature strip */
 .feature-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:34px}
 .feature-mini{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:16px;box-shadow:var(--shadow)}
-.feature-mini>span{font-size:22px;line-height:1.1}
+.feature-mini>span{color:var(--text);flex-shrink:0}
 .feature-mini b{display:block;font-size:14px;font-weight:700;margin-bottom:3px}
 .feature-mini p{font-size:12.5px;color:var(--muted);line-height:1.5}
 @media(max-width:600px){.feature-strip{grid-template-columns:1fr}}
@@ -75,11 +77,13 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
 .cat-card{appearance:none;width:100%;text-align:left;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--radius-md);padding:20px;transition:all .15s ease;position:relative;overflow:hidden;min-height:140px;display:flex;flex-direction:column;justify-content:flex-start;box-shadow:var(--shadow)}
 .cat-card:hover{border-color:var(--cat-c,var(--accent));background:var(--surface-strong);transform:translateY(-2px)}
 .cat-accent{width:3px;height:100%;position:absolute;left:0;top:0}
-.cat-icon{display:block;font-size:22px;margin-bottom:12px}
+.cat-icon{display:block;color:var(--cat-c,var(--text));margin-bottom:14px}
 .cat-title{display:block;font-size:16px;font-weight:700;letter-spacing:-.01em;padding-right:48px}
 .cat-sub{display:block;font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5;flex-grow:1}
 .cat-badge{font-size:10px;padding:3px 6px;border-radius:var(--radius-sm);position:absolute;top:20px;right:20px;font-weight:700}
 .badge-done{background:var(--success-soft);color:var(--success);border:1px solid color-mix(in srgb,var(--success) 20%,transparent)}
+.badge-warn{background:var(--warning-soft);color:var(--warning);border:1px solid color-mix(in srgb,var(--warning) 25%,transparent)}
+.badge-danger{background:var(--danger-soft);color:var(--danger);border:1px solid color-mix(in srgb,var(--danger) 20%,transparent)}
 .badge-new{background:var(--bg-soft);color:var(--muted);border:1px solid var(--line)}
 
 /* About */
@@ -93,12 +97,12 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
 .quiz-header{border-radius:var(--radius-md);padding:18px;margin-bottom:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
 .quiz-meta{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}
 .quiz-category{font-size:13.5px;color:var(--cat-c,var(--muted));font-weight:700}
-.quiz-progress-text{font-family:"Outfit", sans-serif;font-size:12.5px;color:var(--cat-c,var(--accent));font-weight:700}
+.quiz-progress-text{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--cat-c,var(--accent));font-weight:700}
 .progress-bar{height:6px;background:var(--bg-soft);border-radius:var(--radius-sm);overflow:hidden}
 .progress-fill{height:100%;border-radius:var(--radius-sm);transition:width .3s ease;background:var(--cat-c,var(--accent))}
 
 .question-card{padding:24px;margin-bottom:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius-md)}
-.q-num{font-family:"Outfit", sans-serif;font-size:11px;color:var(--faint);font-weight:700;letter-spacing:.1em;margin-bottom:8px}
+.q-num{font-variant-numeric:tabular-nums;font-size:11px;color:var(--faint);font-weight:700;letter-spacing:.1em;margin-bottom:8px}
 .q-text{font-size:clamp(18px,4vw,22px);font-weight:700;line-height:1.5;color:var(--text)}
 .q-image{padding:16px;background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-md);margin:16px 0 8px}
 .notation-card{display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -110,7 +114,7 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
 .opt-btn{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px 18px;text-align:left;cursor:pointer;font-size:14.5px;color:var(--text);transition:all .12s ease;display:flex;align-items:center;gap:12px;width:100%;min-height:50px;box-shadow:var(--shadow)}
 .opt-btn:hover:not(:disabled){border-color:var(--cat-c,var(--accent));background:var(--surface-strong)}
 .opt-btn:active:not(:disabled){transform:scale(0.99)}
-.opt-label{font-family:"Outfit", sans-serif;width:24px;height:24px;border-radius:var(--radius-sm);border:1px solid var(--line);display:grid;place-items:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--muted);background:var(--bg-soft)}
+.opt-label{font-variant-numeric:tabular-nums;width:24px;height:24px;border-radius:var(--radius-sm);border:1px solid var(--line);display:grid;place-items:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--muted);background:var(--bg-soft)}
 .opt-text{flex:1;line-height:1.4}
 .state-mark{font-weight:700;margin-left:auto}
 .opt-btn.correct{background:var(--success-soft);border-color:var(--success)}
@@ -132,22 +136,22 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
 .btn-pri{background:var(--accent);color:var(--surface);border:1px solid var(--accent)}
 .next-btn{background:var(--cat-c,var(--accent));color:var(--surface);border:1px solid var(--cat-c,var(--accent))}
 .next-btn,.btn-sec,.btn-pri{width:100%;border-radius:var(--radius-md);padding:14px;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s ease;display:inline-flex;align-items:center;justify-content:center}
-.btn-pri:hover{background:var(--accent-strong);border-color:var(--accent-strong);box-shadow:0 4px 12px rgba(63,81,181,0.2)}
-.next-btn:hover{filter:brightness(.92);box-shadow:0 4px 12px rgba(63,81,181,0.2)}
+.btn-pri:hover{background:var(--accent-strong);border-color:var(--accent-strong)}
+.next-btn:hover{filter:brightness(.92)}
 .next-btn:active,.btn-sec:active,.btn-pri:active{transform:scale(.985)}
 
 /* Result Card */
 .result-card{padding:28px 20px;text-align:center;margin-bottom:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius-md)}
 .score-ring{width:100px;height:100px;margin:0 auto 16px;position:relative}
 .score-ring svg{width:100px;height:100px}
-.score-center{font-family:"Outfit", sans-serif;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:22px;font-weight:700}
+.score-center{font-variant-numeric:tabular-nums;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:22px;font-weight:700}
 .result-title{font-size:22px;font-weight:700;margin-top:8px}
 .result-sub{font-size:13.5px;color:var(--muted);margin-top:6px}
 
 .result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
 .r-stat{background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px;transition:all 0.2s ease}
 .r-stat:hover{transform:translateY(-1px)}
-.r-stat-n{font-family:"Outfit", sans-serif;font-size:20px;font-weight:700}
+.r-stat-n{font-variant-numeric:tabular-nums;font-size:20px;font-weight:700}
 .r-stat-l{font-size:11.5px;color:var(--muted);margin-top:2px;font-weight:600}
 
 .result-history-title{margin:28px 0 12px;text-align:left;font-size:15px;font-weight:700}
@@ -174,7 +178,7 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
   transform: translateY(-1px);
 }
 .stat-num {
-  font-family:"Outfit", sans-serif;
+  font-variant-numeric:tabular-nums;
   font-size:20px;
   font-weight:700;
   color:var(--accent);
@@ -201,7 +205,7 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
 .print-area{padding:4px 0}
 .print-header{text-align:center;margin-bottom:20px}
 .print-header-icon{width:48px;height:48px;border-radius:var(--radius-md);background:var(--surface);display:grid;place-items:center;font-size:24px;border:1px solid var(--line);box-shadow:var(--shadow);margin:0 auto 12px}
-.print-header h2{font-family:"Outfit", var(--font);font-size:20px;font-weight:700}
+.print-header h2{letter-spacing:-.01em;font-size:20px;font-weight:700}
 .print-header .print-date{font-size:12px;color:var(--faint);margin-top:4px}
 .print-name-row{display:flex;align-items:center;gap:10px;justify-content:center;margin:16px 0 12px}
 .print-name-row label{font-size:13.5px;font-weight:700;color:var(--muted)}
@@ -301,7 +305,7 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
   <!-- App Bar -->
   <header class="appbar">
     <div class="appbar-inner">
-      <button class="brand" id="nav-brand-btn" type="button">🎵 MusicQuiz</button>
+      <button class="brand" id="nav-brand-btn" type="button"><span id="brand-icon" class="brand-icon"></span><span>MusicQuiz</span></button>
       <nav class="appnav" aria-label="주요 화면">
         <button class="navbtn" id="nav-home-btn" type="button">홈</button>
         <button class="navbtn" id="nav-about-btn" type="button">소개</button>
@@ -312,7 +316,7 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
   <!-- Home Screen -->
   <div class="screen active" id="home-screen">
     <section class="hero">
-      <span class="hero-badge">🎵 중등 음악 이론</span>
+      <span class="hero-badge"><span id="hero-badge-icon" class="brand-icon"></span>중등 음악 이론</span>
       <h1 id="home-title" tabindex="-1">음악 이론 퀴즈</h1>
       <p class="lead">중학교 음악 교육과정 기반 · 7개 영역 · 140문항. 이론을 익히고 퀴즈로 점검한 뒤, 결과를 PDF 리포트로 저장하세요.</p>
     </section>
@@ -328,9 +332,9 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
     <div class="category-grid" id="cat-grid"></div>
 
     <div class="feature-strip">
-      <div class="feature-mini"><span>🎼</span><div><b>SVG 벡터 악보</b><p>폰트 깨짐 없는 음표·쉼표 렌더링</p></div></div>
-      <div class="feature-mini"><span>🎹</span><div><b>인터랙티브 학습</b><p>피아노 건반·메트로놈·화음 도구</p></div></div>
-      <div class="feature-mini"><span>💾</span><div><b>PDF 리포트</b><p>학습 결과를 한 페이지로 저장</p></div></div>
+      <div class="feature-mini"><span id="feat-icon-note"></span><div><b>SVG 벡터 악보</b><p>폰트 깨짐 없는 음표·쉼표 렌더링</p></div></div>
+      <div class="feature-mini"><span id="feat-icon-keys"></span><div><b>인터랙티브 학습</b><p>피아노 건반·메트로놈·화음 도구</p></div></div>
+      <div class="feature-mini"><span id="feat-icon-doc"></span><div><b>PDF 리포트</b><p>학습 결과를 한 페이지로 저장</p></div></div>
     </div>
   </div>
 
@@ -382,7 +386,7 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
     <button class="back-btn" id="result-home-btn" type="button">← 홈으로</button>
     <div id="print-area" class="print-area">
       <div class="print-header">
-        <div class="print-header-icon">🎵</div>
+        <div class="print-header-icon" id="print-header-icon"></div>
         <h2>음악 이론 퀴즈 학습 결과</h2>
         <p class="print-date typora-comment" id="print-date"></p>
       </div>
@@ -394,15 +398,15 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
         <div class="score-ring">
           <svg width="100" height="100" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="42" fill="none" stroke="var(--line)" stroke-width="8"/>
-            <circle cx="50" cy="50" r="42" fill="none" stroke-width="8" stroke-linecap="round" id="score-arc" stroke="#6C5CE7" stroke-dasharray="0 264" transform="rotate(-90 50 50)"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke-width="8" stroke-linecap="round" id="score-arc" stroke="#cbc9bc" stroke-dasharray="0 264" transform="rotate(-90 50 50)"/>
           </svg>
           <div class="score-center" id="score-pct"></div>
         </div>
         <div class="result-title" id="result-title" tabindex="-1"></div>
         <div class="result-sub" id="result-sub"></div>
         <div class="result-stats">
-          <div class="r-stat"><div class="r-stat-n" id="r-correct" style="color:#639922">0</div><div class="r-stat-l">정답</div></div>
-          <div class="r-stat"><div class="r-stat-n" id="r-wrong" style="color:#E24B4A">0</div><div class="r-stat-l">오답</div></div>
+          <div class="r-stat"><div class="r-stat-n" id="r-correct" style="color:#276b41">0</div><div class="r-stat-l">정답</div></div>
+          <div class="r-stat"><div class="r-stat-n" id="r-wrong" style="color:#a13327">0</div><div class="r-stat-l">오답</div></div>
           <div class="r-stat"><div class="r-stat-n" id="r-time">0s</div><div class="r-stat-l">소요 시간</div></div>
         </div>
         <div class="section-title result-history-title">누적 학습 기록</div>
@@ -425,8 +429,9 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
       <div id="review-list"></div>
     </div>
     <div class="btn-row">
-      <button class="btn-pri" id="pdf-download-btn" type="button">📄 PDF 저장</button>
-      <button class="btn-sec" id="retry-btn" type="button">다시 풀기</button>
+      <button class="btn-pri" id="pdf-download-btn" type="button"><span id="pdf-btn-icon" class="brand-icon"></span>PDF 저장</button>
+      <button class="btn-sec" id="retry-btn" type="button">같은 문제 다시</button>
+      <button class="btn-sec" id="wrong-retry-btn" type="button" style="display:none">오답만 다시 풀기</button>
       <button class="btn-pri" id="other-cat-btn" type="button">다른 영역 →</button>
     </div>
   </div>
@@ -445,13 +450,13 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
 </main>
 <script>
 const CATS=[
-  {id:'note',title:'음표와 쉼표',sub:'음표 종류·음가·점음표',icon:'🎵',accent:'#6C5CE7'},
-  {id:'scale',title:'음계와 조성',sub:'장음계·단음계·조표',icon:'🎼',accent:'#00B894'},
-  {id:'rhythm',title:'박자와 리듬',sub:'박자표·박·리듬꼴',icon:'🥁',accent:'#E17055'},
-  {id:'mark',title:'악상기호',sub:'세기·빠르기·나타냄말',icon:'✦',accent:'#0984E3'},
-  {id:'chord',title:'화음과 음정',sub:'음정·장단화음·으뜸화음',icon:'🎹',accent:'#c0901e'},
-  {id:'inst',title:'악기',sub:'관현악기·국악기·분류',icon:'🎻',accent:'#E84393'},
-  {id:'form',title:'음악 형식',sub:'형식·악곡·음악사',icon:'📜',accent:'#00CEC9'},
+  {id:'note',title:'음표와 쉼표',sub:'음표 종류·음가·점음표',icon:'note',accent:'#4b4470'},
+  {id:'scale',title:'음계와 조성',sub:'장음계·단음계·조표',icon:'scale',accent:'#3f6e52'},
+  {id:'rhythm',title:'박자와 리듬',sub:'박자표·박·리듬꼴',icon:'rhythm',accent:'#b1603f'},
+  {id:'mark',title:'악상기호',sub:'세기·빠르기·나타냄말',icon:'mark',accent:'#3c6a86'},
+  {id:'chord',title:'화음과 음정',sub:'음정·장단화음·으뜸화음',icon:'chord',accent:'#a37a2c'},
+  {id:'inst',title:'악기',sub:'관현악기·국악기·분류',icon:'inst',accent:'#914268'},
+  {id:'form',title:'음악 형식',sub:'형식·악곡·음악사',icon:'form',accent:'#2d7972'},
 ];
 
 const QUESTIONS={
@@ -628,6 +633,67 @@ function svgNode(tag,attrs={}){
   return el;
 }
 
+const ICONS={
+  note:[
+    ['circle',{cx:8,cy:17.3,r:3.1,fill:'currentColor'}],
+    ['line',{x1:11,y1:17.3,x2:11,y2:4.5,stroke:'currentColor','stroke-width':1.6,'stroke-linecap':'round'}],
+    ['path',{d:'M11,4.5 C15.5,5.8 16.5,10 13,12.2',fill:'none',stroke:'currentColor','stroke-width':1.6,'stroke-linecap':'round'}]
+  ],
+  scale:[
+    ['rect',{x:4,y:14,width:3.6,height:6,fill:'currentColor'}],
+    ['rect',{x:10.2,y:9,width:3.6,height:11,fill:'currentColor'}],
+    ['rect',{x:16.4,y:4,width:3.6,height:16,fill:'currentColor'}]
+  ],
+  rhythm:[
+    ['rect',{x:4,y:11,width:3.6,height:9,fill:'currentColor'}],
+    ['rect',{x:10.2,y:4,width:3.6,height:16,fill:'currentColor'}],
+    ['rect',{x:16.4,y:8,width:3.6,height:12,fill:'currentColor'}]
+  ],
+  mark:[
+    ['path',{d:'M5,7 L19,12 L5,17',fill:'none',stroke:'currentColor','stroke-width':1.7,'stroke-linecap':'round','stroke-linejoin':'round'}]
+  ],
+  chord:[
+    ['line',{x1:12,y1:5,x2:12,y2:19,stroke:'currentColor','stroke-width':1.4,opacity:.5}],
+    ['circle',{cx:12,cy:6.5,r:2.6,fill:'currentColor'}],
+    ['circle',{cx:12,cy:12,r:2.6,fill:'currentColor'}],
+    ['circle',{cx:12,cy:17.5,r:2.6,fill:'currentColor'}]
+  ],
+  inst:[
+    ['path',{d:'M8,4.5 C6,6.5 6,9 8,11 C6,13 6,15.5 8,17.5',fill:'none',stroke:'currentColor','stroke-width':1.5,'stroke-linecap':'round'}],
+    ['path',{d:'M16,4.5 C18,6.5 18,9 16,11 C18,13 18,15.5 16,17.5',fill:'none',stroke:'currentColor','stroke-width':1.5,'stroke-linecap':'round'}]
+  ],
+  form:[
+    ['rect',{x:3,y:9,width:5.5,height:7,rx:1,fill:'currentColor'}],
+    ['rect',{x:9.3,y:9,width:5.4,height:7,rx:1,fill:'none',stroke:'currentColor','stroke-width':1.5}],
+    ['rect',{x:15.5,y:9,width:5.5,height:7,rx:1,fill:'currentColor'}]
+  ],
+  book:[
+    ['path',{d:'M4,6.5 C4,5.5 5.3,4.7 7.2,4.7 C9.1,4.7 10.7,5.5 12,6.6 C13.3,5.5 14.9,4.7 16.8,4.7 C18.7,4.7 20,5.5 20,6.5 L20,17.3 C20,17.3 18.3,16.4 16.8,16.4 C14.9,16.4 13.3,17.3 12,18.3 C10.7,17.3 9.1,16.4 7.2,16.4 C5.3,16.4 4,17.3 4,17.3 Z',fill:'none',stroke:'currentColor','stroke-width':1.4,'stroke-linejoin':'round'}],
+    ['line',{x1:12,y1:6.6,x2:12,y2:18.3,stroke:'currentColor','stroke-width':1.4}]
+  ],
+  quizcheck:[
+    ['rect',{x:4,y:4,width:16,height:16,rx:3.2,fill:'none',stroke:'currentColor','stroke-width':1.5}],
+    ['path',{d:'M8,12.3 L11,15.3 L16,9',fill:'none',stroke:'currentColor','stroke-width':1.8,'stroke-linecap':'round','stroke-linejoin':'round'}]
+  ],
+  keys:[
+    ['rect',{x:5,y:4,width:3.6,height:16,rx:.6,fill:'none',stroke:'currentColor','stroke-width':1.3}],
+    ['rect',{x:10.2,y:4,width:3.6,height:16,rx:.6,fill:'none',stroke:'currentColor','stroke-width':1.3}],
+    ['rect',{x:15.4,y:4,width:3.6,height:16,rx:.6,fill:'none',stroke:'currentColor','stroke-width':1.3}],
+    ['rect',{x:7.6,y:4,width:3,height:9.5,fill:'currentColor'}]
+  ],
+  document:[
+    ['path',{d:'M6,3 H15 L19,7 V21 H6 Z',fill:'none',stroke:'currentColor','stroke-width':1.4,'stroke-linejoin':'round'}],
+    ['path',{d:'M15,3 V7 H19',fill:'none',stroke:'currentColor','stroke-width':1.4,'stroke-linejoin':'round'}],
+    ['line',{x1:9,y1:12,x2:16,y2:12,stroke:'currentColor','stroke-width':1.3,'stroke-linecap':'round'}],
+    ['line',{x1:9,y1:16,x2:16,y2:16,stroke:'currentColor','stroke-width':1.3,'stroke-linecap':'round'}]
+  ]
+};
+function svgIcon(name,size){
+  const svg=svgNode('svg',{class:'icon',viewBox:'0 0 24 24',width:size||20,height:size||20,'aria-hidden':'true',focusable:'false'});
+  (ICONS[name]||[]).forEach(([tag,attrs])=>svg.appendChild(svgNode(tag,attrs)));
+  return svg;
+}
+
 function nonNegativeInt(value){
   const n=Number(value);
   return Number.isFinite(n)&&n>0?Math.floor(n):0;
@@ -684,23 +750,26 @@ function buildCategoryGrid(){
     const accent=node('span','cat-accent');
     accent.style.background=c.accent;
     
-    const icon=node('span','cat-icon',c.icon);
+    const icon=node('span','cat-icon');
+    icon.appendChild(svgIcon(c.icon,22));
     const title=node('span','cat-title',c.title);
     const sub=node('span','cat-sub',c.sub);
-    const badge=node('span',done!==undefined?'cat-badge badge-done':'cat-badge badge-new',done!==undefined?`완료 ${done}%`:'NEW');
-    
+    const badgeTier=done===undefined?'new':done>=80?'done':done>=50?'warn':'danger';
+    const badgeText=done===undefined?'NEW':badgeTier==='danger'?`복습 필요 ${done}%`:`완료 ${done}%`;
+    const badge=node('span',`cat-badge badge-${badgeTier}`,badgeText);
+
     // 학습 및 퀴즈 액션 버튼
     const actions=node('div','cat-actions');
     const learnBtn=node('button','cat-btn');
     learnBtn.type='button';
     learnBtn.setAttribute('aria-label',`${c.title} 이론 학습`);
-    learnBtn.append(node('span',undefined,'📖'), node('span',undefined,'이론 학습'));
+    learnBtn.append(svgIcon('book',15), node('span',undefined,'이론 학습'));
     learnBtn.addEventListener('click',()=>goStudy(c.id));
-    
+
     const quizBtn=node('button','cat-btn pri');
     quizBtn.type='button';
     quizBtn.setAttribute('aria-label',`${c.title} 퀴즈 도전`);
-    quizBtn.append(node('span',undefined,'✍️'), node('span',undefined,'퀴즈 도전'));
+    quizBtn.append(svgIcon('quizcheck',15), node('span',undefined,'퀴즈 도전'));
     quizBtn.addEventListener('click',()=>startQuiz(c.id));
     
     actions.append(learnBtn, quizBtn);
@@ -786,7 +855,7 @@ function goStudy(catId){
 function renderNoteStudy(parent){
   const sec1 = node('div', 'study-section');
   sec1.append(
-    node('h3', undefined, '🎼 1. 주요 음표와 쉼표의 음가'),
+    node('h3', undefined, '1. 주요 음표와 쉼표의 음가'),
     node('p', undefined, '중등 교육과정에서 다루는 기본 음표와 쉼표의 박자 수(음가)를 숙지해 봅시다. 박자 계산 시 음가의 상대적 길이를 이해하는 것이 중요합니다.')
   );
   
@@ -842,7 +911,7 @@ function renderNoteStudy(parent){
   
   const sec2 = node('div', 'study-section');
   sec2.append(
-    node('h3', undefined, '🧮 2. 실시간 박자 계산기'),
+    node('h3', undefined, '2. 실시간 박자 계산기'),
     node('p', undefined, '아래 음표 버튼들을 클릭하여 나만의 리듬 마디를 구성해 보세요. 총 박자수가 실시간으로 합산됩니다.')
   );
   
@@ -889,7 +958,7 @@ function renderNoteStudy(parent){
 function renderScaleStudy(parent){
   const sec1 = node('div', 'study-section');
   sec1.append(
-    node('h3', undefined, '🎹 1. 장음계(Major Scale)의 반음 구조'),
+    node('h3', undefined, '1. 장음계(Major Scale)의 반음 구조'),
     node('p', undefined, '장음계는 으뜸음에서 출발하여 3-4번째 음(미-파)과 7-8번째 음(시-도) 사이가 반음이 되고, 나머지 음들은 온음 간격인 7음계입니다.'),
     node('p', undefined, '아래 피아노 건반에서 건반을 클릭해 장음계의 반음/온음 간격을 직접 확인하세요. 파란색은 온음 진행, 빨간색은 반음 진행 영역입니다.')
   );
@@ -965,7 +1034,7 @@ function renderRhythmStudy(parent){
 
   const sec1 = node('div', 'study-section');
   sec1.append(
-    node('h3', undefined, '🥁 1. 박자표 종류와 강세 패턴'),
+    node('h3', undefined, '1. 박자표 종류와 강세 패턴'),
     node('p', undefined, '박자표는 한 마디에 들어가는 기준음표의 개수와 강약을 규정합니다.'),
     node('p', undefined, '아래 탭을 눌러 각 박자표의 한 마디당 강세(강, 약, 중강) 패턴을 확인하고 메트로놈을 켜 청각적으로 체험해 보세요.')
   );
@@ -985,7 +1054,7 @@ function renderRhythmStudy(parent){
   let selectedRhythm = null;
   let activeIdx = -1;
   
-  const playBtn = node('button', 'cat-btn pri', '⏱️ 메트로놈 시작');
+  const playBtn = node('button', 'cat-btn pri', '메트로놈 시작');
   playBtn.type = 'button';
   playBtn.style.marginTop = '12px';
   playBtn.style.display = 'none';
@@ -994,7 +1063,7 @@ function renderRhythmStudy(parent){
     if(window.metroInterval){
       clearInterval(window.metroInterval);
       window.metroInterval = null;
-      playBtn.textContent = '⏱️ 메트로놈 시작';
+      playBtn.textContent = '메트로놈 시작';
       const nodes = beatContainer.querySelectorAll('.rhythm-beat-node');
       nodes.forEach(n => {
         n.style.transform = '';
@@ -1003,7 +1072,7 @@ function renderRhythmStudy(parent){
       activeIdx = -1;
     } else {
       if(!selectedRhythm) return;
-      playBtn.textContent = '⏹️ 메트로놈 정지';
+      playBtn.textContent = '메트로놈 정지';
       activeIdx = 0;
       
       const triggerBeat = () => {
@@ -1042,7 +1111,7 @@ function renderRhythmStudy(parent){
       if(window.metroInterval){
         clearInterval(window.metroInterval);
         window.metroInterval = null;
-        playBtn.textContent = '⏱️ 메트로놈 시작';
+        playBtn.textContent = '메트로놈 시작';
       }
       activeIdx = -1;
       selectedRhythm = r;
@@ -1078,7 +1147,7 @@ function renderRhythmStudy(parent){
 function renderMarkStudy(parent){
   const sec1 = node('div', 'study-section');
   sec1.append(
-    node('h3', undefined, '✦ 1. 악상기호 강도와 빠르기말 조절기'),
+    node('h3', undefined, '1. 악상기호 강도와 빠르기말 조절기'),
     node('p', undefined, '악곡의 감정과 분위기를 살려주는 세기기호와 빠르기말의 단계적 높낮이를 조작해 봅시다.'),
     node('p', undefined, '슬라이더를 조절하면 현재 강도/속도에 맞는 악상기호의 정의가 하이라이트됩니다.')
   );
@@ -1136,9 +1205,9 @@ function renderMarkStudy(parent){
   });
   
   tool.append(
-    node('div', undefined, '🔊 음의 세기 크기 조절 (여림 → 세게)'),
+    node('div', undefined, '음의 세기 크기 조절 (여림 → 세게)'),
     dynRange, dynLabel,
-    node('div', {style:'margin-top:20px;'}, '⏱️ 빠르기 템포 조절 (느림 → 빠르게)'),
+    node('div', {style:'margin-top:20px;'}, '빠르기 템포 조절 (느림 → 빠르게)'),
     tempoRange, tempoLabel
   );
   sec1.appendChild(tool);
@@ -1148,7 +1217,7 @@ function renderMarkStudy(parent){
 function renderChordStudy(parent){
   const sec1 = node('div', 'study-section');
   sec1.append(
-    node('h3', undefined, '🎹 1. 화음(Chord)과 음정(Interval) 규칙'),
+    node('h3', undefined, '1. 화음(Chord)과 음정(Interval) 규칙'),
     node('p', undefined, '음정은 두 음 사이의 높이 차이(도 단위)이며, 3화음은 음계 위에 3도씩 두 번 쌓아 만든 화음입니다.'),
     node('p', undefined, '장3도(반음 4개)와 단3도(반음 3개)의 결합 방식에 따라 화음 성격이 결정됩니다.')
   );
@@ -1183,7 +1252,7 @@ function renderChordStudy(parent){
   
   const sec2 = node('div', 'study-section');
   sec2.append(
-    node('h3', undefined, '🎼 2. C장조 주요 3화음의 구조'),
+    node('h3', undefined, '2. C장조 주요 3화음의 구조'),
     node('p', undefined, '• 으뜸화음 (I도 화음): CEG(도미솔) · 곡의 안정과 종지를 이루는 화음입니다.'),
     node('p', undefined, '• 버금딸림화음 (IV도 화음): FAC(파라도) · 으뜸화음을 보조하는 폭넓은 화음입니다.'),
     node('p', undefined, '• 딸림화음 (V도 화음): GBD(솔시레) · 긴장감을 조성해 으뜸화음으로 돌아가려는 성질이 강합니다.')
@@ -1194,7 +1263,7 @@ function renderChordStudy(parent){
 function renderInstStudy(parent){
   const sec1 = node('div', 'study-section');
   sec1.append(
-    node('h3', undefined, '🎻 1. 오케스트라 관현악기 분류'),
+    node('h3', undefined, '1. 오케스트라 관현악기 분류'),
     node('p', undefined, '오케스트라 악기들은 소리를 내는 방식과 재질에 따라 네 가지 악기군으로 분류됩니다.')
   );
   
@@ -1218,7 +1287,7 @@ function renderInstStudy(parent){
   
   const sec2 = node('div', 'study-section');
   sec2.append(
-    node('h3', undefined, '🥁 2. 전통 국악기의 갈래'),
+    node('h3', undefined, '2. 전통 국악기의 갈래'),
     node('p', undefined, '국악기는 연주 방식에 따라 관/현/타악기로 구분하며, 2022 교과과정의 단골 문제입니다.'),
     node('p', undefined, '• 현악기 (현을 타거나 문지름): 가야금(12줄, 뜯음), 거문고(6줄, 술대 사용), 해금(2줄, 찰현), 아쟁'),
     node('p', undefined, '• 관악기 (김을 불어 소리냄): 대금(가로 피리), 피리(세로, 겹황), 단소(세로 피리), 태평소'),
@@ -1230,7 +1299,7 @@ function renderInstStudy(parent){
 function renderFormStudy(parent){
   const sec1 = node('div', 'study-section');
   sec1.append(
-    node('h3', undefined, '📜 1. 서양 악곡의 구조적 형식'),
+    node('h3', undefined, '1. 서양 악곡의 구조적 형식'),
     node('p', undefined, '음악은 일정한 주제를 제시하고, 대비되는 단락을 배열하며 일정한 형식을 갖춥니다.'),
     node('p', undefined, '아래 버튼을 눌러 각 형식의 블록 다이어그램을 시각적으로 공부하세요.')
   );
@@ -1273,14 +1342,14 @@ function renderFormStudy(parent){
   
   const sec2 = node('div', 'study-section');
   sec2.append(
-    node('h3', undefined, '🎻 2. 전통 국악의 주요 형식'),
+    node('h3', undefined, '2. 전통 국악의 주요 형식'),
     node('p', undefined, '• 판소리: 창자(노래하는 이) 한 명과 고수(북 장단을 치는 이)가 대사(아니리)와 노래(소리), 몸짓(발림)을 주고받는 종합 예술입니다.'),
     node('p', undefined, '• 산조: 민속악의 기악 독주 형식으로, 장구 반주에 맞춰 아주 느린 장단(진양조)에서 출발하여 중모리 → 중중모리 → 자진모리 → 휘모리 등 점차 빠른 장단으로 빨라지며 진행되는 즉흥적 악곡입니다.')
   );
   
   const sec3 = node('div', 'study-section');
   sec3.append(
-    node('h3', undefined, '🎮 3. 미니 챌린지: 산조 장단 빠르기 정렬 퍼즐'),
+    node('h3', undefined, '3. 미니 챌린지: 산조 장단 빠르기 정렬 퍼즐'),
     node('p', undefined, '산조의 장단 명칭을 [가장 느린 장단]부터 [가장 빠른 장단] 순서대로 하나씩 클릭하여 맞추어 보세요.')
   );
   
@@ -1330,11 +1399,11 @@ function renderFormStudy(parent){
         if(currentSelection.length === 5) {
           const isCorrect = correctOrder.every((val, idx) => val === currentSelection[idx]);
           if(isCorrect) {
-            puzzleFeedback.textContent = '🎉 정답입니다! 산조의 장단 빠르기 순서(진양조 → 중모리 → 중중모리 → 자진모리 → 휘모리)를 완벽하게 맞추셨습니다.';
+            puzzleFeedback.textContent = '정답입니다! 산조의 장단 빠르기 순서(진양조 → 중모리 → 중중모리 → 자진모리 → 휘모리)를 완벽하게 맞추셨습니다.';
             puzzleFeedback.style.color = 'var(--success)';
             playChord([261.63, 329.63, 523.25]); // 성공 사운드
           } else {
-            puzzleFeedback.textContent = '❌ 오답입니다. 순서가 올바르지 않습니다. 다시 초기화해서 도전해보세요!';
+            puzzleFeedback.textContent = '오답입니다. 순서가 올바르지 않습니다. 다시 초기화해서 도전해보세요!';
             puzzleFeedback.style.color = 'var(--danger)';
             playChord([220.00, 220.00], 0.3); // 실패 사운드
           }
@@ -1344,7 +1413,7 @@ function renderFormStudy(parent){
     });
   };
   
-  const resetPuzzleBtn = node('button', 'cat-btn pri', '🔄 퍼즐 초기화');
+  const resetPuzzleBtn = node('button', 'cat-btn pri', '퍼즐 초기화');
   resetPuzzleBtn.type = 'button';
   resetPuzzleBtn.style.marginTop = '12px';
   resetPuzzleBtn.addEventListener('click', renderPuzzle);
@@ -1524,6 +1593,15 @@ function renderNotation(target,notation){
   target.appendChild(wrap);
 }
 
+function beginQuiz(cat,questionList,labelSuffix){
+  const qs=questionList.map(shuffleQuestionOptions);
+  state={screen:'quiz',cat,qs,cur:0,score:0,answers:[],startTime:Date.now(),streak:0,bestStreak:0};
+  byId('q-cat-name').textContent=labelSuffix?`${cat.title} · ${labelSuffix}`:cat.title;
+  byId('quiz-screen').style.setProperty('--cat-c',cat.accent);
+  renderQuestion();
+  showScreen('quiz-screen','q-text');
+}
+
 function startQuiz(catId){
   const cat=CATS.find(c=>c.id===catId);
   const allQ=QUESTIONS[catId];
@@ -1532,12 +1610,7 @@ function startQuiz(catId){
     goHome();
     return;
   }
-  const qs=shuffle(allQ).slice(0,10).map(shuffleQuestionOptions);
-  state={screen:'quiz',cat,qs,cur:0,score:0,answers:[],startTime:Date.now(),streak:0,bestStreak:0};
-  byId('q-cat-name').textContent=cat.title;
-  byId('quiz-screen').style.setProperty('--cat-c',cat.accent);
-  renderQuestion();
-  showScreen('quiz-screen','q-text');
+  beginQuiz(cat,shuffle(allQ).slice(0,10));
 }
 
 function renderQuestion(){
@@ -1630,14 +1703,18 @@ function showResult(){
   const arc=document.getElementById('score-arc');
   const circ=2*Math.PI*42;
   arc.setAttribute('stroke-dasharray',`${circ*pct/100} ${circ}`);
-  arc.setAttribute('stroke',pct>=80?'#639922':pct>=60?'#BA7517':'#E24B4A');
+  arc.setAttribute('stroke',pct>=80?'#276b41':pct>=60?'#8a5a10':'#a13327');
   byId('score-pct').textContent=pct+'%';
-  const msgs=pct>=90?['완벽해요!','음악 천재 🎵']:pct>=70?['잘했어요!','꾸준히 공부해요']:pct>=50?['절반 이상!','복습이 필요해요']:['더 노력해요','열심히 공부해봐요'];
+  const msgs=pct>=90?['완벽해요!','음악 천재']:pct>=70?['잘했어요!','꾸준히 공부해요']:pct>=50?['절반 이상!','복습이 필요해요']:['더 노력해요','열심히 공부해봐요'];
   byId('result-title').textContent=msgs[0];
   byId('result-sub').textContent=`${state.score}/${state.qs.length} 정답 · ${msgs[1]}`;
   byId('r-correct').textContent=state.score;
   byId('r-wrong').textContent=state.qs.length-state.score;
   byId('r-time').textContent=elapsed+'s';
+  const wrongCount=state.qs.length-state.score;
+  const wrongBtn=byId('wrong-retry-btn');
+  wrongBtn.style.display=wrongCount>0?'inline-flex':'none';
+  wrongBtn.textContent=`오답만 다시 풀기 (${wrongCount})`;
   const dStr = new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});
   byId('print-date').textContent=dStr;
   const rl=byId('review-list');
@@ -1659,7 +1736,21 @@ function showResult(){
   showScreen('result-screen','result-title');
 }
 
-function retryQuiz(){if(state.cat)startQuiz(state.cat.id);}
+function retryQuiz(){
+  if(!state.cat||!state.qs.length)return;
+  const allQ=QUESTIONS[state.cat.id]||[];
+  const sameSet=state.qs.map(q=>allQ.find(o=>o.q===q.q)).filter(Boolean);
+  if(!sameSet.length)return;
+  beginQuiz(state.cat,sameSet);
+}
+
+function retryWrongOnly(){
+  if(!state.cat)return;
+  const allQ=QUESTIONS[state.cat.id]||[];
+  const wrongSet=state.answers.filter(a=>!a.correct).map(a=>allQ.find(o=>o.q===a.q)).filter(Boolean);
+  if(!wrongSet.length)return;
+  beginQuiz(state.cat,wrongSet,'오답 복습');
+}
 
 byId('quiz-home-btn').addEventListener('click',goHome);
 byId('result-home-btn').addEventListener('click',goHome);
@@ -1667,6 +1758,7 @@ byId('study-home-btn').addEventListener('click',goHome);
 byId('study-to-quiz-btn').addEventListener('click',()=>startQuiz(currentStudyCatId));
 byId('next-btn').addEventListener('click',nextQuestion);
 byId('retry-btn').addEventListener('click',retryQuiz);
+byId('wrong-retry-btn').addEventListener('click',retryWrongOnly);
 byId('other-cat-btn').addEventListener('click',goHome);
 
 byId('nav-brand-btn').addEventListener('click',goHome);
@@ -1702,6 +1794,14 @@ byId('pdf-download-btn').addEventListener('click',function(){
     .catch(error=>console.error('PDF 생성에 실패했습니다.',error))
     .finally(()=>{if(area)area.classList.remove('pdf-rendering');btn.disabled=false;});
 });
+
+byId('brand-icon').appendChild(svgIcon('note',18));
+byId('hero-badge-icon').appendChild(svgIcon('note',13));
+byId('feat-icon-note').appendChild(svgIcon('note',20));
+byId('feat-icon-keys').appendChild(svgIcon('keys',20));
+byId('feat-icon-doc').appendChild(svgIcon('document',20));
+byId('print-header-icon').appendChild(svgIcon('note',22));
+byId('pdf-btn-icon').appendChild(svgIcon('document',15));
 
 loadStorage();
 updateHomeStats();
