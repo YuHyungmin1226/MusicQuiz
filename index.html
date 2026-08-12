@@ -73,7 +73,7 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
 @media(max-width:600px){.feature-strip{grid-template-columns:1fr}}
 .category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:30px}
 .cat-card{appearance:none;width:100%;text-align:left;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--radius-md);padding:20px;transition:all .15s ease;position:relative;overflow:hidden;min-height:140px;display:flex;flex-direction:column;justify-content:flex-start;box-shadow:var(--shadow)}
-.cat-card:hover{border-color:var(--accent);background:var(--surface-strong);transform:translateY(-2px)}
+.cat-card:hover{border-color:var(--cat-c,var(--accent));background:var(--surface-strong);transform:translateY(-2px)}
 .cat-accent{width:3px;height:100%;position:absolute;left:0;top:0}
 .cat-icon{display:block;font-size:22px;margin-bottom:12px}
 .cat-title{display:block;font-size:16px;font-weight:700;letter-spacing:-.01em;padding-right:48px}
@@ -92,10 +92,10 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
 /* Quiz Screen Components */
 .quiz-header{border-radius:var(--radius-md);padding:18px;margin-bottom:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
 .quiz-meta{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}
-.quiz-category{font-size:13.5px;color:var(--muted);font-weight:700}
-.quiz-progress-text{font-family:"Outfit", sans-serif;font-size:12.5px;color:var(--accent);font-weight:700}
+.quiz-category{font-size:13.5px;color:var(--cat-c,var(--muted));font-weight:700}
+.quiz-progress-text{font-family:"Outfit", sans-serif;font-size:12.5px;color:var(--cat-c,var(--accent));font-weight:700}
 .progress-bar{height:6px;background:var(--bg-soft);border-radius:var(--radius-sm);overflow:hidden}
-.progress-fill{height:100%;border-radius:var(--radius-sm);transition:width .3s ease;background:var(--accent)}
+.progress-fill{height:100%;border-radius:var(--radius-sm);transition:width .3s ease;background:var(--cat-c,var(--accent))}
 
 .question-card{padding:24px;margin-bottom:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius-md)}
 .q-num{font-family:"Outfit", sans-serif;font-size:11px;color:var(--faint);font-weight:700;letter-spacing:.1em;margin-bottom:8px}
@@ -108,7 +108,7 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
 /* Options & Buttons */
 .options-grid{display:grid;gap:8px;margin-top:20px}
 .opt-btn{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px 18px;text-align:left;cursor:pointer;font-size:14.5px;color:var(--text);transition:all .12s ease;display:flex;align-items:center;gap:12px;width:100%;min-height:50px;box-shadow:var(--shadow)}
-.opt-btn:hover:not(:disabled){border-color:var(--accent);background:var(--surface-strong)}
+.opt-btn:hover:not(:disabled){border-color:var(--cat-c,var(--accent));background:var(--surface-strong)}
 .opt-btn:active:not(:disabled){transform:scale(0.99)}
 .opt-label{font-family:"Outfit", sans-serif;width:24px;height:24px;border-radius:var(--radius-sm);border:1px solid var(--line);display:grid;place-items:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--muted);background:var(--bg-soft)}
 .opt-text{flex:1;line-height:1.4}
@@ -129,9 +129,11 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
 .feedback-text.ng{color:var(--danger)}
 .feedback-explain{font-size:13.5px;color:var(--muted);margin-top:4px;line-height:1.55}
 
-.next-btn,.btn-pri{background:var(--accent);color:var(--surface);border:1px solid var(--accent)}
+.btn-pri{background:var(--accent);color:var(--surface);border:1px solid var(--accent)}
+.next-btn{background:var(--cat-c,var(--accent));color:var(--surface);border:1px solid var(--cat-c,var(--accent))}
 .next-btn,.btn-sec,.btn-pri{width:100%;border-radius:var(--radius-md);padding:14px;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s ease;display:inline-flex;align-items:center;justify-content:center}
-.next-btn:hover,.btn-pri:hover{background:var(--accent-strong);border-color:var(--accent-strong);box-shadow:0 4px 12px rgba(63,81,181,0.2)}
+.btn-pri:hover{background:var(--accent-strong);border-color:var(--accent-strong);box-shadow:0 4px 12px rgba(63,81,181,0.2)}
+.next-btn:hover{filter:brightness(.92);box-shadow:0 4px 12px rgba(63,81,181,0.2)}
 .next-btn:active,.btn-sec:active,.btn-pri:active{transform:scale(.985)}
 
 /* Result Card */
@@ -248,7 +250,7 @@ button:focus-visible,.q-text:focus-visible{outline:none;box-shadow:var(--ring)}
 
 /* Interactive Tools */
 .study-tool{background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-md);padding:18px;margin:14px 0}
-.study-tool-title{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px}
+.study-tool-title{font-size:12px;font-weight:700;color:var(--cat-c,var(--accent));text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px}
 
 /* Calculator / Piano Grid styles */
 .calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px;margin-bottom:12px}
@@ -677,7 +679,8 @@ function buildCategoryGrid(){
   CATS.forEach(c=>{
     const done=storage.catDone[c.id];
     const card=node('article','cat-card');
-    
+    card.style.setProperty('--cat-c',c.accent);
+
     const accent=node('span','cat-accent');
     accent.style.background=c.accent;
     
@@ -754,6 +757,7 @@ let currentStudyCatId = null;
 function goStudy(catId){
   currentStudyCatId = catId;
   const cat = CATS.find(c=>c.id===catId);
+  byId('study-screen').style.setProperty('--cat-c',cat.accent);
   byId('study-title').textContent = cat.title;
   byId('study-subtitle').textContent = `${cat.sub} · 2022 개정 교육과정 중등 음악`;
   
@@ -1531,7 +1535,7 @@ function startQuiz(catId){
   const qs=shuffle(allQ).slice(0,10).map(shuffleQuestionOptions);
   state={screen:'quiz',cat,qs,cur:0,score:0,answers:[],startTime:Date.now(),streak:0,bestStreak:0};
   byId('q-cat-name').textContent=cat.title;
-  byId('q-prog-fill').style.background=cat.accent;
+  byId('quiz-screen').style.setProperty('--cat-c',cat.accent);
   renderQuestion();
   showScreen('quiz-screen','q-text');
 }
