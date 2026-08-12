@@ -8,6 +8,14 @@
 		X-Content-Type-Options nosniff
 		Referrer-Policy no-referrer
 		Permissions-Policy "camera=(), microphone=(), geolocation=()"
-		Cache-Control "public, max-age=300"
 	}
+
+	# index.html is the entire app and changes on every deploy — always
+	# revalidate so users don't see a stale cached copy after an update.
+	@shell path / /index.html
+	header @shell Cache-Control "no-cache"
+
+	# favicon rarely changes, safe to cache longer.
+	@favicon path /favicon.svg
+	header @favicon Cache-Control "public, max-age=86400"
 }
