@@ -1,5 +1,7 @@
 import { readFile } from 'node:fs/promises';
 
+import { validateStaff } from './staff_integrity.mjs';
+
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 
 // Evaluate the QUESTIONS literal directly instead of hand-rolling a parser.
@@ -27,7 +29,6 @@ console.log(`\nTotal questions: ${total}`);
 let errors = [];
 let warnings = [];
 const seen = {};
-
 for (const [cat, qs] of Object.entries(QUESTIONS)) {
   qs.forEach((q, i) => {
     // Check ans is valid
@@ -56,9 +57,16 @@ for (const [cat, qs] of Object.entries(QUESTIONS)) {
     
     // Check notation consistency
     if (q.notation) {
-      if (!['note', 'rest', 'mark', 'interval', 'keysig', 'noteseq', 'triad', 'phrase'].includes(q.notation.type)) {
+      if (!['note', 'rest', 'mark', 'interval', 'keysig', 'noteseq', 'triad', 'phrase', 'staff'].includes(q.notation.type)) {
         errors.push(`${cat}[${i}]: unknown notation type "${q.notation.type}"`);
       }
+      errors.push(...validateStaff(q.notation, `${cat}[${i}].notation`));
+    }
+    if (q.optionNotations !== undefined) {
+      if (!Array.isArray(q.optionNotations) || q.optionNotations.length !== q.opts.length) errors.push(`${cat}[${i}]: optionNotations must match opts length`);
+      (q.optionNotations || []).forEach((notation, optionIndex) => {
+        if (notation !== null) errors.push(...validateStaff(notation, `${cat}[${i}].optionNotations[${optionIndex}]`));
+      });
     }
   });
 }

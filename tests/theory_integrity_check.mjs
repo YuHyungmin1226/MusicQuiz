@@ -94,6 +94,7 @@ const speedWords = {
   '보통 빠르기': 4,
   '보통으로': 4,
   '빠른': 6,
+  '빠르고 생기 있게': 7,
   '빠르게': 6,
   '자유롭게': -1,
   '일정': -1,
@@ -505,15 +506,18 @@ for (const q of allQuestions) {
 
 for (const q of allQuestions) {
   if (q.notation !== undefined) {
-    if (!q.notation.type || !['note', 'rest', 'mark', 'interval', 'keysig', 'noteseq', 'triad', 'phrase'].includes(q.notation.type)) {
+    if (!q.notation.type || !['note', 'rest', 'mark', 'interval', 'keysig', 'noteseq', 'triad', 'phrase', 'staff'].includes(q.notation.type)) {
       error(q.cat, q.idx, `notation.type="${q.notation.type}" is not a recognized type`, q.q);
     }
-    if (!q.notation.value) {
+    if (q.notation.type !== 'staff' && !q.notation.value) {
       error(q.cat, q.idx, 'notation is missing "value" field', q.q);
     }
     if (!q.notation.label) {
       error(q.cat, q.idx, 'notation is missing "label" field', q.q);
     }
+  }
+  if (q.optionNotations !== undefined && q.optionNotations.length !== q.opts.length) {
+    error(q.cat, q.idx, 'optionNotations length does not match opts length', q.q);
   }
 }
 

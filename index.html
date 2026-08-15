@@ -34,6 +34,8 @@
   --radius-md:7px;
   --radius-lg:12px;
   --space:8px;
+  --score-option-max-block:104px;
+  --score-review-max-inline:320px;
   --font:"Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 body{font-family:var(--font);background:var(--bg);min-height:100vh;color:var(--text);line-height:1.7;overflow-x:hidden}
@@ -48,6 +50,8 @@ svg.icon{flex-shrink:0}
 #home-screen.screen{max-width:clamp(860px,78vw,1480px)}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .typora-comment{color:var(--muted);font-size:13.5px;line-height:1.6}
+.typora-comment.is-success{color:var(--success)}
+.typora-comment.is-danger{color:var(--danger)}
 
 /* App Bar */
 .appbar{position:sticky;top:0;z-index:100;width:100%;background:var(--bg);border-bottom:1px solid var(--line)}
@@ -104,19 +108,25 @@ svg.icon{flex-shrink:0}
 
 .question-card{padding:24px;margin-bottom:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius-md)}
 .q-num{font-variant-numeric:tabular-nums;font-size:11px;color:var(--faint);font-weight:700;letter-spacing:.1em;margin-bottom:8px}
-.q-text{font-size:clamp(18px,4vw,22px);font-weight:700;line-height:1.5;color:var(--text)}
+.q-text{font-size:clamp(18px,4vw,22px);font-weight:700;line-height:1.5;color:var(--text);word-break:keep-all;overflow-wrap:anywhere}
 .q-image{padding:16px;background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-md);margin:16px 0 8px}
 .notation-card{display:flex;flex-direction:column;align-items:center;justify-content:center}
 .notation-card svg{height:52px;width:auto;max-width:100%}
 .q-image .notation-card svg{height:88px}
+.notation-card svg.staff-score{display:block;color:var(--text);width:100%;height:auto;max-height:112px}
+.notation-label{font-size:12.5px;color:var(--muted);line-height:1.4;text-align:center;margin-top:calc(var(--space) / 2)}
 
 /* Options & Buttons */
 .options-grid{display:grid;gap:8px;margin-top:20px}
-.opt-btn{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px 18px;text-align:left;cursor:pointer;font-size:14.5px;color:var(--text);transition:all .12s ease;display:flex;align-items:center;gap:12px;width:100%;min-height:50px;box-shadow:var(--shadow)}
+.opt-btn{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px 18px;text-align:left;cursor:pointer;font-size:14.5px;color:var(--text);transition:all .12s ease;display:flex;align-items:center;gap:12px;width:100%;min-height:50px;box-shadow:var(--shadow);overflow:hidden}
 .opt-btn:hover:not(:disabled){border-color:var(--cat-c,var(--accent));background:var(--surface-strong)}
 .opt-btn:active:not(:disabled){transform:scale(0.99)}
 .opt-label{font-variant-numeric:tabular-nums;width:24px;height:24px;border-radius:var(--radius-sm);border:1px solid var(--line);display:grid;place-items:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--muted);background:var(--bg-soft)}
 .opt-text{flex:1;line-height:1.4}
+.opt-content{display:flex;align-items:center;gap:calc(var(--space) * 1.5);min-width:0;flex:1}
+.option-notation{width:min(280px,48%);min-width:180px;padding:calc(var(--space) / 2) var(--space);background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-sm)}
+.option-notation .notation-label{display:none}
+.option-notation .staff-score{max-height:var(--score-option-max-block)}
 .state-mark{font-weight:700;margin-left:auto}
 .opt-btn.correct{background:var(--success-soft);border-color:var(--success)}
 .opt-btn.correct .opt-label{background:var(--success);color:#fff;border-color:var(--success)}
@@ -150,8 +160,7 @@ svg.icon{flex-shrink:0}
 .result-sub{font-size:13.5px;color:var(--muted);margin-top:6px}
 
 .result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
-.r-stat{background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px;transition:all 0.2s ease}
-.r-stat:hover{transform:translateY(-1px)}
+.r-stat{background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px}
 .r-stat-n{font-variant-numeric:tabular-nums;font-size:20px;font-weight:700}
 .r-stat-l{font-size:11.5px;color:var(--muted);margin-top:2px;font-weight:600}
 
@@ -173,10 +182,6 @@ svg.icon{flex-shrink:0}
   border-radius: var(--radius-md);
   padding: 12px;
   text-align: center;
-  transition: all 0.2s ease;
-}
-.stat-card:hover {
-  transform: translateY(-1px);
 }
 .stat-num {
   font-variant-numeric:tabular-nums;
@@ -193,8 +198,16 @@ svg.icon{flex-shrink:0}
 
 .review-item{padding:14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius-md)}
 .review-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:6px}
-.review-q{font-size:13.5px;font-weight:700;margin-bottom:4px;line-height:1.4}
-.review-a{font-size:12.5px;color:var(--muted);line-height:1.45}
+.review-q{font-size:13.5px;font-weight:700;margin-bottom:4px;line-height:1.4;word-break:keep-all;overflow-wrap:anywhere}
+.review-a{font-size:12.5px;color:var(--muted);line-height:1.45;word-break:keep-all;overflow-wrap:anywhere}
+.review-item>div:last-child{min-width:0;flex:1}
+.review-notation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space);margin-top:var(--space)}
+.review-notation{padding:var(--space);background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-sm);min-width:0}
+.review-prompt-notation{grid-column:1/-1}
+.review-notation-title{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:calc(var(--space) / 2)}
+.review-notation .notation-label{display:none}
+.review-notation .notation-card{color:var(--text)}
+.review-notation .notation-card svg.staff-score{max-width:var(--score-review-max-inline);max-height:none;margin-inline:auto}
 
 .btn-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:12px;width:100%}
 .btn-sec{background:var(--surface);border:1px solid var(--line);color:var(--text)}
@@ -236,6 +249,10 @@ svg.icon{flex-shrink:0}
   .cat-card{min-height:auto;padding:16px}
   .question-card{padding:16px}
   .opt-btn{align-items:flex-start;padding:10px 14px;font-size:13.5px}
+  .opt-content{align-items:stretch;flex-direction:column;gap:var(--space)}
+  .option-notation{width:100%;min-width:0}
+  .option-notation .staff-score{max-height:none}
+  .review-notation-grid{grid-template-columns:1fr}
   .opt-label{width:22px;height:22px;font-size:11px}
   .result-card{padding:20px 14px}
 }
@@ -251,7 +268,7 @@ svg.icon{flex-shrink:0}
 .study-header{margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--line)}
 .study-section{margin-bottom:24px}
 .study-section h3{font-size:16px;font-weight:700;margin-bottom:10px;color:var(--text);display:flex;align-items:center;gap:6px}
-.study-section p{font-size:13.5px;color:var(--muted);line-height:1.6;margin-bottom:10px}
+.study-section p{font-size:13.5px;color:var(--muted);line-height:1.6;margin-bottom:10px;word-break:keep-all;overflow-wrap:anywhere}
 
 /* Interactive Tools */
 .study-tool{background:var(--surface-strong);border:1px solid var(--line);border-radius:var(--radius-md);padding:18px;margin:14px 0}
@@ -262,16 +279,20 @@ svg.icon{flex-shrink:0}
 .calc-btn{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:8px;text-align:center;cursor:pointer;font-size:11.5px;font-weight:700;transition:all 0.12s ease}
 .calc-btn:hover{border-color:var(--accent);background:var(--bg-soft)}
 .calc-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.calc-result{background:var(--surface);border:1px dashed var(--accent);border-radius:var(--radius-sm);padding:12px;text-align:center;font-size:14px;font-weight:700}
+.calc-result{background:var(--surface);border:1px dashed var(--accent);border-radius:var(--radius-sm);padding:12px;text-align:center;font-size:14px;font-weight:700;word-break:keep-all;overflow-wrap:anywhere}
 
 .piano-kb{display:flex;justify-content:flex-start;background:var(--surface);padding:20px 10px;border-radius:var(--radius-md);border:1px solid var(--line);margin:14px auto;overflow-x:auto;scrollbar-width:thin;width:fit-content;max-width:100%}
-.piano-key{width:44px;height:160px;background:#ffffff;border:1px solid #dee2e6;border-radius:0 0 4px 4px;position:relative;cursor:pointer;transition:background 0.1s ease;flex-shrink:0}
+.piano-scroll-hint{display:none}
+.scale-term{white-space:nowrap}
+.study-level-phrase{white-space:nowrap}
+.piano-key{appearance:none;width:44px;height:160px;padding:0;background:#ffffff;border:1px solid #dee2e6;border-radius:0 0 4px 4px;position:relative;cursor:pointer;transition:background 0.1s ease;flex-shrink:0}
 .piano-key.black{width:28px;height:100px;background:#212529;margin-left:-14px;margin-right:-14px;z-index:2;border-radius:0 0 3px 3px}
 .piano-key-label{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;font-weight:700;color:var(--faint);pointer-events:none}
 .piano-key.black .piano-key-label{color:#c9c7bf;bottom:6px}
 .piano-key:hover{background:var(--bg-soft)}
 .piano-key.active-white{background:var(--accent-soft)!important;border-color:var(--accent)}
 .piano-key.active-black{background:var(--accent)!important;border-color:var(--accent)}
+@media(max-width:600px){.piano-scroll-hint{display:block;text-align:center;margin-bottom:calc(var(--space) / 2)}}
 
 .rhythm-bar-container{display:flex;flex-direction:column;gap:10px;margin-top:14px}
 .rhythm-beats{display:flex;gap:6px;width:100%}
@@ -402,15 +423,16 @@ svg.icon{flex-shrink:0}
         <div class="score-ring">
           <svg width="100" height="100" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="42" fill="none" stroke="var(--line)" stroke-width="8"/>
-            <circle cx="50" cy="50" r="42" fill="none" stroke-width="8" stroke-linecap="round" id="score-arc" stroke="#cbc9bc" stroke-dasharray="0 264" transform="rotate(-90 50 50)"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke-width="8" stroke-linecap="round" id="score-arc" stroke="var(--line-strong)" stroke-dasharray="0 264" transform="rotate(-90 50 50)"/>
           </svg>
           <div class="score-center" id="score-pct"></div>
         </div>
         <div class="result-title" id="result-title" tabindex="-1"></div>
         <div class="result-sub" id="result-sub"></div>
+        <p class="typora-comment" id="practice-status" hidden></p>
         <div class="result-stats">
-          <div class="r-stat"><div class="r-stat-n" id="r-correct" style="color:#276b41">0</div><div class="r-stat-l">정답</div></div>
-          <div class="r-stat"><div class="r-stat-n" id="r-wrong" style="color:#a13327">0</div><div class="r-stat-l">오답</div></div>
+          <div class="r-stat"><div class="r-stat-n" id="r-correct" style="color:var(--success)">0</div><div class="r-stat-l">정답</div></div>
+          <div class="r-stat"><div class="r-stat-n" id="r-wrong" style="color:var(--danger)">0</div><div class="r-stat-l">오답</div></div>
           <div class="r-stat"><div class="r-stat-n" id="r-time">0s</div><div class="r-stat-l">소요 시간</div></div>
         </div>
         <div class="section-title result-history-title">누적 학습 기록</div>
@@ -438,6 +460,7 @@ svg.icon{flex-shrink:0}
       <button class="btn-sec" id="wrong-retry-btn" type="button" style="display:none">오답만 다시 풀기</button>
       <button class="btn-pri" id="other-cat-btn" type="button">다른 영역 →</button>
     </div>
+    <p class="typora-comment" id="pdf-status" role="status" aria-live="polite"></p>
   </div>
 
   <!-- About Screen -->
@@ -465,13 +488,13 @@ const CATS=[
 
 const QUESTIONS={
 note:[
-  {q:'4분음표를 1박으로 할 때, 온음표의 박자 수는?',opts:['1박','2박','3박','4박'],ans:3,notation:{type:'note',value:'whole',label:'온음표'},explain:'온음표는 4분음표 4개와 같은 길이입니다.'},
+  {q:'4분음표를 1박으로 할 때, 온음표의 박자 수는?',opts:['1박','2박','3박','4박'],ans:3,notation:{type:'staff',label:'가온 도 온음표 오선보',elements:[{type:'note',pitch:'C4',duration:'whole'}]},explain:'온음표는 4분음표 4개와 같은 길이입니다.'},
   {q:'4분음표를 1박으로 할 때, 2분음표의 박자 수는?',opts:['1박','2박','3박','4박'],ans:1,notation:{type:'note',value:'half',label:'2분음표'},explain:'2분음표는 온음표의 절반, 4분음표 2개와 같은 길이입니다.'},
-  {q:'4분음표를 1박으로 할 때, 점8분음표의 박자 수는?',opts:['½박','¾박','1박','1½박'],ans:1,notation:{type:'note',value:'dotted-eighth',label:'점8분음표'},explain:'점음표는 원래 음표 길이의 절반을 더합니다. 점8분음표 = ½박 + ¼박 = ¾박입니다.'},
+  {q:'4분음표를 1박으로 할 때, 점8분음표의 박자 수는?',opts:['½박','¾박','1박','1½박'],ans:1,notation:{type:'staff',label:'점8분음표 오선보',elements:[{type:'note',pitch:'G4',duration:'eighth',dots:1}]},explain:'점음표는 원래 음표 길이의 절반을 더합니다. 점8분음표 = ½박 + ¼박 = ¾박입니다.'},
   {q:'4분음표를 1박으로 할 때, 8분음표는 몇 박인가요?',opts:['½박','1박','2박','4박'],ans:0,notation:{type:'note',value:'eighth',label:'8분음표'},explain:'8분음표는 4분음표의 절반인 ½박입니다.'},
   {q:'4분음표를 1박으로 할 때, 점2분음표의 박자 수는?',opts:['2박','2.5박','3박','3.5박'],ans:2,notation:{type:'note',value:'dotted-half',label:'점2분음표'},explain:'점음표는 원래 음표 길이의 절반을 더하므로, 점2분음표 = 2박 + 1박 = 3박입니다.'},
-  {q:'4분음표를 1박으로 할 때, 4분쉼표가 쉬는 시간은?',opts:['½박','1박','2박','4박'],ans:1,notation:{type:'rest',value:'quarter',label:'4분쉼표'},explain:'쉼표는 해당 음표와 같은 길이만큼 소리를 내지 않습니다. 4분쉼표 = 1박입니다.'},
-  {q:'16분음표 2개는 어느 음표와 같은가요?',opts:['온음표','2분음표','4분음표','8분음표'],ans:3,notation:{type:'note',value:'sixteenth',label:'16분음표'},explain:'16분음표 = 8분음표의 절반이므로, 16분음표 2개 = 8분음표 1개.'},
+  {q:'4분음표를 1박으로 할 때, 4분쉼표가 쉬는 시간은?',opts:['½박','1박','2박','4박'],ans:1,notation:{type:'staff',label:'4분쉼표 오선보',elements:[{type:'rest',duration:'quarter'}]},explain:'쉼표는 해당 음표와 같은 길이만큼 소리를 내지 않습니다. 4분쉼표 = 1박입니다.'},
+  {q:'16분음표 2개는 어느 음표와 같은가요?',opts:['온음표','2분음표','4분음표','8분음표'],ans:3,notation:{type:'staff',label:'기둥과 보로 묶인 16분음표 두 개',elements:[{type:'note',id:'a',pitch:'E4',duration:'sixteenth',beam:'g1'},{type:'note',id:'b',pitch:'G4',duration:'sixteenth',beam:'g1'}]},explain:'16분음표 = 8분음표의 절반이므로, 16분음표 2개 = 8분음표 1개.'},
   {q:'온음표 쉼표의 모양 설명으로 맞는 것은?',opts:['선 위에 매달린 직사각형','선 아래에 붙은 직사각형','빈 마름모','채워진 마름모'],ans:1,explain:'온음표 쉼표는 4번 선 아래에 붙은 납작한 직사각형으로 표기됩니다.'},
   {q:'4분음표를 1박으로 할 때, 점4분음표의 박자 수는?',opts:['1박','1.5박','2박','2.5박'],ans:1,notation:{type:'note',value:'dotted-quarter',label:'점4분음표'},explain:'점음표는 원래 음표 길이의 절반을 더합니다. 점4분음표 = 1박 + ½박 = 1.5박입니다.'},
   {q:'4분음표를 1박으로 할 때, 다음 중 틀린 것은?',opts:['4분음표 = 1박','2분음표 = 2박','온음표 = 4박','8분음표 = 1박'],ans:3,explain:'8분음표는 ½박입니다. 1박은 4분음표입니다.'},
@@ -480,24 +503,24 @@ note:[
   {q:'당김음(Syncopation)이란?',opts:['여린박이 강박처럼 강조됨','강박에 음이 오는 것','빠르게 연주하는 기법','쉼표가 많은 리듬'],ans:0,explain:'당김음은 여린박에 시작한 음이 강박까지 이어져 강박처럼 들리는 효과입니다.'},
   {q:'4분음표 4개로 만들 수 있는 박자는?',opts:['2/4박자','3/4박자','4/4박자','6/8박자'],ans:2,notation:{type:'note',value:'quarter',label:'4분음표'},explain:'4/4박자는 한 마디에 4분음표가 4개 들어가는 박자입니다.'},
   {q:'2분음표 쉼표의 모양은?',opts:['선 아래에 붙음','선 위에 있는 직사각형','삐죽한 모양','물결 모양'],ans:1,explain:'2분음표 쉼표는 3번 선 위에 올려놓은 납작한 직사각형으로, 온음표 쉼표와 반대 방향입니다.'},
-  {q:'셋잇단음표(Triplet)에서 3개의 음표가 차지하는 시간은?',opts:['같은 종류 1개 길이','같은 종류 2개 길이','같은 종류 3개 길이','같은 종류 4개 길이'],ans:1,notation:{type:'noteseq',value:['eighth','eighth','eighth'],bracket:true,label:'셋잇단음표'},explain:'8분음표 셋잇단음표 3개는 8분음표 2개(= 4분음표 1박)와 같은 시간을 차지합니다.'},
+  {q:'셋잇단음표(Triplet)에서 3개의 음표가 차지하는 시간은?',opts:['같은 종류 1개 길이','같은 종류 2개 길이','같은 종류 3개 길이','같은 종류 4개 길이'],ans:1,notation:{type:'staff',label:'한 보로 묶인 8분음표 셋잇단음표',elements:[{type:'note',id:'a',pitch:'E4',duration:'eighth',beam:'triplet'},{type:'note',id:'b',pitch:'F4',duration:'eighth',beam:'triplet'},{type:'note',id:'c',pitch:'G4',duration:'eighth',beam:'triplet'},{type:'tuplet',from:'a',to:'c',number:3,placement:'above'}]},explain:'8분음표 셋잇단음표 3개는 8분음표 2개(= 4분음표 1박)와 같은 시간을 차지합니다.'},
   {q:'온음표 쉼표와 2분음표 쉼표를 구별하는 방법은?',opts:['크기가 다르다','위치가 반대이다','색이 다르다','획수가 다르다'],ans:1,explain:'온음표 쉼표는 선 아래에, 2분음표 쉼표는 선 위에 붙습니다.'},
-  {q:'붙임줄(Tie)의 역할은?',opts:['음을 꾸미는 것','같은 음을 연결해 길이를 늘리는 것','빠르기를 표시','음의 세기를 표시'],ans:1,notation:{type:'mark',value:'tie',label:'붙임줄'},explain:'붙임줄은 같은 높이의 음표 두 개를 연결하여 하나의 긴 음으로 연주하게 합니다.'},
-  {q:'이음줄(Slur)의 역할은?',opts:['음을 부드럽게 연결','음의 길이를 연장','음의 세기 증가','빠르게 연주'],ans:0,notation:{type:'mark',value:'legato',label:'이음줄'},explain:'이음줄은 다른 음들을 부드럽게 이어 레가토로 연주하게 하는 기호입니다.'},
+  {q:'붙임줄(Tie)의 역할은?',opts:['음을 꾸미는 것','같은 음을 연결해 길이를 늘리는 것','빠르기를 표시','음의 세기를 표시'],ans:1,notation:{type:'staff',label:'같은 높이의 솔 두 음을 잇는 붙임줄',elements:[{type:'note',id:'a',pitch:'G4',duration:'quarter'},{type:'barline',style:'thin'},{type:'note',id:'b',pitch:'G4',duration:'quarter'},{type:'tie',from:'a',to:'b',placement:'below'}]},explain:'붙임줄은 같은 높이의 음표 두 개를 연결하여 하나의 긴 음으로 연주하게 합니다.'},
+  {q:'이음줄(Slur)의 역할은?',opts:['음을 부드럽게 연결','음의 길이를 연장','음의 세기 증가','빠르게 연주'],ans:0,notation:{type:'staff',label:'서로 다른 도 레 미 음을 잇는 이음줄',elements:[{type:'note',id:'a',pitch:'C4',duration:'quarter'},{type:'note',id:'b',pitch:'D4',duration:'quarter'},{type:'note',id:'c',pitch:'E4',duration:'quarter'},{type:'slur',from:'a',to:'c',placement:'above'}]},explain:'이음줄은 다른 음들을 부드럽게 이어 레가토로 연주하게 하는 기호입니다.'},
   {q:'한 마디에 4분음표 4박이 들어가는 박자 표기는?',opts:['2/4','3/4','4/4','6/8'],ans:2,notation:{type:'note',value:'quarter',label:'4분음표'},explain:'4/4박자: 분모 4는 4분음표, 분자 4는 한 마디에 4박임을 나타냅니다.'},
 ],
 scale:[
   {q:'C장조의 음계 순서는?',opts:['도레미파솔라시도','도레미♭파솔라시도','도레♭미파솔라시도','도레미파♭솔라시도'],ans:0,explain:'C장조는 검은 건반 없이 흰 건반만으로 이루어진 기본 장음계입니다.'},
   {q:'장음계의 온음·반음 구조는?',opts:['온온반온온온반','온반온온반온온','반온온온반온온','온온온반온온반'],ans:0,explain:'장음계의 구조는 온-온-반-온-온-온-반 순서입니다 (W-W-H-W-W-W-H).'},
-  {q:'G장조의 조표는?',opts:['♭ 1개','♯ 1개','♭ 2개','♯ 2개'],ans:1,explain:'G장조는 F♯ 하나를 조표로 가집니다.'},
-  {q:'F장조의 조표는?',opts:['♭ 1개','♯ 1개','♭ 2개','♯ 2개'],ans:0,explain:'F장조는 B♭ 하나를 조표로 가집니다.'},
+  {q:'G장조의 조표는?',opts:['♭ 1개','♯ 1개','♭ 2개','♯ 2개'],ans:1,optionNotations:[{type:'staff',label:'내림표 한 개 조표',key:'F',elements:[{type:'barline',style:'final'}]},{type:'staff',label:'올림표 한 개 조표',key:'G',elements:[{type:'barline',style:'final'}]},{type:'staff',label:'내림표 두 개 조표',key:'Bb',elements:[{type:'barline',style:'final'}]},{type:'staff',label:'올림표 두 개 조표',key:'D',elements:[{type:'barline',style:'final'}]}],explain:'G장조는 F♯ 하나를 조표로 가집니다.'},
+  {q:'F장조의 조표는?',opts:['♭ 1개','♯ 1개','♭ 2개','♯ 2개'],ans:0,optionNotations:[{type:'staff',label:'내림표 한 개 조표',key:'F',elements:[{type:'barline',style:'final'}]},{type:'staff',label:'올림표 한 개 조표',key:'G',elements:[{type:'barline',style:'final'}]},{type:'staff',label:'내림표 두 개 조표',key:'Bb',elements:[{type:'barline',style:'final'}]},{type:'staff',label:'올림표 두 개 조표',key:'D',elements:[{type:'barline',style:'final'}]}],explain:'F장조는 B♭ 하나를 조표로 가집니다.'},
   {q:'계이름 "라"에 해당하는 음이름(영어)은?',opts:['A','B','C','D'],ans:0,explain:'솔페지오 계이름과 영어 음이름: 도=C, 레=D, 미=E, 파=F, 솔=G, 라=A, 시=B.'},
   {q:'자연단음계와 장음계의 차이점은?',opts:['3·6·7번째 음이 반음 낮음','2·4·6번째 음이 반음 높음','1·3·5번째 음만 다름','모든 음이 반음 낮음'],ans:0,explain:'자연단음계는 장음계의 3, 6, 7번째 음을 각각 반음 낮춰서 만듭니다.'},
   {q:'D장조의 올림표(♯) 수는?',opts:['1개','2개','3개','4개'],ans:1,explain:'D장조는 F♯, C♯ 두 개의 올림표를 가집니다.'},
-  {q:'♯이 3개인 장조는?',opts:['G장조','D장조','A장조','E장조'],ans:2,notation:{type:'keysig',value:'sharp3',label:'♯ 3개'},explain:'♯ 3개 = A장조입니다. (F♯, C♯, G♯)'},
+  {q:'♯이 3개인 장조는?',opts:['G장조','D장조','A장조','E장조'],ans:2,notation:{type:'staff',label:'올림표 세 개 F C G 순서의 A장조 조표',key:'A',elements:[{type:'barline',style:'final'}]},explain:'♯ 3개 = A장조입니다. (F♯, C♯, G♯)'},
   {q:'반음(Half step)이란?',opts:['피아노에서 인접한 두 건반의 음정','두 음의 음정 간격이 온음인 것','두 옥타브 차이','3도 음정'],ans:0,notation:{type:'interval',value:'min2',label:'반음 (예: 미~파)'},explain:'반음은 피아노에서 바로 이웃한 두 건반 사이의 가장 작은 음정 간격입니다.'},
   {q:'솔페지오에서 "시"의 음이름은?',opts:['A','B','C','G'],ans:1,explain:'도=C, 레=D, 미=E, 파=F, 솔=G, 라=A, 시=B입니다.'},
-  {q:'♭이 2개인 조성은?',opts:['F장조','B♭장조','E♭장조','A♭장조'],ans:1,notation:{type:'keysig',value:'flat2',label:'♭ 2개'},explain:'B♭장조는 B♭, E♭ 두 개의 내림표를 가집니다.'},
+  {q:'♭이 2개인 조성은?',opts:['F장조','B♭장조','E♭장조','A♭장조'],ans:1,notation:{type:'staff',label:'내림표 두 개 B E 순서의 B플랫장조 조표',key:'Bb',elements:[{type:'barline',style:'final'}]},explain:'B♭장조는 B♭, E♭ 두 개의 내림표를 가집니다.'},
   {q:'화성단음계(Harmonic minor)의 특징은?',opts:['7번째 음을 반음 올림','6번째 음을 반음 올림','3번째 음을 반음 올림','5번째 음을 반음 올림'],ans:0,explain:'화성단음계는 자연단음계의 7번째 음을 반음 올려서 이끈음 효과를 만듭니다.'},
   {q:'5도권에서 ♯이 하나씩 늘어나는 순서는?',opts:['C→G→D→A→E','C→F→B♭→E♭','C→D→E→F','C→B→A→G'],ans:0,explain:'장조의 ♯ 순서: C(0)→G(1)→D(2)→A(3)→E(4)→B(5)→F♯(6)→C♯(7)'},
   {q:'"도"에서 옥타브 위의 "도"까지 반음 개수는?',opts:['10개','11개','12개','13개'],ans:2,notation:{type:'interval',value:'perfect8',label:'옥타브 (도~도)'},explain:'한 옥타브는 12개의 반음(반음 간격)으로 구성됩니다.'},
@@ -505,18 +528,18 @@ scale:[
   {q:'한 옥타브 안의 서로 다른 반음계 음은 몇 개인가요?',opts:['7개','10개','12개','13개'],ans:2,notation:{type:'interval',value:'perfect8',label:'한 옥타브'},explain:'반음계는 한 옥타브 안에서 12개의 서로 다른 반음계 음으로 이루어집니다. 옥타브 위의 같은 음까지 세면 13번째 음이 됩니다.'},
   {q:'E장조의 ♯ 개수는?',opts:['2개','3개','4개','5개'],ans:2,explain:'E장조는 F♯, C♯, G♯, D♯ 네 개의 올림표를 가집니다.'},
   {q:'가단조(A minor)의 나란한조(관계장조)는?',opts:['C장조','G장조','F장조','D장조'],ans:0,explain:'가단조의 으뜸음 라(A)에서 단3도 위인 다(C)장조가 나란한조입니다.'},
-  {q:'올림표(♯)의 역할은?',opts:['음을 반음 올린다','음을 반음 낮춘다','음을 온음 올린다','이전 변화표를 취소'],ans:0,notation:{type:'keysig',value:'sharp1',label:'♯'},explain:'올림표(♯)는 해당 음을 반음 높여 연주하도록 지시합니다.'},
-  {q:'내림표(♭)의 역할은?',opts:['음을 반음 올린다','음을 반음 낮춘다','음을 온음 올린다','온음 낮춘다'],ans:1,notation:{type:'keysig',value:'flat1',label:'♭'},explain:'내림표(♭)는 해당 음을 반음 낮춰 연주하도록 지시합니다.'},
+  {q:'올림표(♯)의 역할은?',opts:['음을 반음 올린다','음을 반음 낮춘다','음을 온음 올린다','이전 변화표를 취소'],ans:0,notation:{type:'staff',label:'F4와 F샵4 비교 오선보',elements:[{type:'note',pitch:'F4',duration:'quarter'},{type:'note',pitch:'F#4',duration:'quarter'}]},explain:'올림표(♯)는 해당 음을 반음 높여 연주하도록 지시합니다.'},
+  {q:'내림표(♭)의 역할은?',opts:['음을 반음 올린다','음을 반음 낮춘다','음을 온음 올린다','온음 낮춘다'],ans:1,notation:{type:'staff',label:'B4와 B플랫4 비교 오선보',elements:[{type:'note',pitch:'B4',duration:'quarter'},{type:'note',pitch:'Bb4',duration:'quarter'}]},explain:'내림표(♭)는 해당 음을 반음 낮춰 연주하도록 지시합니다.'},
 ],
 rhythm:[
   {q:'4/4박자에서 가장 강한 박은?',opts:['1박','2박','3박','4박'],ans:0,explain:'4/4박자의 강세: 강(1박) - 약(2박) - 중강(3박) - 약(4박)'},
   {q:'3/4박자의 강세 패턴은?',opts:['강-약-약','강-약-강','강-강-약','약-강-약'],ans:0,explain:'3/4박자: 강(1박) - 약(2박) - 약(3박)으로, 왈츠 리듬이 대표적입니다.'},
   {q:'6/8박자에서 보통 한 박의 단위가 되는 음표는?',opts:['4분음표','8분음표','2분음표','점4분음표'],ans:3,explain:'6/8박자는 보통 8분음표 3개를 한 묶음으로 보아 점4분음표를 한 박처럼 느끼며 2박으로 셉니다.'},
-  {q:'2/4박자 한 마디에 들어가는 4분음표의 수는?',opts:['2개','3개','4개','8개'],ans:0,notation:{type:'note',value:'quarter',label:'4분음표'},explain:'2/4박자: 분자 2는 2박, 분모 4는 4분음표 기준임을 나타냅니다.'},
+  {q:'2/4박자 한 마디에 들어가는 4분음표의 수는?',opts:['2개','3개','4개','8개'],ans:0,notation:{type:'staff',label:'4분의 2박자 한 마디에 4분음표 두 개',time:[2,4],elements:[{type:'note',pitch:'E4',duration:'quarter'},{type:'note',pitch:'G4',duration:'quarter'},{type:'barline',style:'final'}]},explain:'2/4박자: 분자 2는 2박, 분모 4는 4분음표 기준임을 나타냅니다.'},
   {q:'박자표 3/8에서 분모 8이 나타내는 것은?',opts:['8분음표가 기준','3박','8마디','8분쉼표'],ans:0,explain:'박자표의 분모는 기준이 되는 음표의 종류입니다. 8=8분음표.'},
   {q:'3/4박자를 대표하는 춤곡은?',opts:['왈츠','마치','폴카','탱고'],ans:0,explain:'왈츠(Waltz)는 3/4박자의 대표적인 춤곡으로 "쿵-짝-짝" 리듬이 특징입니다.'},
   {q:'혼합박자 5/4박자의 강세는 보통 어떻게 나뉘나요?',opts:['3+2 또는 2+3','4+1','5개 동등','1+4'],ans:0,explain:'5/4박자는 보통 3+2 또는 2+3으로 나뉘어 강세를 가집니다.'},
-  {q:'4/4박자 한 마디에 8분음표는 몇 개까지 들어가나요?',opts:['4개','6개','8개','16개'],ans:2,notation:{type:'note',value:'eighth',label:'8분음표'},explain:'4/4박자 = 4박 = 8분음표 기준 8개.'},
+  {q:'4/4박자 한 마디에 8분음표는 몇 개까지 들어가나요?',opts:['4개','6개','8개','16개'],ans:2,notation:{type:'staff',label:'4분의 4박자 한 마디의 8분음표 여덟 개',time:[4,4],elements:[{type:'note',pitch:'E4',duration:'eighth',beam:'a'},{type:'note',pitch:'F4',duration:'eighth',beam:'a'},{type:'note',pitch:'G4',duration:'eighth',beam:'b'},{type:'note',pitch:'A4',duration:'eighth',beam:'b'},{type:'note',pitch:'B4',duration:'eighth',beam:'c'},{type:'note',pitch:'A4',duration:'eighth',beam:'c'},{type:'note',pitch:'G4',duration:'eighth',beam:'d'},{type:'note',pitch:'F4',duration:'eighth',beam:'d'},{type:'barline',style:'final'}]},explain:'4/4박자 = 4박 = 8분음표 기준 8개.'},
   {q:'"알레그로"는 어떤 빠르기인가요?',opts:['느리게','보통 빠르게','빠르게','아주 느리게'],ans:2,explain:'Allegro(알레그로)는 빠르고 활기 있게 연주하라는 빠르기말입니다. BPM 범위는 시대와 악보에 따라 달라질 수 있습니다.'},
   {q:'리타르단도(rit.)의 의미는?',opts:['점점 빠르게','점점 느리게','갑자기 빠르게','일정한 빠르기'],ans:1,explain:'Ritardando(리타르단도, rit.)는 점점 느리게 연주하라는 빠르기 변화 기호입니다.'},
   {q:'아첼레란도(accel.)의 의미는?',opts:['점점 느리게','점점 빠르게','갑자기 느리게','빠르기 유지'],ans:1,explain:'Accelerando(아첼레란도, accel.)는 점점 빠르게 연주하라는 지시입니다.'},
@@ -525,9 +548,9 @@ rhythm:[
   {q:'4분음표 = 60 BPM은 1분에 4분음표가 몇 개인가요?',opts:['30개','60개','120개','240개'],ans:1,notation:{type:'note',value:'quarter',label:'4분음표'},explain:'BPM(Beats Per Minute): 4분음표 = 60은 1분에 4분음표 60박을 연주한다는 뜻입니다.'},
   {q:'복박자(compound time)란?',opts:['각 박이 3으로 나뉘는 박자','홀수 박의 박자','각 박이 2로 나뉘는 박자','강박이 없는 박자'],ans:0,notation:{type:'note',value:'dotted-quarter',label:'점4분음표 (1박=8분음표 3개)'},explain:'복박자는 한 박이 8분음표 3개(점4분음표)로 구성되어 3으로 나뉘는 박자입니다. 6/8, 9/8, 12/8이 대표적입니다.'},
   {q:'당김음 리듬이 자주 쓰이는 음악 장르는?',opts:['클래식','재즈','그레고리안 성가','인도 음악'],ans:1,explain:'당김음(Syncopation)은 재즈, 팝, 블루스에서 스윙감을 주는 핵심 리듬 기법입니다.'},
-  {q:'점4분음표와 8분음표의 조합은 어떤 리듬인가요?',opts:['점리듬(Dotted rhythm)','셋잇단음표','당김음','2연음'],ans:0,notation:{type:'noteseq',value:['dotted-quarter','eighth'],label:'점4분음표 + 8분음표'},explain:'점4분음표+8분음표는 "쿵-짝" 형태의 점리듬(Dotted rhythm)입니다.'},
+  {q:'점4분음표와 8분음표의 조합은 어떤 리듬인가요?',opts:['점리듬(Dotted rhythm)','셋잇단음표','당김음','2연음'],ans:0,notation:{type:'staff',label:'점4분음표와 8분음표 점리듬',elements:[{type:'note',pitch:'E4',duration:'quarter',dots:1},{type:'note',pitch:'G4',duration:'eighth'}]},explain:'점4분음표+8분음표는 "쿵-짝" 형태의 점리듬(Dotted rhythm)입니다.'},
   {q:'4/4박자에서 3번째 박의 강세는?',opts:['강','약','중강','없음'],ans:2,explain:'4/4박자: 강(1)·약(2)·중강(3)·약(4)으로, 3번째 박은 중강박입니다.'},
-  {q:'다음 중 복박자(compound time)에 해당하는 것은?',opts:['2/4박자','3/4박자','6/8박자','4/4박자'],ans:2,notation:{type:'note',value:'dotted-quarter',label:'점4분음표 (1박=3분할)'},explain:'6/8박자는 겹2박자로, 한 마디에 점4분음표가 2개(한 박이 8분음표 3개씩) 들어가는 대표적인 복박자입니다.'},
+  {q:'다음 중 복박자(compound time)에 해당하는 것은?',opts:['2/4박자','3/4박자','6/8박자','4/4박자'],ans:2,notation:{type:'staff',label:'8분의 6박자에서 세 개씩 묶인 8분음표',time:[6,8],elements:[{type:'note',pitch:'E4',duration:'eighth',beam:'a'},{type:'note',pitch:'F4',duration:'eighth',beam:'a'},{type:'note',pitch:'G4',duration:'eighth',beam:'a'},{type:'note',pitch:'A4',duration:'eighth',beam:'b'},{type:'note',pitch:'G4',duration:'eighth',beam:'b'},{type:'note',pitch:'F4',duration:'eighth',beam:'b'},{type:'barline',style:'final'}]},explain:'6/8박자는 겹2박자로, 한 마디에 점4분음표가 2개(한 박이 8분음표 3개씩) 들어가는 대표적인 복박자입니다.'},
   {q:'안단테(Andante)의 뜻은?',opts:['아주 느리게','느리게 걷는 속도로','빠르게','아주 빠르게'],ans:1,explain:'Andante(안단테)는 이탈리아어로 "걷는 속도로"를 뜻합니다.'},
 ],
 mark:[
@@ -535,7 +558,7 @@ mark:[
   {q:'pp(피아니시모)의 의미는?',opts:['아주 세게','세게','여리게','아주 여리게'],ans:3,explain:'pp(pianissimo)는 "아주 여리게"를 의미합니다.'},
   {q:'크레셴도(crescendo)를 나타내는 기호는?',opts:['<','>', '==', '≤'],ans:0,explain:'크레셴도(<)는 점점 세게를 나타내는 기호입니다.'},
   {q:'데크레셴도(decrescendo)의 의미는?',opts:['점점 세게','점점 여리게','갑자기 세게','갑자기 여리게'],ans:1,notation:{type:'mark',value:'decrescendo',label:'데크레셴도(>)'},explain:'데크레셴도(>)는 점점 여리게 연주하라는 기호입니다.'},
-  {q:'mf(메조포르테)의 의미는?',opts:['아주 세게','세게','조금 세게','보통 세게'],ans:2,explain:'mf(mezzo forte)는 "조금 세게" 수준입니다.'},
+  {q:'mf(메조포르테)의 의미는?',opts:['아주 여리게','조금 여리게','조금 세게','아주 세게'],ans:2,explain:'mf(mezzo forte)는 "조금 세게"를 뜻하는 세기말입니다.'},
   {q:'sfz(스포르찬도)의 의미는?',opts:['점점 세게','특별히 강하게 강조','점점 여리게','유지하며 세게'],ans:1,explain:'sfz(sforzando)는 특정 음을 갑자기 강하게 강조하는 기호입니다.'},
   {q:'레가토(legato)는 어떻게 연주하나요?',opts:['음을 끊어서','음을 부드럽게 연결','아주 짧게','강하게 강조'],ans:1,notation:{type:'mark',value:'legato',label:'레가토(이음줄)'},explain:'레가토(legato)는 음과 음 사이를 부드럽게 연결하여 연주하는 주법입니다.'},
   {q:'스타카토(staccato)의 기호는?',opts:['음표 위/아래 점(·)','음표 위 선(-)','물결 기호(~)','꺾인 화살표'],ans:0,explain:'스타카토는 음표 위나 아래에 작은 점(·)으로 표기하며, 음을 짧고 끊어서 연주합니다.'},
@@ -545,8 +568,8 @@ mark:[
   {q:'Moderato(모데라토)의 뜻은?',opts:['느리게','보통 빠르기로','빠르게','아주 빠르게'],ans:1,explain:'Moderato는 "중간 정도의" 빠르기를 의미합니다.'},
   {q:'p(피아노)와 f(포르테) 사이의 세기 순서(여린→센 순)는?',opts:['pp-p-mp-mf-f-ff','pp-p-mf-mp-f-ff','p-pp-mp-mf-f-ff','pp-mp-p-mf-f-ff'],ans:0,explain:'세기 순서: pp < p < mp < mf < f < ff'},
   {q:'"Dolce"의 뜻은?',opts:['강하게','부드럽고 달콤하게','빠르게','슬프게'],ans:1,explain:'Dolce(돌체)는 "달콤하게, 부드럽게"를 의미하는 나타냄말입니다.'},
-  {q:'"Vivace"의 빠르기는?',opts:['아주 느리게','느리게','빠르게','아주 빠르게'],ans:3,explain:'Vivace(비바체)는 "생기 있게, 활발하게"를 뜻하며 Allegro보다 빠른 매우 빠른 빠르기입니다.'},
-  {q:'왼쪽·오른쪽 반복 기호로 묶인 구간의 의미는?',opts:['처음부터 반복','그 부분만 반복','3번 반복','끝까지 반복 후 종료'],ans:1,notation:{type:'mark',value:'repeat',label:'도돌이표'},explain:'왼쪽 반복 기호와 오른쪽 반복 기호로 묶인 구간을 한 번 반복합니다.'},
+  {q:'"Vivace"의 뜻으로 가장 알맞은 것은?',opts:['아주 느리고 차분하게','느리고 서정적으로','빠르고 생기 있게','반드시 Presto보다 빠르게'],ans:2,explain:'Vivace(비바체)는 "생기 있고 빠르게" 연주하라는 뜻입니다. 실제 빠르기는 시대와 곡의 맥락에 따라 달라집니다.'},
+  {q:'왼쪽·오른쪽 반복 기호로 묶인 구간의 의미는?',opts:['처음부터 반복','그 부분만 반복','3번 반복','끝까지 반복 후 종료'],ans:1,notation:{type:'staff',label:'왼쪽과 오른쪽 도돌이표로 묶인 한 마디',elements:[{type:'barline',style:'repeat-start'},{type:'note',pitch:'E4',duration:'quarter'},{type:'note',pitch:'G4',duration:'quarter'},{type:'barline',style:'repeat-end'}]},explain:'왼쪽 반복 기호와 오른쪽 반복 기호로 묶인 구간을 한 번 반복합니다.'},
   {q:'Da capo(D.C.)의 의미는?',opts:['처음으로 돌아가','표시된 곳으로 돌아가','끝','중간부터'],ans:0,explain:'Da capo(D.C.)는 "처음부터"를 뜻하며, 곡의 처음으로 돌아가 연주하라는 지시입니다.'},
   {q:'Dal segno(D.S.)의 의미는?',opts:['처음으로','세뇨(Segno) 표시가 있는 곳으로','마지막으로','두 번 반복'],ans:1,explain:'Dal segno(D.S.)는 세뇨(Segno) 표시가 있는 곳으로 돌아가라는 지시입니다.'},
   {q:'"Fine"의 의미는?',opts:['시작','끝','반복','느리게'],ans:1,explain:'Fine(피네)는 "끝"을 의미하며 D.C. al Fine와 함께 쓰여 그곳에서 곡이 끝납니다.'},
@@ -554,23 +577,23 @@ mark:[
 ],
 chord:[
   {q:'음정 "3도"란?',opts:['3개의 음 사이','두 음 사이 간격이 3도','화음 3개','3번째 음'],ans:1,explain:'음정은 두 음 사이의 높이 차이를 나타내며, "도~미"처럼 3번째 음까지의 거리를 3도라 합니다.'},
-  {q:'장3도의 반음 수는?',opts:['3반음','4반음','5반음','6반음'],ans:1,notation:{type:'interval',value:'maj3',label:'장3도 (도~미)'},explain:'장3도는 4개의 반음으로 이루어집니다. 예: 도~미.'},
-  {q:'단3도의 반음 수는?',opts:['2반음','3반음','4반음','5반음'],ans:1,notation:{type:'interval',value:'min3',label:'단3도 (미~솔)'},explain:'단3도는 3개의 반음으로 이루어집니다. 예: 미~솔.'},
+  {q:'장3도의 반음 수는?',opts:['3반음','4반음','5반음','6반음'],ans:1,notation:{type:'staff',label:'장3도 C4-E4 오선보',elements:[{type:'note',pitch:'C4',duration:'half'},{type:'note',pitch:'E4',duration:'half'}]},explain:'장3도는 4개의 반음으로 이루어집니다. 예: 도~미.'},
+  {q:'단3도의 반음 수는?',opts:['2반음','3반음','4반음','5반음'],ans:1,notation:{type:'staff',label:'단3도 E4-G4 오선보',elements:[{type:'note',pitch:'E4',duration:'half'},{type:'note',pitch:'G4',duration:'half'}]},explain:'단3도는 3개의 반음으로 이루어집니다. 예: 미~솔.'},
   {q:'장화음(Major chord)의 구성은?',opts:['장3도+단3도','단3도+장3도','장3도+장3도','단3도+단3도'],ans:0,explain:'장화음 = 장3도(4반음) + 단3도(3반음)'},
   {q:'단화음(Minor chord)의 구성은?',opts:['장3도+단3도','단3도+장3도','장3도+장3도','단3도+단3도'],ans:1,explain:'단화음 = 단3도(3반음) + 장3도(4반음)'},
   {q:'C장조에서 으뜸화음(I도 화음)은?',opts:['CEG(도미솔)','DFA(레파라)','EGB(미솔시)','FAC(파라도)'],ans:0,explain:'으뜸화음(Tonic chord)은 음계의 1번째 음에서 시작합니다. C장조에서는 C-E-G.'},
   {q:'C장조에서 딸림화음(V도 화음)은?',opts:['CEG','DFA','EGB','GBD(솔시레)'],ans:3,explain:'딸림화음(Dominant chord)은 음계 5번째 음에서 시작합니다. C장조에서는 G-B-D.'},
   {q:'버금딸림화음(IV도 화음)은 C장조에서?',opts:['CEG','FAC(파라도)','GBD','ACE'],ans:1,explain:'버금딸림화음(Subdominant)은 음계 4번째 음에서 시작합니다. C장조: F-A-C.'},
-  {q:'완전5도의 반음 수는?',opts:['5반음','6반음','7반음','8반음'],ans:2,notation:{type:'interval',value:'perfect5',label:'완전5도 (도~솔)'},explain:'완전5도 = 7개의 반음입니다. 예: 도~솔.'},
-  {q:'완전8도(옥타브)의 반음 수는?',opts:['10반음','11반음','12반음','13반음'],ans:2,notation:{type:'interval',value:'perfect8',label:'완전8도 (옥타브)'},explain:'완전8도(옥타브) = 12개의 반음입니다.'},
+  {q:'완전5도의 반음 수는?',opts:['5반음','6반음','7반음','8반음'],ans:2,notation:{type:'staff',label:'완전5도 C4-G4 오선보',elements:[{type:'note',pitch:'C4',duration:'half'},{type:'note',pitch:'G4',duration:'half'}]},explain:'완전5도 = 7개의 반음입니다. 예: 도~솔.'},
+  {q:'완전8도(옥타브)의 반음 수는?',opts:['10반음','11반음','12반음','13반음'],ans:2,notation:{type:'staff',label:'완전8도 C4-C5 오선보',elements:[{type:'note',pitch:'C4',duration:'half'},{type:'note',pitch:'C5',duration:'half'}]},explain:'완전8도(옥타브) = 12개의 반음입니다.'},
   {q:'감화음(Diminished chord)의 구성은?',opts:['장3도+장3도','단3도+단3도','장3도+단3도','단3도+장3도'],ans:1,explain:'감화음 = 단3도+단3도, 즉 6반음으로 이루어집니다.'},
   {q:'증화음(Augmented chord)의 구성은?',opts:['장3도+장3도','단3도+단3도','장3도+단3도','단3도+장3도'],ans:0,explain:'증화음 = 장3도+장3도, 즉 8반음으로 이루어집니다.'},
   {q:'"종지(Cadence)"란?',opts:['화음 진행의 종지 방식','음계의 이름','박자의 종류','악기 조율법'],ans:0,explain:'종지는 악구나 곡을 마무리하는 화음 진행 방식입니다. V→I(정격종지)가 대표적입니다.'},
   {q:'정격종지란?',opts:['V→I 진행','I→V 진행','IV→I 진행','V→IV 진행'],ans:0,explain:'정격종지(Authentic cadence)는 딸림화음(V)에서 으뜸화음(I)으로 진행하는 가장 완결된 종지입니다.'},
-  {q:'C-E-G 화음은 어떤 종류인가요?',opts:['C단화음','C장화음','C감화음','C증화음'],ans:1,notation:{type:'triad',value:'major',label:'C-E-G'},explain:'C-E-G는 장3도(C-E) + 단3도(E-G)로 구성된 C장화음입니다.'},
+  {q:'C-E-G 화음은 어떤 종류인가요?',opts:['C단화음','C장화음','C감화음','C증화음'],ans:1,notation:{type:'staff',label:'C-E-G 장3화음 오선보',elements:[{type:'note',pitch:'C4',duration:'whole',chord:'c'},{type:'note',pitch:'E4',duration:'whole',chord:'c'},{type:'note',pitch:'G4',duration:'whole',chord:'c'}]},optionNotations:[{type:'staff',label:'C-E플랫-G 단3화음',elements:[{type:'note',pitch:'C4',duration:'whole',chord:'c'},{type:'note',pitch:'Eb4',duration:'whole',chord:'c'},{type:'note',pitch:'G4',duration:'whole',chord:'c'}]},{type:'staff',label:'C-E-G 장3화음',elements:[{type:'note',pitch:'C4',duration:'whole',chord:'c'},{type:'note',pitch:'E4',duration:'whole',chord:'c'},{type:'note',pitch:'G4',duration:'whole',chord:'c'}]},{type:'staff',label:'C-E플랫-G플랫 감3화음',elements:[{type:'note',pitch:'C4',duration:'whole',chord:'c'},{type:'note',pitch:'Eb4',duration:'whole',chord:'c'},{type:'note',pitch:'Gb4',duration:'whole',chord:'c'}]},{type:'staff',label:'C-E-G샵 증3화음',elements:[{type:'note',pitch:'C4',duration:'whole',chord:'c'},{type:'note',pitch:'E4',duration:'whole',chord:'c'},{type:'note',pitch:'G#4',duration:'whole',chord:'c'}]}],explain:'C-E-G는 장3도(C-E) + 단3도(E-G)로 구성된 C장화음입니다.'},
   {q:'"아르페지오(Arpeggio)"란?',opts:['화음을 동시에','화음을 순서대로 연주','빠르게 반복','슬라이드 연주'],ans:1,notation:{type:'mark',value:'arpeggio',label:'아르페지오'},explain:'아르페지오는 화음의 구성음을 아래에서 위로 순서대로 하나씩 연주하는 기법입니다.'},
-  {q:'장2도의 반음 수는?',opts:['1반음','2반음','3반음','4반음'],ans:1,notation:{type:'interval',value:'maj2',label:'장2도 (도~레)'},explain:'장2도 = 2반음(온음 1개). 예: 도~레.'},
-  {q:'단2도의 반음 수는?',opts:['1반음','2반음','3반음','4반음'],ans:0,notation:{type:'interval',value:'min2',label:'단2도 (미~파)'},explain:'단2도 = 1반음(반음 1개). 예: 미~파, 시~도.'},
+  {q:'장2도의 반음 수는?',opts:['1반음','2반음','3반음','4반음'],ans:1,notation:{type:'staff',label:'장2도 C4-D4 오선보',elements:[{type:'note',pitch:'C4',duration:'half'},{type:'note',pitch:'D4',duration:'half'}]},explain:'장2도 = 2반음(온음 1개). 예: 도~레.'},
+  {q:'단2도의 반음 수는?',opts:['1반음','2반음','3반음','4반음'],ans:0,notation:{type:'staff',label:'단2도 E4-F4 오선보',elements:[{type:'note',pitch:'E4',duration:'half'},{type:'note',pitch:'F4',duration:'half'}]},explain:'단2도 = 1반음(반음 1개). 예: 미~파, 시~도.'},
   {q:'C장조 II도 화음은?',opts:['CEG','DFA','EGB','GBD'],ans:1,explain:'II도 화음은 음계 2번째 음에서 시작합니다. C장조: D-F-A (단화음).'},
   {q:'전위화음이란?',opts:['근음이 아닌 구성음이 베이스에 오는 화음','반음이 없는 화음','5음이 없는 화음','7음이 추가된 화음'],ans:0,explain:'전위화음은 화음의 근음(기본음)이 아닌 다른 구성음이 베이스에 오는 화음입니다.'},
 ],
@@ -606,11 +629,11 @@ form:[
   {q:'바로크 시대(Baroque)의 대표 작곡가는?',opts:['모차르트','베토벤','바흐','슈베르트'],ans:2,explain:'요한 제바스티안 바흐(J.S. Bach, 1685~1750)는 바로크 시대의 대표 작곡가입니다.'},
   {q:'고전주의(Classical)시대의 대표 작곡가는?',opts:['바흐','헨델','모차르트','브람스'],ans:2,explain:'볼프강 아마데우스 모차르트(Mozart, 1756~1791)는 고전주의 시대를 대표합니다.'},
   {q:'낭만주의(Romantic) 시대를 대표하는 작곡가가 아닌 것은?',opts:['쇼팽','슈베르트','헨델','브람스'],ans:2,explain:'헨델(Handel, 1685~1759)은 바로크 시대 작곡가입니다.'},
-  {q:'"교향곡(Symphony)"은 보통 몇 악장으로 구성되나요?',opts:['1악장','2악장','3악장','4악장'],ans:3,explain:'교향곡은 일반적으로 4개의 악장으로 구성됩니다.'},
+  {q:'고전주의 교향곡은 보통 몇 악장으로 구성되나요?',opts:['1악장','2악장','3악장','4악장'],ans:3,explain:'고전주의 교향곡은 보통 4악장으로 구성되지만, 시대와 작품에 따라 악장 수는 달라질 수 있습니다.'},
   {q:'소나타(Sonata)와 교향곡의 주요 차이는?',opts:['소나타는 독주·실내악, 교향곡은 오케스트라','소나타는 느림, 교향곡은 빠름','악장 수가 다름','조성이 다름'],ans:0,explain:'소나타는 독주 또는 소편성 실내악, 교향곡은 대편성 오케스트라를 위한 형식입니다.'},
   {q:'협주곡(Concerto)의 특징은?',opts:['독주악기와 오케스트라','합창과 오케스트라','현악기만 사용','무반주 성악'],ans:0,explain:'협주곡은 독주악기와 오케스트라가 대비·협력하며 연주하는 형식입니다.'},
   {q:'악곡의 코다(Coda)란?',opts:['도입부','전개부','마무리 부분','반복 부분'],ans:2,formDiagram:{blocks:[{notation:{type:'phrase',value:'A',label:'A'}},{notation:{type:'phrase',value:'B',label:'B'}},{notation:{type:'phrase',value:'A',label:'A'}},{notation:{type:'mark',value:'fermata',label:'Coda'}}],highlight:3},explain:'코다(Coda)는 이탈리아어로 "꼬리"를 의미하며, 악곡을 마무리하는 종결 부분입니다.'},
-  {q:'4악장 교향곡에서 2악장의 일반적인 특징은?',opts:['빠르고 활발함','느리고 서정적','왈츠 리듬','강렬한 종결'],ans:1,formDiagram:{blocks:[{notation:{type:'phrase',value:'NEUTRAL',label:'1악장'}},{notation:{type:'phrase',value:'NEUTRAL',label:'2악장'}},{notation:{type:'phrase',value:'NEUTRAL',label:'3악장'}},{notation:{type:'phrase',value:'NEUTRAL',label:'4악장'}}],highlight:1},explain:'4악장 교향곡의 2악장은 일반적으로 느리고 서정적인 성격을 가집니다.'},
+  {q:'고전주의의 전형적인 4악장 교향곡에서 2악장의 특징은?',opts:['빠르고 활발함','대체로 느리고 서정적','항상 왈츠 리듬','반드시 강렬한 종결'],ans:1,formDiagram:{blocks:[{notation:{type:'phrase',value:'NEUTRAL',label:'1악장'}},{notation:{type:'phrase',value:'NEUTRAL',label:'2악장'}},{notation:{type:'phrase',value:'NEUTRAL',label:'3악장'}},{notation:{type:'phrase',value:'NEUTRAL',label:'4악장'}}],highlight:1},explain:'고전주의의 전형적인 4악장 교향곡에서 2악장은 대체로 느리고 서정적이지만, 모든 작품에 예외 없이 적용되는 규칙은 아닙니다.'},
   {q:'한국 전통음악 "판소리"의 특징은?',opts:['독창+고수 반주','합창+오케스트라','무반주 기악','2인 2창'],ans:0,explain:'판소리는 소리꾼(독창) 한 명이 고수(북 반주)의 장단에 맞춰 이야기를 노래하는 형식입니다.'},
   {q:'국악의 "산조"는 어떤 형식인가요?',opts:['독주 기악곡','합창곡','무용음악','의식음악'],ans:0,explain:'산조는 독주 악기와 장구 반주로 이루어진 기악 독주 형식으로, 빠르기가 점차 빨라집니다.'},
   {q:'"가곡(Lied)"이 발전한 시대는?',opts:['바로크','고전주의','낭만주의','현대'],ans:2,explain:'독일 가곡(Lied)은 슈베르트·슈만·브람스 등 낭만주의 시대에 크게 발전했습니다.'},
@@ -620,8 +643,11 @@ form:[
 ],
 };
 
-let state={screen:'landing',cat:null,qs:[],cur:0,score:0,answers:[],startTime:0,streak:0,bestStreak:0};
+const ATTEMPT_MODE={NORMAL:'normal',SAME_SET_PRACTICE:'same-set-practice',WRONG_ONLY_PRACTICE:'wrong-only-practice'};
+let state={screen:'landing',cat:null,qs:[],cur:0,score:0,answers:[],startTime:0,streak:0,bestStreak:0,attemptMode:ATTEMPT_MODE.NORMAL};
 let storage={total:0,correct:0,maxStreak:0,catDone:{}};
+let resultGeneration=0;
+let exportGeneration=0;
 const SVG_NS='http://www.w3.org/2000/svg';
 
 function byId(id){return document.getElementById(id)}
@@ -832,7 +858,10 @@ function goStudy(catId){
   const cat = CATS.find(c=>c.id===catId);
   byId('study-screen').style.setProperty('--cat-c',cat.accent);
   byId('study-title').textContent = cat.title;
-  byId('study-subtitle').textContent = `${cat.sub} · 2022 개정 교육과정 중등 음악`;
+  byId('study-subtitle').replaceChildren(
+    document.createTextNode(`${cat.sub} · 2022 개정 교육과정 `),
+    node('span','study-level-phrase','중등 음악')
+  );
   
   const content = byId('study-content');
   content.replaceChildren();
@@ -968,6 +997,9 @@ function renderScaleStudy(parent){
   );
   
   const kb = node('div', 'piano-kb');
+  const scrollHint = node('p', 'typora-comment piano-scroll-hint', '건반을 좌우로 밀어 더 살펴보세요.');
+  scrollHint.id = 'piano-scroll-hint';
+  kb.setAttribute('aria-describedby', scrollHint.id);
   const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
   const keys = [];
   for(let oct = 3; oct <= 5; oct++){
@@ -986,7 +1018,9 @@ function renderScaleStudy(parent){
   scaleGuide.style.marginBottom = '12px';
 
   keys.forEach((k)=>{
-    const keyEl = node('div', k.black?'piano-key black':'piano-key');
+    const keyEl = node('button', k.black?'piano-key black':'piano-key');
+    keyEl.type='button';
+    keyEl.setAttribute('aria-label',`${k.note}${k.oct} 건반`);
     if(!k.black && k.note==='C'){
       keyEl.appendChild(node('span','piano-key-label',`C${k.oct}`));
     }
@@ -997,21 +1031,20 @@ function renderScaleStudy(parent){
       const freq = noteFreq(k.note, k.oct);
       playTone(freq, 0.4, 'sine');
 
-      let desc = `음이름: ${k.note}${k.oct} (${freq.toFixed(1)} Hz)`;
+      const desc = `음이름: ${k.note}${k.oct} (${freq.toFixed(1)} Hz)`;
       if(k.note === 'E' || k.note === 'F'){
-        desc += ` [E-F 반음 관계 · 장음계의 3-4음]`;
+        scaleGuide.replaceChildren(document.createTextNode(`${desc} [E-F `), node('span', 'scale-term', '반음 관계'), document.createTextNode(' · 장음계의 3-4음]'));
       } else if(k.note === 'B' || k.note === 'C'){
-        desc += ` [B-C 반음 관계 · 장음계의 7-8음]`;
+        scaleGuide.replaceChildren(document.createTextNode(`${desc} [B-C `), node('span', 'scale-term', '반음 관계'), document.createTextNode(' · 장음계의 7-8음]'));
       } else {
-        desc += ` [온음 관계 영역]`;
+        scaleGuide.textContent = `${desc} [온음 관계 영역]`;
       }
-      scaleGuide.textContent = desc;
     });
     kb.appendChild(keyEl);
   });
   
   const tool = node('div', 'study-tool');
-  tool.append(node('div', 'study-tool-title', 'Piano Keyboard Scale Viewer'), kb, scaleGuide);
+  tool.append(node('div', 'study-tool-title', 'Piano Keyboard Scale Viewer'), scrollHint, kb, scaleGuide);
   sec1.appendChild(tool);
   
   const sec2 = node('div', 'study-section');
@@ -1154,9 +1187,10 @@ function renderMarkStudy(parent){
   const tool = node('div', 'study-tool');
   tool.append(node('div', 'study-tool-title', 'Dynamics & Tempo Interactive Scale'));
   
-  const dynLabel = node('div', 'calc-result', '세기기호: mf (보통 세게)');
+  const dynLabel = node('div', 'calc-result', '세기기호: mf (조금 세게)');
   dynLabel.style.marginBottom = '8px';
   const dynRange = document.createElement('input');
+  dynRange.id = 'dynamics-range';
   dynRange.type = 'range';
   dynRange.min = '1';
   dynRange.max = '6';
@@ -1179,8 +1213,11 @@ function renderMarkStudy(parent){
   });
   
   const tempoLabel = node('div', 'calc-result', '빠르기말: Moderato (보통 빠르기로 · BPM 108~120)');
+  tempoLabel.id = 'tempo-value';
+  dynLabel.id = 'dynamics-value';
   tempoLabel.style.marginBottom = '8px';
   const tempoRange = document.createElement('input');
+  tempoRange.id = 'tempo-range';
   tempoRange.type = 'range';
   tempoRange.min = '1';
   tempoRange.max = '7';
@@ -1194,7 +1231,7 @@ function renderMarkStudy(parent){
     {s:'Andante', l:'걷는 빠르기로 / 느리게 걷는 속도로 (BPM 76~108)'},
     {s:'Moderato', l:'보통 빠르기로 (BPM 108~120)'},
     {s:'Allegro', l:'빠르게 (BPM 120~168)'},
-    {s:'Vivace', l:'아주 빠르게 (BPM 160~180)'},
+    {s:'Vivace', l:'빠르고 생기 있게 (BPM 160~180)'},
     {s:'Presto', l:'매우 빠르게 (BPM 168~200)'}
   ];
   
@@ -1203,10 +1240,15 @@ function renderMarkStudy(parent){
     tempoLabel.textContent = `빠르기말: ${tempos[v].s} (${tempos[v].l})`;
   });
   
+  const dynamicsControlLabel=node('label', undefined, '음의 세기 크기 조절 (여림 → 세게)');
+  dynamicsControlLabel.htmlFor=dynRange.id;
+  const tempoControlLabel=node('label', undefined, '빠르기 템포 조절 (느림 → 빠르게)');
+  tempoControlLabel.htmlFor=tempoRange.id;
+  tempoControlLabel.style.marginTop='20px';
   tool.append(
-    node('div', undefined, '음의 세기 크기 조절 (여림 → 세게)'),
+    dynamicsControlLabel,
     dynRange, dynLabel,
-    node('div', {style:'margin-top:20px;'}, '빠르기 템포 조절 (느림 → 빠르게)'),
+    tempoControlLabel,
     tempoRange, tempoLabel
   );
   sec1.appendChild(tool);
@@ -1486,7 +1528,217 @@ function shuffle(arr){
 
 function shuffleQuestionOptions(q){
   const order=shuffle(q.opts.map((_,i)=>i));
-  return {...q,opts:order.map(i=>q.opts[i]),ans:order.indexOf(q.ans)};
+  const optionNotations=q.optionNotations?order.map(i=>q.optionNotations[i]):undefined;
+  return {...q,opts:order.map(i=>q.opts[i]),optionNotations,ans:order.indexOf(q.ans)};
+}
+
+const SHARP_ORDER=['F','C','G','D','A','E','B'];
+const FLAT_ORDER=['B','E','A','D','G','C','F'];
+const KEY_SIGNATURES={G:1,D:2,A:3,E:4,B:5,'F#':6,'C#':7,F:-1,Bb:-2,Eb:-3,Ab:-4,Db:-5,Gb:-6,Cb:-7};
+const STAFF_STEP={C:0,D:1,E:2,F:3,G:4,A:5,B:6};
+const STAFF_TOP=28;
+const STAFF_GAP=8;
+
+function staffPitchStep(pitch){
+  const match=/^([A-G])(?:#|b)?([0-8])$/.exec(pitch);
+  return STAFF_STEP[match[1]]+(Number(match[2])-4)*7-2;
+}
+
+function staffPitchY(pitch){return STAFF_TOP+STAFF_GAP*4-staffPitchStep(pitch)*STAFF_GAP/2;}
+
+function drawStaffLines(svg,width){
+  for(let index=0;index<5;index++)svg.appendChild(svgNode('line',{class:'staff-line',x1:8,y1:STAFF_TOP+index*STAFF_GAP,x2:width-8,y2:STAFF_TOP+index*STAFF_GAP,stroke:'currentColor','stroke-width':1}));
+}
+
+function drawTrebleClef(svg){
+  const clef=svgNode('text',{class:'treble-clef',x:23,y:59,'font-size':43,'font-family':'serif',fill:'currentColor','text-anchor':'middle'});
+  clef.textContent='𝄞';
+  svg.appendChild(clef);
+}
+
+function drawKeySignature(svg,key,startX){
+  const count=KEY_SIGNATURES[key]||0;
+  if(count===0)return startX;
+  const order=count>0?SHARP_ORDER:FLAT_ORDER;
+  const pitches=count>0?['F5','C5','G5','D5','A4','E5','B4']:['B4','E5','A4','D5','G4','C5','F4'];
+  const glyph=count>0?'♯':'♭';
+  for(let index=0;index<Math.abs(count);index++){
+    const accidental=svgNode('text',{class:'key-accidental',x:startX+index*12,y:staffPitchY(pitches[index])+6,'font-size':19,'font-family':'serif',fill:'currentColor','text-anchor':'middle','data-pitch':order[index]});
+    accidental.textContent=glyph;
+    svg.appendChild(accidental);
+  }
+  return startX+Math.abs(count)*12+6;
+}
+
+function drawTimeSignature(svg,time,startX){
+  if(!time)return startX;
+  const group=svgNode('g',{class:'time-signature'});
+  time.forEach((value,index)=>{
+    const text=svgNode('text',{x:startX,y:index===0?42:58,'font-size':17,'font-weight':700,'font-family':'serif',fill:'currentColor','text-anchor':'middle'});
+    text.textContent=String(value);
+    group.appendChild(text);
+  });
+  svg.appendChild(group);
+  return startX+18;
+}
+
+function drawLedgerLines(svg,x,pitch){
+  const step=staffPitchStep(pitch);
+  if(step<=-2)for(let ledger=-2;ledger>=step;ledger-=2)svg.appendChild(svgNode('line',{class:'ledger-line',x1:x-9,y1:STAFF_TOP+STAFF_GAP*4-ledger*STAFF_GAP/2,x2:x+9,y2:STAFF_TOP+STAFF_GAP*4-ledger*STAFF_GAP/2,stroke:'currentColor','stroke-width':1.2}));
+  if(step>=10)for(let ledger=10;ledger<=step;ledger+=2)svg.appendChild(svgNode('line',{class:'ledger-line',x1:x-9,y1:STAFF_TOP+STAFF_GAP*4-ledger*STAFF_GAP/2,x2:x+9,y2:STAFF_TOP+STAFF_GAP*4-ledger*STAFF_GAP/2,stroke:'currentColor','stroke-width':1.2}));
+}
+
+function staffAccidentalColumns(elements){
+  const columns=new Map();
+  const chordColumns=new Map();
+  elements.forEach(note=>{
+    if(note.type!=='note'||!/[#b]/.test(note.pitch))return;
+    if(!note.chord){columns.set(note,0);return;}
+    const used=chordColumns.get(note.chord)||[];
+    const step=staffPitchStep(note.pitch);
+    let column=used.findIndex(columnSteps=>columnSteps.every(otherStep=>Math.abs(otherStep-step)>=7));
+    if(column<0){column=used.length;used.push([]);}
+    used[column].push(step);
+    chordColumns.set(note.chord,used);
+    columns.set(note,column);
+  });
+  return columns;
+}
+
+function drawStaffNote(svg,note,x,stemDirection,accidentalColumn=0){
+  const y=staffPitchY(note.pitch);
+  const open=note.duration==='whole'||note.duration==='half';
+  const stemUp=stemDirection?stemDirection==='up':staffPitchStep(note.pitch)<4;
+  drawLedgerLines(svg,x,note.pitch);
+  const pitchMatch=/^([A-G])([#b])?/.exec(note.pitch);
+  if(pitchMatch[2]){
+    const accidental=svgNode('text',{class:'note-accidental',x:x-25-accidentalColumn*24,y:y+6,'font-size':22,'font-family':'serif',fill:'currentColor','text-anchor':'middle','font-weight':700,'data-accidental-column':accidentalColumn});
+    accidental.textContent=pitchMatch[2]==='#'?'♯':'♭';
+    svg.appendChild(accidental);
+  }
+  svg.appendChild(svgNode('ellipse',{class:'notehead',cx:x,cy:y,rx:6.5,ry:4.6,transform:`rotate(-18 ${x} ${y})`,fill:open?'var(--surface)':'currentColor',stroke:'currentColor','stroke-width':1.7,'data-pitch':note.pitch}));
+  let stemX=x;
+  let stemEnd=y;
+  if(note.duration!=='whole'){
+    stemX=x+(stemUp?6:-6);
+    stemEnd=y+(stemUp?-27:27);
+    if(!note.beam)svg.appendChild(svgNode('line',{class:'stem',x1:stemX,y1:y,x2:stemX,y2:stemEnd,stroke:'currentColor','stroke-width':1.7,'stroke-linecap':'round'}));
+    const flags=note.duration==='sixteenth'?2:note.duration==='eighth'?1:0;
+    if(flags&&!note.beam)for(let flag=0;flag<flags;flag++)svg.appendChild(svgNode('path',{class:'flag',d:stemUp?`M${stemX},${stemEnd+flag*7} q10,4 7,14`:`M${stemX},${stemEnd-flag*7} q-10,-4 -7,-14`,fill:'none',stroke:'currentColor','stroke-width':2,'stroke-linecap':'round'}));
+  }
+  for(let dot=0;dot<(note.dots||0);dot++)svg.appendChild(svgNode('circle',{class:'augmentation-dot',cx:x+11+dot*6,cy:y-2,r:1.8,fill:'currentColor'}));
+  return {x,y,stemX,stemEnd,stemUp,note};
+}
+
+function drawStaffRest(svg,rest,x){
+  const y=44;
+  if(rest.duration==='whole'||rest.duration==='half')svg.appendChild(svgNode('rect',{class:'rest',x:x-6,y:rest.duration==='whole'?36:38,width:12,height:6,fill:'currentColor'}));
+  else if(rest.duration==='quarter')svg.appendChild(svgNode('path',{class:'rest',d:`M${x-3},30 l7,9 -7,8 7,9 c-7,-3 -9,3 -4,7`,fill:'none',stroke:'currentColor','stroke-width':2.8,'stroke-linejoin':'round','stroke-linecap':'round'}));
+  else{
+    svg.appendChild(svgNode('path',{class:'rest',d:`M${x+3},31 L${x-5},57`,fill:'none',stroke:'currentColor','stroke-width':2,'stroke-linecap':'round'}));
+    const flags=rest.duration==='sixteenth'?2:1;
+    for(let flag=0;flag<flags;flag++)svg.appendChild(svgNode('circle',{class:'rest',cx:x+2-flag*3,cy:32+flag*9,r:3,fill:'currentColor'}));
+  }
+  for(let dot=0;dot<(rest.dots||0);dot++)svg.appendChild(svgNode('circle',{class:'augmentation-dot',cx:x+10+dot*6,cy:y,r:1.8,fill:'currentColor'}));
+}
+
+function drawStaffBarline(svg,barline,x){
+  const group=svgNode('g',{class:`barline ${barline.style}`});
+  if(barline.style==='thin')group.appendChild(svgNode('line',{class:'barline-thin',x1:x,y1:STAFF_TOP,x2:x,y2:STAFF_TOP+STAFF_GAP*4,stroke:'currentColor','stroke-width':1.2}));
+  if(barline.style==='final')group.append(svgNode('line',{class:'barline-thin',x1:x-5,y1:STAFF_TOP,x2:x-5,y2:STAFF_TOP+STAFF_GAP*4,stroke:'currentColor','stroke-width':1.2}),svgNode('line',{class:'barline-thick',x1:x,y1:STAFF_TOP,x2:x,y2:STAFF_TOP+STAFF_GAP*4,stroke:'currentColor','stroke-width':4}));
+  if(barline.style==='repeat-start'||barline.style==='repeat-end'){
+    const direction=barline.style==='repeat-start'?1:-1;
+    group.append(svgNode('line',{x1:x,y1:STAFF_TOP,x2:x,y2:STAFF_TOP+STAFF_GAP*4,stroke:'currentColor','stroke-width':4}),svgNode('line',{x1:x+direction*6,y1:STAFF_TOP,x2:x+direction*6,y2:STAFF_TOP+STAFF_GAP*4,stroke:'currentColor','stroke-width':1.2}),svgNode('circle',{cx:x+direction*12,cy:40,r:2,fill:'currentColor'}),svgNode('circle',{cx:x+direction*12,cy:48,r:2,fill:'currentColor'}));
+  }
+  svg.appendChild(group);
+}
+
+function drawStaffCurve(svg,curve,positions){
+  const from=positions.get(curve.from),to=positions.get(curve.to);
+  const below=Math.max(from.y,to.y)+13;
+  const above=Math.min(from.y,to.y)-13;
+  const y=curve.placement==='above'?above:below;
+  const control=y+(curve.placement==='above'?-10:10);
+  svg.appendChild(svgNode('path',{class:`staff-curve ${curve.type}`,d:`M${from.x},${y} Q${(from.x+to.x)/2},${control} ${to.x},${y}`,fill:'none',stroke:'currentColor','stroke-width':1.7,'stroke-linecap':'round'}));
+}
+
+function drawStaffBeams(svg,positions){
+  const groups=new Map();
+  positions.forEach(position=>{if(position.note.beam){const group=groups.get(position.note.beam)||[];group.push(position);groups.set(position.note.beam,group);}});
+  groups.forEach(group=>{
+    if(group.length<2)return;
+    const stemUp=group[0].stemUp;
+    const beamY=stemUp?Math.min(...group.map(position=>position.stemEnd)):Math.max(...group.map(position=>position.stemEnd));
+    const first=group[0],last=group[group.length-1];
+    svg.appendChild(svgNode('line',{class:'beam',x1:first.stemX,y1:beamY,x2:last.stemX,y2:beamY,stroke:'currentColor','stroke-width':5,'stroke-linecap':'butt'}));
+    if(group.some(position=>position.note.duration==='sixteenth'))svg.appendChild(svgNode('line',{class:'beam',x1:first.stemX,y1:beamY+(stemUp?7:-7),x2:last.stemX,y2:beamY+(stemUp?7:-7),stroke:'currentColor','stroke-width':4,'stroke-linecap':'butt'}));
+    group.forEach(position=>svg.appendChild(svgNode('line',{class:'stem beam-stem',x1:position.stemX,y1:position.y,x2:position.stemX,y2:beamY,stroke:'currentColor','stroke-width':1.7})));
+  });
+}
+
+function drawStaffTuplet(svg,tuplet,positions){
+  const from=positions.get(tuplet.from),to=positions.get(tuplet.to);
+  const above=tuplet.placement!=='below';
+  const edgeY=above?Math.min(from.stemEnd,to.stemEnd,from.y,to.y):Math.max(from.stemEnd,to.stemEnd,from.y,to.y);
+  const bracketY=edgeY+(above?-13:13);
+  const hookY=bracketY+(above?4:-4);
+  const centerX=(from.x+to.x)/2;
+  const group=svgNode('g',{class:'staff-tuplet','data-tuplet-number':tuplet.number,'data-from':tuplet.from,'data-to':tuplet.to});
+  group.appendChild(svgNode('path',{class:'tuplet-bracket',d:`M${from.x},${hookY} V${bracketY} H${centerX-7} M${centerX+7},${bracketY} H${to.x} V${hookY}`,fill:'none',stroke:'currentColor','stroke-width':1.4,'stroke-linecap':'square'}));
+  const number=svgNode('text',{class:'tuplet-number',x:centerX,y:bracketY+(above?4:-2),'font-size':12,'font-weight':700,'font-family':'serif',fill:'currentColor','text-anchor':'middle'});
+  number.textContent=String(tuplet.number);
+  group.appendChild(number);
+  svg.appendChild(group);
+}
+
+function renderStaffNotation(notation){
+  const drawable=notation.elements.filter(element=>element.type==='note'||element.type==='rest'||element.type==='barline');
+  const width=Math.max(160,72+drawable.length*34);
+  const svg=svgNode('svg',{class:'staff-score',viewBox:`0 0 ${width} 88`,role:'img','aria-label':notation.label});
+  drawStaffLines(svg,width);
+  drawTrebleClef(svg);
+  let cursor=drawKeySignature(svg,notation.key,62);
+  cursor=drawTimeSignature(svg,notation.time,cursor);
+  const accidentalColumns=staffAccidentalColumns(notation.elements);
+  if(accidentalColumns.size)cursor+=Math.max(...accidentalColumns.values())*24+12;
+  const beamDirections=new Map();
+  notation.elements.forEach(element=>{
+    if(element.type!=='note'||!element.beam||beamDirections.has(element.beam))return;
+    const group=notation.elements.filter(candidate=>candidate.type==='note'&&candidate.beam===element.beam);
+    const averageStep=group.reduce((sum,note)=>sum+staffPitchStep(note.pitch),0)/group.length;
+    beamDirections.set(element.beam,averageStep<4?'up':'down');
+  });
+  const beamGroups=new Map();
+  beamDirections.forEach((direction,id)=>{
+    const group=svgNode('g',{class:'beam-group','data-beam-group':id,'data-stem-direction':direction});
+    beamGroups.set(id,group);
+    svg.appendChild(group);
+  });
+  const positions=new Map();
+  const sequence=[];
+  let previousChord='';
+  notation.elements.forEach(element=>{
+    if(element.type==='tie'||element.type==='slur'||element.type==='tuplet')return;
+    if(element.chord&&element.chord===previousChord)cursor-=34;
+    if(element.type==='note'){
+      const target=element.beam?beamGroups.get(element.beam):svg;
+      const position=drawStaffNote(target,element,cursor,beamDirections.get(element.beam),accidentalColumns.get(element));
+      sequence.push(position);
+      if(element.id)positions.set(element.id,position);
+      previousChord=element.chord||'';
+    }else if(element.type==='rest'){
+      drawStaffRest(svg,element,cursor);
+      previousChord='';
+    }else{
+      drawStaffBarline(svg,element,element.style==='final'&&element===notation.elements.at(-1)?width-12:cursor);
+      previousChord='';
+    }
+    cursor+=34;
+  });
+  beamGroups.forEach((group,id)=>drawStaffBeams(group,sequence.filter(position=>position.note.beam===id)));
+  notation.elements.filter(element=>element.type==='tuplet').forEach(tuplet=>drawStaffTuplet(svg,tuplet,positions));
+  notation.elements.filter(element=>element.type==='tie'||element.type==='slur').forEach(curve=>drawStaffCurve(svg,curve,positions));
+  return svg;
 }
 
 const INTERVAL_OFFSETS={'min2':6,'maj2':8,'min3':11,'maj3':14,'perfect5':22,'perfect8':38};
@@ -1498,6 +1750,11 @@ function renderNotation(target,notation){
   if(!notation){target.style.display='none';return;}
   target.style.display='';
   const wrap=node('div','notation-card');
+  if(notation.type==='staff'){
+    wrap.append(renderStaffNotation(notation),node('div','notation-label',notation.label));
+    target.appendChild(wrap);
+    return;
+  }
   const seqLen=Array.isArray(notation.value)?notation.value.length:1;
   const viewBox=notation.type==='mark'?'0 0 64 56':notation.type==='interval'?'0 0 60 70':notation.type==='keysig'?'0 0 116 46':notation.type==='phrase'?'0 0 72 42':notation.type==='triad'?'0 0 40 76':notation.type==='noteseq'?`0 0 ${16+seqLen*28} 60`:'0 0 44 60';
   const svg=svgNode('svg',{viewBox,role:'img','aria-label':notation.label||'음악 기호'});
@@ -1652,9 +1909,9 @@ function renderNotation(target,notation){
   target.appendChild(wrap);
 }
 
-function beginQuiz(cat,questionList,labelSuffix){
+function beginQuiz(cat,questionList,attemptMode,labelSuffix){
   const qs=questionList.map(shuffleQuestionOptions);
-  state={screen:'quiz',cat,qs,cur:0,score:0,answers:[],startTime:Date.now(),streak:0,bestStreak:0};
+  state={screen:'quiz',cat,qs,cur:0,score:0,answers:[],startTime:Date.now(),streak:0,bestStreak:0,attemptMode};
   byId('q-cat-name').textContent=labelSuffix?`${cat.title} · ${labelSuffix}`:cat.title;
   byId('quiz-screen').style.setProperty('--cat-c',cat.accent);
   renderQuestion();
@@ -1669,7 +1926,7 @@ function startQuiz(catId){
     goHome();
     return;
   }
-  beginQuiz(cat,shuffle(allQ).slice(0,10));
+  beginQuiz(cat,shuffle(allQ).slice(0,10),ATTEMPT_MODE.NORMAL);
 }
 
 function renderFormDiagram(target,diagram){
@@ -1710,7 +1967,15 @@ function renderQuestion(){
     const btn=document.createElement('button');
     btn.className='opt-btn';
     btn.type='button';
-    btn.append(node('span','opt-label',labels[i]),node('span','opt-text',o));
+    btn.setAttribute('aria-label',`${labels[i]}. ${o}`);
+    const content=node('span','opt-content');
+    if(q.optionNotations?.[i]){
+      const notation=node('span','option-notation');
+      renderNotation(notation,q.optionNotations[i]);
+      content.appendChild(notation);
+    }
+    content.appendChild(node('span','opt-text',o));
+    btn.append(node('span','opt-label',labels[i]),content);
     btn.addEventListener('click',()=>selectAnswer(i,btn));
     opts.appendChild(btn);
   });
@@ -1743,7 +2008,7 @@ function selectAnswer(idx,btn){
     fi.textContent='✗';ft.textContent=`오답. 정답: ${q.opts[q.ans]}`;ft.className='feedback-text ng';fb.className='feedback-bar show ng';
   }
   fe.textContent=q.explain||'';
-  state.answers.push({q:q.q,opts:q.opts,ans:q.ans,chosen:idx,correct,explain:q.explain||''});
+  state.answers.push({q:q.q,opts:q.opts,ans:q.ans,chosen:idx,correct,explain:q.explain||'',notation:q.notation||null,optionNotations:q.optionNotations||null});
   const done=Math.round((state.cur+1)/state.qs.length*100);
   byId('next-btn').style.display='block';
   byId('q-prog-fill').style.width=`${done}%`;
@@ -1766,22 +2031,37 @@ function showResult(){
     return;
   }
   state.screen='result';
+  resultGeneration++;
+  exportGeneration++;
+  const pdfStatus=byId('pdf-status');
+  const pdfButton=byId('pdf-download-btn');
+  const printArea=byId('print-area');
+  pdfStatus.textContent='';
+  pdfStatus.classList.remove('is-success','is-danger');
+  pdfButton.disabled=false;
+  printArea.classList.remove('pdf-rendering');
   const elapsed=Math.round((Date.now()-state.startTime)/1000);
   const pct=Math.round(state.score/state.qs.length*100);
-  storage.total+=state.qs.length;
-  storage.correct+=state.score;
-  if(state.bestStreak>storage.maxStreak)storage.maxStreak=state.bestStreak;
-  storage.catDone[state.cat.id]=pct;
-  saveStorage();
+  if(state.attemptMode===ATTEMPT_MODE.NORMAL){
+    storage.total+=state.qs.length;
+    storage.correct+=state.score;
+    if(state.bestStreak>storage.maxStreak)storage.maxStreak=state.bestStreak;
+    storage.catDone[state.cat.id]=pct;
+    saveStorage();
+  }
   updateHomeStats();
   const arc=document.getElementById('score-arc');
   const circ=2*Math.PI*42;
   arc.setAttribute('stroke-dasharray',`${circ*pct/100} ${circ}`);
-  arc.setAttribute('stroke',pct>=80?'#276b41':pct>=60?'#8a5a10':'#a13327');
+  arc.setAttribute('stroke',pct>=80?'var(--success)':pct>=60?'var(--warning)':'var(--danger)');
   byId('score-pct').textContent=pct+'%';
   const msgs=pct>=90?['완벽해요!','음악 천재']:pct>=70?['잘했어요!','꾸준히 공부해요']:pct>=50?['절반 이상!','복습이 필요해요']:['더 노력해요','열심히 공부해봐요'];
   byId('result-title').textContent=msgs[0];
   byId('result-sub').textContent=`${state.score}/${state.qs.length} 정답 · ${msgs[1]}`;
+  const practiceStatus=byId('practice-status');
+  const isPractice=state.attemptMode!==ATTEMPT_MODE.NORMAL;
+  practiceStatus.hidden=!isPractice;
+  practiceStatus.textContent=isPractice?'연습 결과 · 누적 학습 기록에는 반영되지 않습니다.':'';
   byId('r-correct').textContent=state.score;
   byId('r-wrong').textContent=state.qs.length-state.score;
   byId('r-time').textContent=elapsed+'s';
@@ -1803,7 +2083,42 @@ function showResult(){
     const explain=node('div','review-a',a.explain);
     explain.style.marginTop='2px';
     explain.style.opacity='.78';
-    body.append(question,answer,explain);
+    body.append(question,answer);
+    if(a.notation?.type==='staff'||a.optionNotations){
+      const notationGrid=node('div','review-notation-grid');
+      if(a.notation?.type==='staff'){
+        const prompt=node('section','review-notation review-prompt-notation');
+        const promptTitle=node('div','review-notation-title','문제 악보');
+        promptTitle.id=`review-prompt-title-${i}`;
+        prompt.setAttribute('aria-labelledby',promptTitle.id);
+        const promptScore=node('div');
+        renderNotation(promptScore,a.notation);
+        prompt.append(promptTitle,promptScore);
+        notationGrid.appendChild(prompt);
+      }
+      if(a.optionNotations){
+        const selected=node('section','review-notation review-selected-notation');
+        const selectedTitle=node('div','review-notation-title','내 답');
+        selectedTitle.id=`review-selected-title-${i}`;
+        selected.setAttribute('aria-labelledby',selectedTitle.id);
+        const selectedScore=node('div');
+        renderNotation(selectedScore,a.optionNotations[a.chosen]);
+        selected.append(selectedTitle,selectedScore);
+        notationGrid.appendChild(selected);
+        if(!a.correct){
+          const correctNotation=node('section','review-notation review-correct-notation');
+          const correctTitle=node('div','review-notation-title','정답');
+          correctTitle.id=`review-correct-title-${i}`;
+          correctNotation.setAttribute('aria-labelledby',correctTitle.id);
+          const correctScore=node('div');
+          renderNotation(correctScore,a.optionNotations[a.ans]);
+          correctNotation.append(correctTitle,correctScore);
+          notationGrid.appendChild(correctNotation);
+        }
+      }
+      body.appendChild(notationGrid);
+    }
+    body.appendChild(explain);
     div.append(dot,body);
     rl.appendChild(div);
   });
@@ -1815,7 +2130,7 @@ function retryQuiz(){
   const allQ=QUESTIONS[state.cat.id]||[];
   const sameSet=state.qs.map(q=>allQ.find(o=>o.q===q.q)).filter(Boolean);
   if(!sameSet.length)return;
-  beginQuiz(state.cat,sameSet);
+  beginQuiz(state.cat,sameSet,ATTEMPT_MODE.SAME_SET_PRACTICE,'같은 문제 연습');
 }
 
 function retryWrongOnly(){
@@ -1823,7 +2138,7 @@ function retryWrongOnly(){
   const allQ=QUESTIONS[state.cat.id]||[];
   const wrongSet=state.answers.filter(a=>!a.correct).map(a=>allQ.find(o=>o.q===a.q)).filter(Boolean);
   if(!wrongSet.length)return;
-  beginQuiz(state.cat,wrongSet,'오답 복습');
+  beginQuiz(state.cat,wrongSet,ATTEMPT_MODE.WRONG_ONLY_PRACTICE,'오답 복습');
 }
 
 byId('quiz-home-btn').addEventListener('click',goHome);
@@ -1858,15 +2173,34 @@ function savePdf(area,fn){
 byId('pdf-download-btn').addEventListener('click',function(){
   const btn=this;
   const area=byId('print-area');
+  const status=byId('pdf-status');
   const name=byId('student-name').value.trim();
   const date=new Date().toISOString().slice(0,10).replace(/-/g,'');
   const fn=name?`음악이론_${name}_${date}.pdf`:`음악이론_학습결과_${date}.pdf`;
+  const generation=resultGeneration;
+  const exportToken=++exportGeneration;
+  status.textContent='';
+  status.classList.remove('is-success','is-danger');
   btn.disabled=true;
   if(area)area.classList.add('pdf-rendering');
   window.scrollTo(0,0);
   savePdf(area,fn)
-    .catch(error=>console.error('PDF 생성에 실패했습니다.',error))
-    .finally(()=>{if(area)area.classList.remove('pdf-rendering');btn.disabled=false;});
+    .then(()=>{
+      if(generation!==resultGeneration||exportToken!==exportGeneration)return;
+      status.textContent='PDF 파일을 저장했습니다.';
+      status.classList.add('is-success');
+    })
+    .catch(error=>{
+      console.error('PDF 생성에 실패했습니다.',error);
+      if(generation!==resultGeneration||exportToken!==exportGeneration)return;
+      status.textContent='PDF 저장에 실패했습니다. 잠시 후 다시 시도해 주세요.';
+      status.classList.add('is-danger');
+    })
+    .finally(()=>{
+      if(generation!==resultGeneration||exportToken!==exportGeneration)return;
+      if(area)area.classList.remove('pdf-rendering');
+      btn.disabled=false;
+    });
 });
 
 byId('brand-icon').appendChild(svgIcon('note',18));
